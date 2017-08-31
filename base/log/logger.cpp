@@ -13,33 +13,10 @@ namespace zam {
         namespace log {
 
 
-            void logger::allocate(const char* tag, loggerConfig const& cfg) {
+            logger::logger(const char* tag, level lv) {
 
             }
 
-            void logger::trace(const char* tag, const char* fmt, ...) {
-
-            }
-
-            void logger::debug(const char* tag, const char* fmt, ...) {
-
-            }
-
-            void logger::info(const char* tag, const char* fmt, ...) {
-
-            }
-
-            void logger::warn(const char* tag, const char* fmt, ...) {
-
-            }
-
-            void logger::error(const char* tag, const char* fmt, ...) {
-
-            }
-
-            void logger::fatal(const char* tag, const char* fmt, ...) {
-
-            }
 
         }
     }

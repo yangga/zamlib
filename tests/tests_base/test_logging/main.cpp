@@ -9,6 +9,6 @@
 using namespace zam::base::log;
 
 int main(int argc, char* argv[]) {
-    logger::debug("test", "hello world");
+    //logd("test") << "hello world";
     return 0;
 }

@@ -5,24 +5,25 @@
 #ifndef ZAM_LOG_H
 #define ZAM_LOG_H
 
+#include "loggerDefine.h"
+
 namespace zam {
     namespace base {
         namespace log {
 
-            class loggerConfig;
-
             class logger {
-
             public:
-                static void allocate(const char* tag, loggerConfig const& cfg);
+                logger() = delete;
+                logger(const char* tag, level lv);
+                ~logger() = default;
 
-                static void trace(const char* tag, const char* fmt, ...);
-                static void debug(const char* tag, const char* fmt, ...);
-                static void info(const char* tag, const char* fmt, ...);
-                static void warn(const char* tag, const char* fmt, ...);
-                static void error(const char* tag, const char* fmt, ...);
-                static void fatal(const char* tag, const char* fmt, ...);
+                template <typename T>
+                logger& operator << (T const& v) {
+                    return *this;
+                }
             };
+
+
 
         }   // namespace log
     }   // namespace base
