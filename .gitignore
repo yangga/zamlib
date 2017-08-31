@@ -35,7 +35,10 @@
 CMakeFiles
 CMakeCache.txt
 cmake_install.cmake
+cmake-build-*
 MakeFile
+
+# generated config files
 ZamConfig.h
 
 # except directories
