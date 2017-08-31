@@ -7,7 +7,17 @@ set(CMAKE_CXX_STANDARD 17)
 set (Zam_VERSION_MAJOR 0)
 set (Zam_VERSION_MINOR 1)
 
+# configure a header file to pass some of the CMake settings
+# to the source code
+configure_file (
+		"${PROJECT_SOURCE_DIR}/ZamConfig.h.in"
+		"${PROJECT_BINARY_DIR}/ZamConfig.h"
+)
+
+# output path
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # setup directory where we should look for cmake files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -29,17 +39,9 @@ else(JSONCPP_FOUND)
 endif(JSONCPP_FOUND)
 
 
-# configure a header file to pass some of the CMake settings
-# to the source code
-configure_file (
-	"${PROJECT_SOURCE_DIR}/ZamConfig.h.in"
-	"${PROJECT_BINARY_DIR}/ZamConfig.h"
-	)
-
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-
+include_directories ("${PROJECT_SOURCE_DIR}")
 include_directories ("${PROJECT_BINARY_DIR}")
 
 add_subdirectory(base)
 add_subdirectory(net)
+add_subdirectory(tests)
