@@ -7,4 +7,6 @@
 
 #include <boost/cstdint.hpp>
 
+#include <json/json.h>
+
 #endif //ZAM_STDAFX_H

@@ -2,44 +2,42 @@
 // Created by SungWoo Yang on 2017. 8. 30..
 //
 
+#include "stdafx.h"
 #include "logger.h"
 
-#include "stdafx.h"
+#include "loggerDefine.h"
+#include "loggerConfig.h"
 
 namespace zam {
     namespace base {
         namespace log {
 
 
-            void logger::trace(const char* fmt, ...) {
+            void logger::allocate(const char* tag, loggerConfig const& cfg) {
 
             }
 
-            void logger::debug(const char* fmt, ...) {
+            void logger::trace(const char* tag, const char* fmt, ...) {
 
             }
 
-            void logger::info(const char* fmt, ...) {
+            void logger::debug(const char* tag, const char* fmt, ...) {
 
             }
 
-            void logger::warn(const char* fmt, ...) {
+            void logger::info(const char* tag, const char* fmt, ...) {
 
             }
 
-            void logger::error(const char* fmt, ...) {
+            void logger::warn(const char* tag, const char* fmt, ...) {
 
             }
 
-            void logger::fatal(const char* fmt, ...) {
+            void logger::error(const char* tag, const char* fmt, ...) {
 
             }
 
-            bool logger::checkLevel(level lv) const {
-                return true;
-            }
-
-            void logger::log(level lv, const char* txt) {
+            void logger::fatal(const char* tag, const char* fmt, ...) {
 
             }
 
