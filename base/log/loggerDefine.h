@@ -9,13 +9,15 @@ namespace zam {
     namespace base {
         namespace log {
 
-            enum level {
+            enum level : uint32_t {
                 trace = 1 << 0,
                 debug = 1 << 1,
                 info = 1 << 2,
                 warning = 1 << 3,
                 error = 1 << 4,
-                fatal = 1 << 5
+                fatal = 1 << 5,
+
+                all = trace|debug|info|warning|error|fatal
             };
 
         }   // namespace log
