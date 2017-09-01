@@ -4,3 +4,12 @@
 
 #include "base.h"
 #include "loggerConfig.h"
+
+namespace zam {
+    namespace base {
+        namespace log {
+
+
+        }   // namespace log
+    }   // namespace base
+}  // namespace zam

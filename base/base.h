@@ -6,9 +6,8 @@
 #define ZAM_BASE_STDAFX_H
 
 #include <boost/config.hpp>
-#include <boost/cstdint.hpp>
-#include <boost/lexical_cast.hpp>
 
-#include <json/json.h>
+#include <boost/assert.hpp>
+#include <boost/cstdint.hpp>
 
 #endif //ZAM_BASE_STDAFX_H

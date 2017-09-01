@@ -9,6 +9,8 @@
 using namespace zam::base::log;
 
 int main(int argc, char* argv[]) {
+
+
     logd("test") << "hello" << " world";
     logd("test") << "i wanna be a rich !!!" << " give me " << 1 << " dollar";
 

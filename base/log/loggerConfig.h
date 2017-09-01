@@ -5,11 +5,28 @@
 #ifndef ZAM_BASE_LOG_LOGGERCONFIG_H
 #define ZAM_BASE_LOG_LOGGERCONFIG_H
 
+#include <json/value.h>
+
+#include "loggerDefine.h"
+
 namespace zam {
     namespace base {
         namespace log {
 
-            class loggerConfig {
+            struct loggerConfig {
+                streamType type;
+                level lv;
+            };
+
+            struct loggerConfigConsole : loggerConfig {
+
+            };
+
+            struct loggerConfigFile : loggerConfig {
+
+            };
+
+            struct loggerConfigTracer : loggerConfig {
 
             };
 

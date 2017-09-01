@@ -12,6 +12,8 @@
 
 #include <sstream>
 
+#include <boost/noncopyable.hpp>
+
 namespace zam {
     namespace base {
         namespace log {
@@ -19,7 +21,7 @@ namespace zam {
             class logWriter;
             class loggerInitializer;
 
-            class logger {
+            class logger : boost::noncopyable {
                 friend class loggerInitializer;
 
             public:
@@ -47,12 +49,11 @@ namespace zam {
                     return operator<<(static_cast<const uint32_t>(v));
                 }
 
-
             private:
                 void flush();
 
             private:
-                level lv_ = level::info;
+                level lv_ = level::all;
                 logWriter* writer_ = nullptr;
                 std::stringstream ss_;
             };
