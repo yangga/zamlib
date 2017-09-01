@@ -2,10 +2,9 @@
 // Created by SungWoo Yang on 2017. 8. 31..
 //
 
-#include <iostream>
+#include <base/logger.h>
 
-#include <base/base.h>
-#include <base/log/logger.h>
+#include <iostream>
 
 using namespace zam::base::log;
 

@@ -2,8 +2,8 @@
 // Created by SungWoo Yang on 2017. 8. 30..
 //
 
-#ifndef ZAM_LOGGERCONFIG_H
-#define ZAM_LOGGERCONFIG_H
+#ifndef ZAM_BASE_LOG_LOGGERCONFIG_H
+#define ZAM_BASE_LOG_LOGGERCONFIG_H
 
 namespace zam {
     namespace base {
@@ -17,4 +17,4 @@ namespace zam {
     }   // namespace base
 }  // namespace zam
 
-#endif //ZAM_LOGGERCONFIG_H
+#endif //ZAM_BASE_LOG_LOGGERCONFIG_H

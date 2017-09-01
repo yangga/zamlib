@@ -2,8 +2,8 @@
 // Created by SungWoo Yang on 2017. 8. 31..
 //
 
-#ifndef ZAM_LOGWRITER_H
-#define ZAM_LOGWRITER_H
+#ifndef ZAM_BASE_LOG_DETAIL_LOGWRITER_H
+#define ZAM_BASE_LOG_DETAIL_LOGWRITER_H
 
 #include "../loggerDefine.h"
 
@@ -28,4 +28,4 @@ namespace zam {
 }
 
 
-#endif //ZAM_LOGWRITER_H
+#endif //ZAM_BASE_LOG_DETAIL_LOGWRITER_H

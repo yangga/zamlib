@@ -10,7 +10,6 @@
 #include "loggerDefine.h"
 #include "loggerConfig.h"
 
-
 namespace zam {
     namespace base {
         namespace log {

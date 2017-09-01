@@ -5,8 +5,8 @@
 #include "base.h"
 #include "loggerInitializer.h"
 
-#include "detail/logWriter.h"
-#include "logger.h"
+#include "logWriter.h"
+#include "base/log/logger.h"
 
 namespace zam {
     namespace base {

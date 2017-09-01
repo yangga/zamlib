@@ -2,10 +2,10 @@
 // Created by SungWoo Yang on 2017. 9. 1..
 //
 
-#ifndef ZAM_LOGGERINITIALIZER_H
-#define ZAM_LOGGERINITIALIZER_H
+#ifndef ZAM_BASE_LOG_LOGGERINITIALIZER_H
+#define ZAM_BASE_LOG_LOGGERINITIALIZER_H
 
-#include "loggerDefine.h"
+#include "base/log/loggerDefine.h"
 
 namespace zam {
     namespace base {
@@ -23,4 +23,4 @@ namespace zam {
 }
 
 
-#endif //ZAM_LOGGERINITIALIZER_H
+#endif //ZAM_BASE_LOG_LOGGERINITIALIZER_H

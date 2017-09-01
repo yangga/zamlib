@@ -2,13 +2,12 @@
 // Created by SungWoo Yang on 2017. 8. 30..
 //
 
-#ifndef ZAM_LOG_H
-#define ZAM_LOG_H
+#ifndef ZAM_BASE_LOG_LOGGER_H
+#define ZAM_BASE_LOG_LOGGER_H
 
 #include "loggerDefine.h"
 
-#include "loggerInitializer.h"
-
+#include "detail/loggerInitializer.h"
 #include "detail/logWriter.h"
 
 #include <sstream>
@@ -73,4 +72,4 @@ namespace zam {
 #define logf(_TAG_) __logging_macro__(_TAG_, zam::base::log::level::fatal)
 
 
-#endif //ZAM_LOG_H
+#endif //ZAM_BASE_LOG_LOGGER_H

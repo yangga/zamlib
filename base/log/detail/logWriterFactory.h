@@ -2,8 +2,8 @@
 // Created by SungWoo Yang on 2017. 8. 31..
 //
 
-#ifndef ZAM_LOGWRITERFACTORY_H
-#define ZAM_LOGWRITERFACTORY_H
+#ifndef ZAM_BASE_LOG_DETAIL_LOGWRITERFACTORY_H
+#define ZAM_BASE_LOG_DETAIL_LOGWRITERFACTORY_H
 
 namespace zam {
     namespace base {
@@ -23,4 +23,4 @@ namespace zam {
 }
 
 
-#endif //ZAM_LOGWRITERFACTORY_H
+#endif //ZAM_BASE_LOG_DETAIL_LOGWRITERFACTORY_H
