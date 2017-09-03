@@ -51,7 +51,7 @@ namespace zam {
                         if (nullptr == appender)
                             throw std::invalid_argument("no stream");
 
-                        appender->load(*loggerPool::instance().get(tag), vAppender);
+                        appender->load(*loggerPool::instance().alloc(tag), vAppender);
                     }
                 } catch(std::exception& e) {
                     throw std::logic_error(std::string(e.what()) + " - tag:" + tag);

@@ -17,8 +17,8 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    ZAM_LOGD("test") << "hello" << " world";
-    ZAM_LOGD("test") << "i wanna be a rich !!!" << " give me " << 1 << " dollar";
+    ZAM_LOGD("test1") << "hello" << " world";
+    ZAM_LOGD("test1") << "i wanna be a rich !!!" << " give me " << 1 << " dollar";
 
     return 0;
 }

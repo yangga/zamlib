@@ -15,8 +15,8 @@ namespace zam {
             public:
                 loggerWriter(std::string name);
 
-                inline bool checkLevel(level lv) BOOST_NOEXCEPT {
-                    return (lv_ & lv);
+                inline bool checkLevel(level lv) const BOOST_NOEXCEPT {
+                    return (lv_ <= lv);
                 }
 
                 void flush(const char* txt);
