@@ -24,7 +24,10 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # checking libraries
 # Boost
-find_package(Boost REQUIRED COMPONENTS date_time filesystem iostreams system serialization)
+set(Boost_USE_STATIC_LIBS        ON) # only find static libs
+set(Boost_USE_MULTITHREADED      ON)
+set(Boost_USE_STATIC_RUNTIME    OFF)
+find_package(Boost REQUIRED COMPONENTS date_time filesystem iostreams system serialization log log_setup thread)
 if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
 	#link_directories(${Boost_LIBRARY_DIRS})

@@ -5,7 +5,7 @@
 #include "base.h"
 #include "loggerWriter.h"
 
-#include <iostream>
+#include <boost/log/common.hpp>
 
 namespace zam {
     namespace base {
@@ -16,8 +16,16 @@ namespace zam {
             {
             }
 
-            void loggerWriter::flush(const char* txt) {
-                std::cout << txt << std::endl;
+            void loggerWriter::addSink(sink_t s) {
+                sinks_.push_back(s);
+            }
+
+            void loggerWriter::flush(level lvContext, const char* txt) {
+                namespace src = boost::log::sources;
+                namespace keywords = boost::log::keywords;
+
+                src::severity_channel_logger_mt<level> logger(keywords::channel = name_);
+	            BOOST_LOG_SEV(logger, lvContext) << txt;
             }
 
         }

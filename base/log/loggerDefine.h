@@ -5,6 +5,8 @@
 #ifndef ZAM_BASE_LOG_LOGGERDEFINE_H
 #define ZAM_BASE_LOG_LOGGERDEFINE_H
 
+#include <boost/log/expressions/keyword.hpp>
+
 #include <string>
 
 namespace zam {
@@ -13,15 +15,18 @@ namespace zam {
 
             enum level : uint32_t {
                 all = 0,
-                trace = 1,
-                debug = 2,
-                info = 3,
-                warn = 4,
-                error = 5,
-                fatal = 6
+                trace = 0,
+                debug,
+                info,
+                warn,
+                error,
+                fatal
             };
+            BOOST_LOG_ATTRIBUTE_KEYWORD(zam_severity, "Severity", level);
+
             std::string toString(level lv);
             level toLevel(const char* name);
+            std::ostream& operator << (std::ostream& strm, level lv);
 
             enum streamType : uint32_t {
                 none = 0,

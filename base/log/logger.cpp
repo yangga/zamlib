@@ -19,7 +19,7 @@ namespace zam {
             }
 
             void logger::flush() {
-                writer_->flush(ss_.str().c_str());
+                writer_->flush(lv_, ss_.str().c_str());
             }
 
         }

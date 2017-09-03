@@ -18,14 +18,14 @@ namespace zam {
                 level lv;
                 const char* name;
                 const char* initial;
+                const char* display;
             } __logLevelDic__ [] = {
-                    {level::all,   "all",   "a"},
-                    {level::trace, "trace", "t"},
-                    {level::debug, "debug", "d"},
-                    {level::info,  "info",  "i"},
-                    {level::warn,  "warn",  "w"},
-                    {level::error, "error", "e"},
-                    {level::fatal, "fatal", "f"}
+                    {level::trace, "trace", "t", "trace"},
+                    {level::debug, "debug", "d", "debug"},
+                    {level::info,  "info",  "i", "info "},
+                    {level::warn,  "warn",  "w", "warn "},
+                    {level::error, "error", "e", "error"},
+                    {level::fatal, "fatal", "f", "fatal"}
             };
             static_assert(0 < sizeof(__logLevelDic__));
 
@@ -56,6 +56,11 @@ namespace zam {
                 }
 
                 return __logLevelDic__[0].lv;
+            }
+
+            std::ostream& operator << (std::ostream& strm, level lv) {
+                strm << __logLevelDic__[lv].display;
+                return strm;
             }
 
             /// stream

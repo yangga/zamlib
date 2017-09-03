@@ -13,12 +13,12 @@ int main(int argc, char* argv[]) {
     try {
         loggerSystem::load("../misc/tests/test_logging/test_logging.json");
     } catch(std::exception& e) {
-        std::cout << e.what() << std::endl;
+        std::cerr << e.what() << std::endl;
         return -1;
     }
 
     ZAM_LOGD("test1") << "hello" << " world";
-    ZAM_LOGD("test1") << "i wanna be a rich !!!" << " give me " << 1 << " dollar";
+    ZAM_LOGW("test1") << "i wanna be a rich !!!" << " give me " << 1 << " dollar";
 
     return 0;
 }

@@ -9,6 +9,7 @@
 
 #include "base/log/detail/loggerWriter.h"
 #include "detail/loggerPool.h"
+#include "detail/loggerSystemInitOnce.h"
 
 #include "base/log/appender/loggerAppenderConsole.h"
 #include "base/log/appender/loggerAppenderFile.h"
@@ -35,7 +36,9 @@ namespace zam {
 
 
             void loggerSystem::allocate(const char* tag, Json::Value const& vAppenderList) {
-                static auto findAppender = [&](Json::Value const& vAppender) -> loggerAppender* {
+                static loggerSystemInitOnce __loggerSystemInitOnce__;
+
+                static auto getAppender = [&](Json::Value const& vAppender) -> loggerAppender* {
                     auto type = toStreamType(vAppender["stream"].asString().c_str());
                     for (auto const& ele : __log_appenders__) {
                         if (ele.type == type)
@@ -44,14 +47,19 @@ namespace zam {
                     return nullptr;
                 };
 
+                static auto getLevel = [&](Json::Value const& vAppender) -> level {
+                    return toLevel(vAppender["level"].asCString());
+                };
+
                 try {
+                    loggerWriter* writer = loggerPool::instance().alloc(tag);
 
                     for (auto const& vAppender : vAppenderList) {
-                        auto appender = findAppender(vAppender);
+                        auto appender = getAppender(vAppender);
                         if (nullptr == appender)
-                            throw std::invalid_argument("no stream");
+                            throw std::invalid_argument("invalid stream");
 
-                        appender->load(*loggerPool::instance().alloc(tag), vAppender);
+                        appender->load(*writer, vAppender);
                     }
                 } catch(std::exception& e) {
                     throw std::logic_error(std::string(e.what()) + " - tag:" + tag);
