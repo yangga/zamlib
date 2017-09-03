@@ -17,8 +17,12 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    ZAM_LOGD("test1") << "hello" << " world";
-    ZAM_LOGW("test1") << "i wanna be a rich !!!" << " give me " << 1 << " dollar";
+    ZAM_LOGT("test1") << "trace";
+    ZAM_LOGD("test1") << "debug";
+    ZAM_LOGI("test1") << "info";
+    ZAM_LOGW("test1") << "warning";
+    ZAM_LOGE("test1") << "error";
+    ZAM_LOGF("test1") << "fatal";
 
     return 0;
 }

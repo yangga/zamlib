@@ -15,11 +15,11 @@
   "test1": {
     "appender": [
       {
-        "level": "debug",
+        "level": "trace",
         "stream" : "console"
       },
       {
-        "level": "debug",
+        "level": "trace",
         "stream" : "file",
         "path" : "./logs",
         "fileName" : "test1.log",
