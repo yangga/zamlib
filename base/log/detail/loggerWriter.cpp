@@ -3,7 +3,7 @@
 //
 
 #include "base.h"
-#include "logWriter.h"
+#include "loggerWriter.h"
 
 #include <iostream>
 
@@ -11,7 +11,12 @@ namespace zam {
     namespace base {
         namespace log {
 
-            void logWriter::flush(const char* txt) {
+            loggerWriter::loggerWriter(std::string name)
+                : name_(std::move(name))
+            {
+            }
+
+            void loggerWriter::flush(const char* txt) {
                 std::cout << txt << std::endl;
             }
 

@@ -10,9 +10,15 @@ using namespace zam::base::log;
 
 int main(int argc, char* argv[]) {
 
+    try {
+        loggerSystem::load("../misc/tests/test_logging/test_logging.json");
+    } catch(std::exception& e) {
+        std::cout << e.what() << std::endl;
+        return -1;
+    }
 
-    logd("test") << "hello" << " world";
-    logd("test") << "i wanna be a rich !!!" << " give me " << 1 << " dollar";
+    ZAM_LOGD("test") << "hello" << " world";
+    ZAM_LOGD("test") << "i wanna be a rich !!!" << " give me " << 1 << " dollar";
 
     return 0;
 }

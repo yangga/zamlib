@@ -13,53 +13,92 @@ namespace zam {
     namespace base {
         namespace log {
 
+            /// level
             struct {
                 level lv;
                 const char* name;
+                const char* initial;
             } __logLevelDic__ [] = {
-                    {level::trace, "trace"},
-                    {level::debug, "debug"},
-                    {level::info, "info"},
-                    {level::warn, "warn"},
-                    {level::error, "error"},
-                    {level::fatal, "fatal"},
+                    {level::all,   "all",   "a"},
+                    {level::trace, "trace", "t"},
+                    {level::debug, "debug", "d"},
+                    {level::info,  "info",  "i"},
+                    {level::warn,  "warn",  "w"},
+                    {level::error, "error", "e"},
+                    {level::fatal, "fatal", "f"}
             };
+            static_assert(0 < sizeof(__logLevelDic__));
+
             std::string toString(level lv) {
-                std::stringstream ss;
-
                 for (auto const& dic : __logLevelDic__) {
-                    if (0 < (dic.lv & lv)) {
-                        if (0 < ss.tellp())
-                            ss << "|";
-
-                        ss << dic.name;
-                    }
+                    if (dic.lv == lv)
+                        return dic.name;
                 }
 
-                return ss.str();
+                return __logLevelDic__[0].name;
             }
 
-            level toLevel(const char* names) {
-                assert(nullptr != names);
+            level toLevel(const char* name) {
+                if (nullptr == name || 0 == strlen(name))
+                    throw std::invalid_argument("invalid level type");
 
-                if (nullptr == names || 0 == strlen(names))
-                    throw std::invalid_argument("invalid names");
+                std::string lname(name);
+                std::transform(lname.begin(), lname.end(), lname.begin(), ::tolower);
 
-                std::string s(names);
-
-                boost::char_separator<char> sep("|");
-                boost::tokenizer<boost::char_separator<char> > tok(s, sep);
-
-                uint32_t lv = 0;
-                for (auto const& name : tok) {
-                    for (auto const& dic : __logLevelDic__) {
-                        if (name == dic.name)
-                            lv |= dic.lv;
-                    }
+                for (auto const& dic : __logLevelDic__) {
+                    if (lname == dic.name)
+                        return dic.lv;
                 }
 
-                assert(0 != lv);
-                return level(lv);
+                for (auto const& dic : __logLevelDic__) {
+                    if (lname == dic.initial)
+                        return dic.lv;
+                }
+
+                return __logLevelDic__[0].lv;
+            }
+
+            /// stream
+            struct {
+                streamType type;
+                const char* name;
+                const char* initial;
+            } __streamTypeDic__ [] = {
+                    {streamType::none,    "none",    "n"},
+                    {streamType::console, "console", "c"},
+                    {streamType::file,    "file",    "f"},
+                    {streamType::tracer,  "tracer",  "t"},
+                    {streamType::udp,     "udp",     "u"}
+            };
+            static_assert(0 < sizeof(__streamTypeDic__));
+
+            std::string toString(streamType type) {
+                for (auto const& dic : __streamTypeDic__) {
+                    if (dic.type == type)
+                        return dic.name;
+                }
+
+                return __streamTypeDic__[0].name;
+            }
+
+            streamType toStreamType(const char *name) {
+                if (nullptr == name || 0 == strlen(name))
+                    throw std::invalid_argument("invalid stream type");
+
+                std::string lname(name);
+                std::transform(lname.begin(), lname.end(), lname.begin(), ::tolower);
+
+                for (auto const& dic : __streamTypeDic__) {
+                    if (lname == dic.name)
+                        return dic.type;
+                }
+
+                for (auto const& dic : __streamTypeDic__) {
+                    if (lname == dic.initial)
+                        return dic.type;
+                }
+
+                return __streamTypeDic__[0].type;
             }
 
         }

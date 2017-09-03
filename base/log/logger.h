@@ -8,24 +8,25 @@
 #include "loggerDefine.h"
 
 #include "detail/loggerInitializer.h"
-#include "detail/logWriter.h"
+#include "base/log/detail/loggerWriter.h"
 
 #include <sstream>
 
-#include <boost/noncopyable.hpp>
 
 namespace zam {
     namespace base {
         namespace log {
 
-            class logWriter;
+            class loggerWriter;
             class loggerInitializer;
 
-            class logger : boost::noncopyable {
+            class logger {
                 friend class loggerInitializer;
 
             public:
                 logger() = default;
+                logger(const logger&) = delete;
+                logger(logger&&) = delete;
                 ~logger();
 
                 bool operator! () const BOOST_NOEXCEPT {
@@ -49,28 +50,32 @@ namespace zam {
                     return operator<<(static_cast<const uint32_t>(v));
                 }
 
+                logger& operator=(const logger&) = delete;
+                logger&& operator=(logger&&) = delete;
+
             private:
                 void flush();
 
             private:
                 level lv_ = level::all;
-                logWriter* writer_ = nullptr;
-                std::stringstream ss_;
+                loggerWriter* writer_ = nullptr;
+                std::stringstream ss_ = std::stringstream();
             };
+
+
 
         }   // namespace log
     }   // namespace base
 }  // namespace zam
 
-#define __logging_macro__(_TAG_, _LEVEL_)  for (zam::base::log::logger _logger;!!_logger;) \
+#define ZAM_LOGGING_MACRO(_TAG_, _LEVEL_)  for (zam::base::log::logger _logger;!!_logger;) \
                                                loggerInitializer::initializeLogger(_logger, _TAG_, _LEVEL_)
 
-#define logt(_TAG_) __logging_macro__(_TAG_, zam::base::log::level::trace)
-#define logd(_TAG_) __logging_macro__(_TAG_, zam::base::log::level::debug)
-#define logi(_TAG_) __logging_macro__(_TAG_, zam::base::log::level::info)
-#define logw(_TAG_) __logging_macro__(_TAG_, zam::base::log::level::warn)
-#define loge(_TAG_) __logging_macro__(_TAG_, zam::base::log::level::error)
-#define logf(_TAG_) __logging_macro__(_TAG_, zam::base::log::level::fatal)
-
+#define ZAM_LOGT(_TAG_) ZAM_LOGGING_MACRO(_TAG_, zam::base::log::level::trace)
+#define ZAM_LOGD(_TAG_) ZAM_LOGGING_MACRO(_TAG_, zam::base::log::level::debug)
+#define ZAM_LOGI(_TAG_) ZAM_LOGGING_MACRO(_TAG_, zam::base::log::level::info)
+#define ZAM_LOGW(_TAG_) ZAM_LOGGING_MACRO(_TAG_, zam::base::log::level::warn)
+#define ZAM_LOGE(_TAG_) ZAM_LOGGING_MACRO(_TAG_, zam::base::log::level::error)
+#define ZAM_LOGF(_TAG_) ZAM_LOGGING_MACRO(_TAG_, zam::base::log::level::fatal)
 
 #endif //ZAM_BASE_LOG_LOGGER_H

@@ -9,5 +9,8 @@
 
 #include <boost/assert.hpp>
 #include <boost/cstdint.hpp>
+#include <boost/shared_ptr.hpp>
+
+#include <iostream>
 
 #endif //ZAM_BASE_STDAFX_H

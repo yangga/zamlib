@@ -12,17 +12,16 @@ namespace zam {
         namespace log {
 
             enum level : uint32_t {
-                trace = 1 << 0,
-                debug = 1 << 1,
-                info = 1 << 2,
-                warn = 1 << 3,
-                error = 1 << 4,
-                fatal = 1 << 5,
-
-                all = trace|debug|info|warn|error|fatal
+                all = 0,
+                trace = 1,
+                debug = 2,
+                info = 3,
+                warn = 4,
+                error = 5,
+                fatal = 6
             };
             std::string toString(level lv);
-            level toLevel(const char* names);
+            level toLevel(const char* name);
 
             enum streamType : uint32_t {
                 none = 0,
@@ -31,6 +30,8 @@ namespace zam {
                 tracer = 1 << 2,
                 udp = 1 << 3
             };
+            std::string toString(streamType type);
+            streamType toStreamType(const char *name);
 
         }   // namespace log
     }   // namespace base

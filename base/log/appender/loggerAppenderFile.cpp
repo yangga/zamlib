@@ -2,13 +2,13 @@
 // Created by SungWoo Yang on 2017. 9. 1..
 //
 
-#include "loggerAllocFile.h"
+#include "loggerAppenderFile.h"
 
 namespace zam {
     namespace base {
         namespace log {
 
-            void loggerAllocFile::initialize(loggerConfig const &cfg) {
+            void loggerAppenderFile::load(loggerWriter &writer, Json::Value const &) {
 
             }
 

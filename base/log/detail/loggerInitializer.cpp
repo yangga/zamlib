@@ -5,14 +5,14 @@
 #include "base.h"
 #include "loggerInitializer.h"
 
-#include "logWriter.h"
+#include "loggerWriter.h"
 #include "base/log/logger.h"
 
 namespace zam {
     namespace base {
         namespace log {
 
-            logWriter g_writer;
+            loggerWriter g_writer("default");
             logger& loggerInitializer::initializeLogger(logger& lg, const char* tag, level lv) {
                 lg.writer_ = &g_writer;
                 lg.lv_ = lv;

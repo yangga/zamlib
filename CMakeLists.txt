@@ -23,14 +23,15 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # checking libraries
-# boost
-find_package(boost REQUIRED)
+# Boost
+find_package(Boost REQUIRED COMPONENTS date_time filesystem iostreams system serialization)
 if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
+	#link_directories(${Boost_LIBRARY_DIRS})
 else(Boost_FOUND)
 	message(FATAL_ERROR "you need to boost library")
 endif(Boost_FOUND)
-# jsoncpp
+# Jsoncpp
 find_package(Jsoncpp REQUIRED)
 if(JSONCPP_FOUND)
 	include_directories(${JSONCPP_INCLUDE_DIR})

@@ -1,0 +1,41 @@
+{
+  "root" : {
+    "appender": [
+      {
+        "level": "error",
+        "stream" : "console",
+        "layout" : "%d [%p] %m%n"
+      },
+      {
+        "level": "error",
+        "stream" : "file",
+        "layout" : "%d [%p] %m%n"
+      }
+    ]
+  },
+
+  "test1": {
+    "appender": [
+      {
+        "level": "info",
+        "stream" : "console",
+        "layout" : "%d [%p] %m%n"
+      },
+      {
+        "level": "warn",
+        "stream" : "file",
+        "layout" : "%d [%p] %m%n",
+        "path" : "./logs",
+        "fileName" : "test1.log",
+        "maxFileByte" : 1024000,
+        "roll" : "daily"
+      },
+      {
+        "level": "warn",
+        "stream" : "udp",
+        "layout" : "%d [%p] %m%n",
+        "url" : "127.0.0.1:9999"
+      }
+    ]
+  }
+}

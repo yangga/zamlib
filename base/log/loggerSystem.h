@@ -17,7 +17,7 @@ namespace zam {
 
             class loggerSystem {
             public:
-                static void allocate(const char* tag, loggerConfig const& cfg);
+                static void allocate(const char* tag, Json::Value const& vAppender);
 
                 static void load(Json::Value const& vCfg);
                 static void load(const char* filename);
