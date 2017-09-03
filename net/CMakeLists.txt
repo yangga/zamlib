@@ -3,5 +3,7 @@ project(net)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE_FILES library.cpp library.h)
+include_directories (${PROJECT_SOURCE_DIR})
+
+set(SOURCE_FILES library.cpp library.h net.h)
 add_library(net ${SOURCE_FILES})

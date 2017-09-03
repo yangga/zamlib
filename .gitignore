@@ -1,3 +1,6 @@
+# thumb database
+.DS_Store
+
 # Prerequisites
 *.d
 
@@ -35,7 +38,11 @@
 CMakeFiles
 CMakeCache.txt
 cmake_install.cmake
+cmake-build-*
 MakeFile
+*.cbp
+
+# generated appender files
 ZamConfig.h
 
 # except directories

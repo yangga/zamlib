@@ -1,0 +1,31 @@
+{
+  "root" : {
+    "appender": [
+      {
+        "level": "error",
+        "stream" : "console"
+      },
+      {
+        "level": "error",
+        "stream" : "file"
+      }
+    ]
+  },
+
+  "test1": {
+    "appender": [
+      {
+        "level": "trace",
+        "stream" : "console"
+      },
+      {
+        "level": "trace",
+        "stream" : "file",
+        "path" : "./logs",
+        "fileName" : "test1.log",
+        "maxFileByte" : 1024000,
+        "roll" : "daily"
+      }
+    ]
+  }
+}
