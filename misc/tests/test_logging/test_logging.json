@@ -13,7 +13,7 @@
   },
 
   "test1": {
-    "level" : "error",
+    "level" : "trace",
     "appender": [
       {
         "level": "trace",
