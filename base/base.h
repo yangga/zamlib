@@ -7,6 +7,13 @@
 
 #include <boost/config.hpp>
 
+#ifdef BOOST_MSVC
+#ifndef _WINDOWS_
+#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
+#include <windows.h>
+#endif
+#endif
+
 #include <boost/assert.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/shared_ptr.hpp>

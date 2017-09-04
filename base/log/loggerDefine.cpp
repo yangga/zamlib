@@ -14,7 +14,7 @@ namespace zam {
         namespace log {
 
             /// level
-            struct {
+            struct __tagLevelInfo__{
                 level lv;
                 const char* name;
                 const char* initial;
@@ -27,7 +27,6 @@ namespace zam {
                     {level::error, "error", "e", "error"},
                     {level::fatal, "fatal", "f", "fatal"}
             };
-            static_assert(0 < sizeof(__logLevelDic__));
 
             std::string toString(level lv) {
                 for (auto const& dic : __logLevelDic__) {
@@ -75,7 +74,6 @@ namespace zam {
                     {streamType::tracer,  "tracer",  "t"},
                     {streamType::udp,     "udp",     "u"}
             };
-            static_assert(0 < sizeof(__streamTypeDic__));
 
             std::string toString(streamType type) {
                 for (auto const& dic : __streamTypeDic__) {

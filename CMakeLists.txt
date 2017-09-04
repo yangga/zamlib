@@ -22,7 +22,7 @@ configure_file (
 # output path
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 
 # setup directory where we should look for cmake files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -37,19 +37,27 @@ if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
 	#link_directories(${Boost_LIBRARY_DIRS})
 else(Boost_FOUND)
-	message(FATAL_ERROR "you need to boost library")
+	if(MSVC)
+		message("You need to add entries - BOOST_INCLUDEDIR, BOOST_LIBRARYDIR, BOOST_ROOT")
+	else(MSVC)
+		message(FATAL_ERROR "you need to boost library")
+	endif(MSVC)
 endif(Boost_FOUND)
 # Jsoncpp
 find_package(Jsoncpp REQUIRED)
 if(JSONCPP_FOUND)
 	include_directories(${JSONCPP_INCLUDE_DIR})
 else(JSONCPP_FOUND)
-	message(FATAL_ERROR "you need to jsoncpp library")
+	if(MSVC)
+		message("You need to add entries - JSONCPP_INCLUDE_DIR, JSONCPP_LIBRARY")
+	else(MSVC)
+		message(FATAL_ERROR "you need to jsoncpp library")
+	endif(MSVC)
 endif(JSONCPP_FOUND)
 
 
 include_directories ("${PROJECT_SOURCE_DIR}")
-include_directories ("${PROJECT_BINARY_DIR}")
+include_directories ("${LIBRARY_OUTPUT_PATH}")
 
 install (FILES "${PROJECT_BINARY_DIR}/ZamConfig.h"
 		DESTINATION ${ROOT_INSTALL_PATH})
@@ -57,3 +65,7 @@ install (FILES "${PROJECT_BINARY_DIR}/ZamConfig.h"
 add_subdirectory(base)
 add_subdirectory(net)
 add_subdirectory(tests)
+
+
+# CPack
+include(CPack)

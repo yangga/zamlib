@@ -52,7 +52,7 @@ namespace zam {
 
             public:
                 void consume(boost::log::record_view const& rec, string_type const& formatted_string) {
-                    auto lv = rec.attribute_values()["Severity"].extract<CFCBase::CLog::severity_level>();
+                    auto lv = rec.attribute_values()["Severity"].extract<level>();
                     auto hstdout = GetStdHandle(STD_OUTPUT_HANDLE);
 
                     CONSOLE_SCREEN_BUFFER_INFO csbi;
