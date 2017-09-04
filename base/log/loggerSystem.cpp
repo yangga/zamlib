@@ -7,16 +7,18 @@
 
 #include "loggerDefine.h"
 
-#include "base/log/detail/loggerWriter.h"
+#include "detail/loggerWriter.h"
 #include "detail/loggerPool.h"
 #include "detail/loggerSystemInitOnce.h"
 
-#include "base/log/appender/loggerAppenderConsole.h"
-#include "base/log/appender/loggerAppenderFile.h"
-#include "base/log/appender/loggerAppenderTracer.h"
-#include "base/log/appender/loggerAppenderUdp.h"
+#include "appender/loggerAppenderConsole.h"
+#include "appender/loggerAppenderFile.h"
+#include "appender/loggerAppenderTracer.h"
+#include "appender/loggerAppenderUdp.h"
 
 #include <json/json.h>
+
+#include <external/JsonValueCaster/JsonValueCaster.h>
 
 #include <fstream>
 
@@ -47,10 +49,6 @@ namespace zam {
                     return nullptr;
                 };
 
-                static auto getLevel = [&](Json::Value const& vAppender) -> level {
-                    return toLevel(vAppender["level"].asCString());
-                };
-
                 try {
                     loggerWriter* writer = loggerPool::instance().alloc(tag);
 
@@ -67,10 +65,21 @@ namespace zam {
             }
 
             void loggerSystem::load(Json::Value const& vCfg) {
+                static auto getLevel = [&](Json::Value const& vAppender) -> level {
+                    try {
+                        return toLevel(vAppender["level"].asCString());
+                    } catch(...) {
+                    }
+                    return level::all;
+                };
+
                 if (!vCfg.isObject())
                     throw std::invalid_argument("logger config json-value is must be object type");
 
                 for (auto const& tag : vCfg.getMemberNames()) {
+                    loggerWriter* writer = loggerPool::instance().alloc(tag);
+                    writer->setLevel(getLevel(vCfg[tag]));
+
                     allocate(tag.c_str(), vCfg[tag]["appender"]);
                 }
             }

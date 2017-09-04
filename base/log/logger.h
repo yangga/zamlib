@@ -69,7 +69,7 @@ namespace zam {
 }  // namespace zam
 
 #define ZAM_LOGGING_MACRO(_TAG_, _LEVEL_)  for (zam::base::log::logger _logger;!!_logger;) \
-                                               loggerInitializer::initializeLogger(_logger, _TAG_, _LEVEL_)
+                                               zam::base::log::loggerInitializer::initializeLogger(_logger, _TAG_, _LEVEL_)
 
 #define ZAM_LOGT(_TAG_) ZAM_LOGGING_MACRO(_TAG_, zam::base::log::level::trace)
 #define ZAM_LOGD(_TAG_) ZAM_LOGGING_MACRO(_TAG_, zam::base::log::level::debug)

@@ -15,7 +15,8 @@ namespace zam {
         namespace log {
 
             logger::~logger() {
-                flush();
+                if (writer_ && writer_->checkLevel(lv_))
+                    flush();
             }
 
             void logger::flush() {
