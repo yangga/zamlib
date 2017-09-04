@@ -3,14 +3,17 @@
 //
 
 #include <base/logger.h>
+#include <base/filesystem/whereami.h>
 
 #include <iostream>
-
-using namespace zam::base::log;
 
 int main(int argc, char* argv[]) {
 
     try {
+        std::cout << "zam::base::filesystem::whereami::module_dir() - " << zam::base::filesystem::whereami::module_dir() << std::endl;
+        chdir(zam::base::filesystem::whereami::module_dir().c_str());
+
+        using namespace zam::base::log;
         loggerSystem::load("../misc/tests/test_logging/test_logging.json");
     } catch(std::exception& e) {
         std::cerr << e.what() << std::endl;

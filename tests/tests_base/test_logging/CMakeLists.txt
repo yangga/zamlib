@@ -8,3 +8,8 @@ add_executable(test_logging ${SOURCE_FILES})
 
 set(LIBRARY_FILES base ${Boost_LIBRARIES})
 target_link_libraries (test_logging ${LIBRARY_FILES})
+
+include(CTest)
+
+# 1st test run
+add_test (test_logging_runs_1 "${EXECUTABLE_OUTPUT_PATH}/test_logging" "")

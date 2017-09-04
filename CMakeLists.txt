@@ -1,11 +1,16 @@
 cmake_minimum_required(VERSION 3.8)
-project(zam)
+project(zamlib)
 
 set(CMAKE_CXX_STANDARD 17)
 
 # The version number.
 set (Zam_VERSION_MAJOR 0)
 set (Zam_VERSION_MINOR 1)
+
+set(ROOT_INSTALL_PATH ${PROJECT_NAME})
+
+# Enable testing function
+enable_testing()
 
 # configure a header file to pass some of the CMake settings
 # to the source code
@@ -45,6 +50,9 @@ endif(JSONCPP_FOUND)
 
 include_directories ("${PROJECT_SOURCE_DIR}")
 include_directories ("${PROJECT_BINARY_DIR}")
+
+install (FILES "${PROJECT_BINARY_DIR}/ZamConfig.h"
+		DESTINATION ${ROOT_INSTALL_PATH})
 
 add_subdirectory(base)
 add_subdirectory(net)

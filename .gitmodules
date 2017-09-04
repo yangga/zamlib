@@ -1,0 +1,3 @@
+[submodule "external/JsonValueCaster"]
+	path = external/JsonValueCaster
+	url = https://github.com/yangga/JsonValueCaster.git

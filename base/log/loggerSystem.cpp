@@ -7,16 +7,18 @@
 
 #include "loggerDefine.h"
 
-#include "base/log/detail/loggerWriter.h"
+#include "detail/loggerWriter.h"
 #include "detail/loggerPool.h"
 #include "detail/loggerSystemInitOnce.h"
 
-#include "base/log/appender/loggerAppenderConsole.h"
-#include "base/log/appender/loggerAppenderFile.h"
-#include "base/log/appender/loggerAppenderTracer.h"
-#include "base/log/appender/loggerAppenderUdp.h"
+#include "appender/loggerAppenderConsole.h"
+#include "appender/loggerAppenderFile.h"
+#include "appender/loggerAppenderTracer.h"
+#include "appender/loggerAppenderUdp.h"
 
 #include <json/json.h>
+
+#include <external/JsonValueCaster/JsonValueCaster.h>
 
 #include <fstream>
 

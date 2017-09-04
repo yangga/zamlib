@@ -37,10 +37,17 @@
 # CMake files
 CMakeFiles
 CMakeCache.txt
-cmake_install.cmake
+*.cmake
 cmake-build-*
 MakeFile
 *.cbp
+
+# make test
+Testing/
+DartConfiguration.tcl
+
+# make install
+install_manifest.txt
 
 # generated appender files
 ZamConfig.h
