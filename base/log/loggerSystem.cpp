@@ -49,10 +49,6 @@ namespace zam {
                     return nullptr;
                 };
 
-                static auto getLevel = [&](Json::Value const& vAppender) -> level {
-                    return toLevel(vAppender["level"].asCString());
-                };
-
                 try {
                     loggerWriter* writer = loggerPool::instance().alloc(tag);
 
@@ -69,10 +65,21 @@ namespace zam {
             }
 
             void loggerSystem::load(Json::Value const& vCfg) {
+                static auto getLevel = [&](Json::Value const& vAppender) -> level {
+                    try {
+                        return toLevel(vAppender["level"].asCString());
+                    } catch(...) {
+                    }
+                    return level::all;
+                };
+
                 if (!vCfg.isObject())
                     throw std::invalid_argument("logger config json-value is must be object type");
 
                 for (auto const& tag : vCfg.getMemberNames()) {
+                    loggerWriter* writer = loggerPool::instance().alloc(tag);
+                    writer->setLevel(getLevel(vCfg[tag]));
+
                     allocate(tag.c_str(), vCfg[tag]["appender"]);
                 }
             }
