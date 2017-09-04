@@ -14,6 +14,7 @@ int main(int argc, char* argv[]) {
         chdir(zam::base::filesystem::whereami::module_dir().c_str());
 
         using namespace zam::base::log;
+
         loggerSystem::load("../misc/tests/test_logging/test_logging.json");
     } catch(std::exception& e) {
         std::cerr << e.what() << std::endl;
