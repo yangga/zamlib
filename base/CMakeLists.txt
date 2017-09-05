@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.2.2)
 project(base)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
 set(LOCAL_INSTALL_PATH "${ROOT_INSTALL_PATH}/${PROJECT_NAME}")
 

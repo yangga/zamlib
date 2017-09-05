@@ -12,10 +12,13 @@ addons:
       - gcc-6
       - g++-6
       - make
+      - cmake
+      - libboost-all-dev
+      - libjsoncpp-dev
 
-install:
-  - sudo apt-get update
-  - sudo apt-get install -y cmake libboost-all-dev libjsoncpp-dev
+#install:
+#- sudo apt-get update
+#- sudo apt-get install -y cmake libboost-all-dev libjsoncpp-dev
 
 script:
   # Link gcc-6 and g++-6 to their standard commands
@@ -27,5 +30,6 @@ script:
   # Check versions of gcc, g++ and cmake
    - gcc -v && g++ -v && cmake --version
   # Run your build commands next
-   - cmake . && make && make test
+   - cmake .
+   - make && make test
 

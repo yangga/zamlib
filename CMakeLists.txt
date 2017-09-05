@@ -1,9 +1,7 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.2.2)
 project(zamlib)
 
-set(CMAKE_CXX_STANDARD 17)
-
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
 # The version number.
 set (Zam_VERSION_MAJOR 0)
