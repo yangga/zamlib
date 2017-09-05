@@ -1,4 +1,4 @@
-#dist: trusty
+dist: trusty
 sudo: require
 
 languge: cpp
@@ -9,6 +9,10 @@ compiler:
 os:
     - linux
 
+cache:
+  directories:
+  - $HOME/.ccache
+  - $HOME/download
 
 addons:
   apt:
@@ -23,12 +27,25 @@ addons:
       #- libboost-all-dev
 
 before_install:
-   - sudo add-apt-repository -y ppa:boost-latest/ppa
-   - sudo apt-get update
+  - env
+  - export SRC_DIR="`pwd`"
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update; brew install ninja; fi
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6" BOOST_TOOLSET=gcc; fi
+  - if [ "$CXX" = "clang++" ]; then export BOOST_TOOLSET=clang; fi
+  # Install newer boost compatible with gcc 6.
+  - export DOWNLOAD_ROOT="$HOME/download"; if [ ! -d "$DOWNLOAD_ROOT" ]; then mkdir -p "$DOWNLOAD_ROOT"; fi
+  - export BOOST_DOWNLOAD_URL="http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.bz2/download"
+  - export BOOST_ROOT="$TRAVIS_BUILD_DIR/../boost"
+  - export CMAKE_MODULE_PATH="$BOOST_ROOT"
+  - if [ ! -f "$DOWNLOAD_ROOT/boost.tar.bz2" ]; then wget --no-verbose --output-document="$DOWNLOAD_ROOT/boost.tar.bz2" "$BOOST_DOWNLOAD_URL"; fi
+  - if [ ! -d "$BOOST_ROOT" ]; then mkdir -p "$BOOST_ROOT" && tar jxf "$DOWNLOAD_ROOT/boost.tar.bz2" --strip-components=1 -C "$BOOST_ROOT"; fi
+  - if [ ! -f "$BOOST_ROOT/b2" ]; then cd "$BOOST_ROOT"; ./bootstrap.sh --with-toolset="$BOOST_TOOLSET" --with-libraries=program_options,system,thread,regex; fi
 
 install:
-#- sudo apt-get update
-   - sudo apt-get install -y cmake libboost-all-dev libjsoncpp-dev
+  - ccache -V && ccache --show-stats && ccache --zero-stats
+  - 'echo "using gcc : : ccache $CXX : <cflags>-std=c11 <cxxflags>-std=c++11 ;" > ~/user-config.jam'
+  - 'echo "using clang : : ccache $CXX : <cflags>-std=c11 <cxxflags>-std=c++11 ;" >> ~/user-config.jam'
+  - cd "$BOOST_ROOT"; ./b2 toolset="$BOOST_TOOLSET" threading=multi --prefix="$BOOST_ROOT" -d0 install
 
 script:
   # Link gcc-6 and g++-6 to their standard commands
@@ -40,8 +57,6 @@ script:
   # Check versions of gcc, g++ and cmake
    - gcc -v && g++ -v && cmake --version
   # Run your build commands next
-   - ls /usr/include
-   - ls /usr/include/jsoncpp
    - cmake .
    - make && make test
 
