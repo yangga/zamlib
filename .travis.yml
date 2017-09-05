@@ -12,8 +12,10 @@ addons:
       - gcc-6
       - g++-6
       - make
-      - boost
-      - jsoncpp
+
+install:
+  - sudo apt-get update -qq
+  - sudo apt-get insall -y -qq boost jsoncpp
 
 script:
   # Link gcc-6 and g++-6 to their standard commands
