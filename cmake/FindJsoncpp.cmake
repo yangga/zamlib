@@ -13,10 +13,20 @@
 
 # only look in default directories
 find_path(
-	JSONCPP_INCLUDE_DIR
-	NAMES json/json.h jsoncpp/json/json.h
+	JSONCPP_INCLUDE_DIR_ROOT
+	NAMES json/json.h
 	DOC "jsoncpp include dir"
 )
+if ("${JSONCPP_INCLUDE_DIR_ROOT}" STREQUAL "")
+	set(JSONCPP_INCLUDE_DIR, ${JSONCPP_INCLUDE_DIR_ROOT})
+else()
+	find_path(
+			JSONCPP_INCLUDE_DIR_ROOT
+			NAMES jsoncpp/json/json.h
+			DOC "jsoncpp include dir"
+	)
+	set(JSONCPP_INCLUDE_DIR "${JSONCPP_INCLUDE_DIR_ROOT}/jsoncpp")
+endif()
 
 find_library(
     JSONCPP_LIBRARY
@@ -29,7 +39,7 @@ set_target_properties(
 	jsoncpp_lib_static
 	PROPERTIES
 	IMPORTED_LOCATION "${JSONCPP_LIBRARY}"
-	INTERFACE_INCLUDE_DIRECTORIES "${JSONCPP_INCLUDE_DIR}"
+	INTERFACE_INCLUDE_DIRECTORIES "${JSONCPP_INCLUDE_DIR_ROOT}"
 )
 
 # debug library on windows
