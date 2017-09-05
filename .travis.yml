@@ -1,8 +1,14 @@
-#dist: trusty
+dist: trusty
 sudo: require
 
 languge: cpp
-compiler: gcc
+compiler:
+    - gcc
+#    - clang
+
+os:
+    - linux
+
 
 addons:
   apt:
@@ -13,12 +19,16 @@ addons:
       - g++-6
       - make
       - cmake
-      - libboost-all-dev
       - libjsoncpp-dev
+      #- libboost-all-dev
 
-#install:
+before_install:
+   - sudo add-apt-repository ppa:boost-latest/ppa
+   - sudo apt-get update
+
+install:
 #- sudo apt-get update
-#- sudo apt-get install -y cmake libboost-all-dev libjsoncpp-dev
+   - sudo apt-get install -y cmake libboost-all-dev libjsoncpp-dev
 
 script:
   # Link gcc-6 and g++-6 to their standard commands
