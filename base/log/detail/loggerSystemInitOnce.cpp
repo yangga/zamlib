@@ -4,6 +4,8 @@
 
 #include "loggerSystemInitOnce.h"
 
+#include "loggerAttrName.h"
+
 #include <boost/core/null_deleter.hpp>
 #include <boost/log/common.hpp>
 #include <boost/log/utility/setup/common_attributes.hpp>
@@ -42,9 +44,19 @@ namespace zam {
                 boost::log::core::get()->set_exception_handler(logging::make_exception_handler<logging::runtime_error, std::exception>(my_log_exception_handler()));
 
                 // global attributes
-                logging::core::get()->add_global_attribute("TimeStamp", attrs::local_clock());
-                logging::core::get()->add_global_attribute(boost::log::aux::default_attribute_names::process_id(), attrs::current_process_id());
-                logging::core::get()->add_global_attribute(boost::log::aux::default_attribute_names::thread_id(), attrs::current_thread_id());
+                logging::core::get()->add_global_attribute(default_attribute_names::timestamp(), attrs::local_clock());
+                logging::core::get()->add_global_attribute(default_attribute_names::process_id(), attrs::current_process_id());
+                logging::core::get()->add_global_attribute(default_attribute_names::thread_id(), attrs::current_thread_id());
+
+                try
+                {
+                    char hostname[80] = { 0, };
+                    memset(hostname, 0, sizeof(hostname));
+                    gethostname(hostname, sizeof(hostname));
+                    logging::core::get()->add_global_attribute(default_attribute_names::hostname(), attrs::constant<std::string>(hostname));
+                }
+                catch (...) {}
+
             }
 
         }

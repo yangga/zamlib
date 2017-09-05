@@ -21,12 +21,14 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    ZAM_LOGT("test1") << "trace";
-    ZAM_LOGD("test1") << "debug";
-    ZAM_LOGI("test1") << "info";
-    ZAM_LOGW("test1") << "warning";
-    ZAM_LOGE("test1") << "error";
-    ZAM_LOGF("test1") << "fatal";
+    for (int i=0; i<10000; ++i) {
+        ZAM_LOGT("test1") << "trace";
+        ZAM_LOGD("test1") << "debug";
+        ZAM_LOGI("test1") << "info";
+        ZAM_LOGW("test1") << "warning";
+        ZAM_LOGE("test1") << "error";
+        ZAM_LOGF("test1") << "fatal";
+    }
 
     return 0;
 }
