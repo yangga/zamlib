@@ -45,7 +45,7 @@ install:
   - ccache -V && ccache --show-stats && ccache --zero-stats
   - 'echo "using gcc : : ccache $CXX : <cflags>-std=c11 <cxxflags>-std=c++11 ;" > ~/user-config.jam'
   - 'echo "using clang : : ccache $CXX : <cflags>-std=c11 <cxxflags>-std=c++11 ;" >> ~/user-config.jam'
-  - cd "$BOOST_ROOT"; ./b2 toolset="$BOOST_TOOLSET" threading=multi --prefix="$BOOST_ROOT" -d0 install
+  - cd "$BOOST_ROOT"; ./b2 toolset="$BOOST_TOOLSET" threading=multi --prefix="$BOOST_ROOT" install
 
 script:
   # Link gcc-6 and g++-6 to their standard commands
