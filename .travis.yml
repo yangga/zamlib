@@ -15,7 +15,7 @@ addons:
 
 install:
   - sudo apt-get update
-  - sudo apt-get install -y boost jsoncpp
+  - sudo apt-get install -y libboost-all-dev libjsoncpp-dev
 
 script:
   # Link gcc-6 and g++-6 to their standard commands
