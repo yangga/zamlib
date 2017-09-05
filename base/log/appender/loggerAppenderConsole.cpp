@@ -5,8 +5,8 @@
 #include "base.h"
 #include "loggerAppenderConsole.h"
 
+#include "../detail/loggerAttrName.h"
 #include "../detail/loggerWriter.h"
-
 
 #include <boost/core/null_deleter.hpp>
 #include <boost/log/attributes.hpp>
@@ -18,6 +18,8 @@
 #include <boost/log/support/date_time.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
+
+#include "external/JsonValueCaster/JsonValueCaster.h"
 
 
 namespace logging = boost::log;
@@ -96,7 +98,8 @@ namespace zam {
 #endif
 
             void loggerAppenderConsole::load(loggerWriter &writer, Json::Value const & vAppender) {
-                const level thisLevel = toLevel(vAppender["level"].asCString());
+                Json::CasterCoverDef const c(vAppender);
+                auto const thisLevel = toLevel(c.get<std::string>("level", "all").c_str());
 
                 auto consoleSinkCreator = [thisLevel=thisLevel, &writer](auto backend) mutable {
                     backend->add_stream(boost::shared_ptr<std::ostream>(&std::clog, boost::null_deleter()));
@@ -107,8 +110,8 @@ namespace zam {
 
                     sink->set_formatter(
                             expr::format("%1% (%2%) [%3%] %4%")
-                            % expr::format_date_time< boost::posix_time::ptime >("TimeStamp", "%d %H:%M:%S.%f")
-                            % expr::attr<attrs::current_thread_id::value_type>("ThreadID")
+                            % expr::format_date_time< boost::posix_time::ptime >(default_attribute_names::timestamp(), "%d %H:%M:%S.%f")
+                            % expr::attr<attrs::current_thread_id::value_type>(default_attribute_names::thread_id())
                             % zam_severity
                             % expr::message
                     );

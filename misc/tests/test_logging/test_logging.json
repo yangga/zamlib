@@ -7,7 +7,11 @@
       },
       {
         "level": "error",
-        "stream" : "file"
+        "stream" : "file",
+        "path" : "./logs",
+        "fileName" : "%HostName%_root_%Y%m%d_%H%M%S_%N.log.log",
+        "maxFileByte" : 1024000,
+        "rollSecond" : 3600
       }
     ]
   },
@@ -23,9 +27,9 @@
         "level": "trace",
         "stream" : "file",
         "path" : "./logs",
-        "fileName" : "test1.log",
+        "fileName" : "test1_%Y%m%d_%H%M%S_%N.log",
         "maxFileByte" : 1024000,
-        "roll" : "daily"
+        "rollSecond" : 3600
       }
     ]
   }
