@@ -39,7 +39,7 @@ matrix:
   include:
     # GCC 6, Boost 1.62.0
     - os: linux
-      env: UNIT_TESTS=true COMPILER=g++-6 BOOST_VERSION=default ENABLE_MEMCHECK=true BOOST_VERSION=1.62.0
+      env: UNIT_TESTS=true COMPILER=g++-6 BOOST_VERSION=default ENABLE_MEMCHECK=true BOOST_VERSION=1.62.0 BOOST_BUILD=true
       compiler: gcc
 
   allow_failures:
