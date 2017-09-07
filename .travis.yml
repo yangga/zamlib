@@ -127,7 +127,7 @@ install:
   ############################################################################
   - |
     if [[ "${BOOST_BUILD}" == "true" ]]; then
-      (cd ${BOOST_DIR} && ./bootstrap.sh && sudo ./b2 link=static install)
+      (cd ${BOOST_DIR} && ./bootstrap.sh && sudo ./b2 link=static threading=multi install)
     fi
 
   ############################################################################
@@ -172,7 +172,7 @@ before_script:
   #- export CC=/usr/bin/gcc-6
   #- export CXX=/usr/bin/g++-6
   # Check versions of gcc, g++ and cmake
-  #- gcc -v && g++ -v && cmake --version
+  - gcc -v && g++ -v && cmake --version
 
   ############################################################################
   # Go back to the root of the project and setup the build directory
