@@ -19,8 +19,8 @@ addons:
       - gcc-6
       - g++-6
       - make
-      - cmake
       - libjsoncpp-dev
+      #- cmake
       #- libboost-all-dev
 
 cache:
@@ -57,7 +57,7 @@ install:
   # Setup default versions and override compiler if needed
   ############################################################################
   - if [[ "${LLVM_VERSION}" == "default" ]]; then LLVM_VERSION=3.9.0; fi
-  - if [[ "${BOOST_VERSION}" == "default" ]]; then BOOST_VERSION=1.62.0; fi
+  - if [[ "${BOOST_VERSION}" == "default" ]]; then BOOST_VERSION=1.63.0; fi
 
   - if [[ "${COMPILER}" != "" ]]; then export CXX=${COMPILER}; fi
 
@@ -126,7 +126,7 @@ install:
   ############################################################################
   - |
     if [[ "${BOOST_BUILD}" == "true" ]]; then
-      (cd ${BOOST_DIR} && ./bootstrap.sh && sudo ./b2 link=static threading=multi -d+2 install)
+      (cd ${BOOST_DIR} && ./bootstrap.sh && sudo ./b2 link=static threading=multi -d0 install)
     fi
 
   ############################################################################
