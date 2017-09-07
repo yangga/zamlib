@@ -128,7 +128,7 @@ install:
   ############################################################################
   - |
     if [[ "${BOOST_BUILD}" == "true" ]]; then
-      (cd ${BOOST_DIR}/tools/build && ./bootstrap.sh && sudo ./b2 link=static install)
+      (cd ${BOOST_DIR}/tools/build && ./bootstrap.sh && ./b2 link=static && sudo ./b2 install)
       CMAKE_OPTIONS+=" -BOOST_INCLUDEDIR=${BOOST_DIR}/include -BOOST_LIBRARYDIR=${BOOST_DIR}/lib"
     fi
 
