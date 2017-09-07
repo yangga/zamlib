@@ -67,7 +67,7 @@ namespace zam {
             void loggerSystem::load(Json::Value const& vCfg) {
                 static auto getLevel = [&](Json::Value const& vAppender) -> level {
                     try {
-                        return toLevel(vAppender["level"].asCString());
+                        return toLevel(Json::CasterStatic::Get<const char*>(vAppender, "level"));
                     } catch(...) {
                     }
                     return level::all;

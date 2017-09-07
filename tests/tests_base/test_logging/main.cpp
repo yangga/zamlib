@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    for (int i=0; i<10000; ++i) {
+    for (int i=0; i<10; ++i) {
         ZAM_LOGT("test1") << "trace";
         ZAM_LOGD("test1") << "debug";
         ZAM_LOGI("test1") << "info";
