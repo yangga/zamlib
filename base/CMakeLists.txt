@@ -11,7 +11,7 @@ set(SOURCE_FILES log/logger.cpp log/logger.h log/loggerDefine.h base.h log/detai
 
 add_library(base ${SOURCE_FILES})
 
-set(DEPENDENT_LIBRARY_FILES jsoncpp_lib_static pthread)
+set(DEPENDENT_LIBRARY_FILES jsoncpp_lib_static)
 target_link_libraries (base ${DEPENDENT_LIBRARY_FILES})
 
 # add the install targets
