@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2.2)
+cmake_minimum_required(VERSION 3.8)
 project(zamlib)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -32,7 +32,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 set(Boost_USE_STATIC_LIBS        ON) # only find static libs
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME    OFF)
-find_package(Boost 1.55 REQUIRED COMPONENTS date_time filesystem iostreams system serialization log log_setup thread)
+find_package(Boost REQUIRED COMPONENTS date_time filesystem iostreams system serialization log log_setup thread)
 if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
 	#link_directories(${Boost_LIBRARY_DIRS})
