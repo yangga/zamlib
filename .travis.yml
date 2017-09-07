@@ -34,8 +34,6 @@ cache:
     - ${TRAVIS_BUILD_DIR}/deps/boost-1.61.0
     - ${TRAVIS_BUILD_DIR}/deps/boost-1.62.0
     - ${TRAVIS_BUILD_DIR}/deps/boost-1.63.0
-    - ${TRAVIS_BUILD_DIR}/deps/boost-1.64.0
-    - ${TRAVIS_BUILD_DIR}/deps/boost-1.65.0
 
 matrix:
   include:
@@ -59,7 +57,7 @@ install:
   # Setup default versions and override compiler if needed
   ############################################################################
   - if [[ "${LLVM_VERSION}" == "default" ]]; then LLVM_VERSION=3.9.0; fi
-  - if [[ "${BOOST_VERSION}" == "default" ]]; then BOOST_VERSION=1.65.0; fi
+  - if [[ "${BOOST_VERSION}" == "default" ]]; then BOOST_VERSION=1.63.0; fi
 
   - if [[ "${COMPILER}" != "" ]]; then export CXX=${COMPILER}; fi
 
