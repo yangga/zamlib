@@ -180,7 +180,7 @@ before_script:
   # Go back to the root of the project and setup the build directory
   ############################################################################
   - ls ${BOOST_DIR}
-  - ls ${BOOST_DIR}/lib
+  - ls ${BOOST_DIR}/libs
   - cd ${TRAVIS_BUILD_DIR}
   - (mkdir build && cd build && cmake .. ${CMAKE_OPTIONS})
 
