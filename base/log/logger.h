@@ -59,7 +59,7 @@ namespace zam {
             private:
                 level lv_ = level::all;
                 loggerWriter* writer_ = nullptr;
-                std::stringstream ss_ = std::stringstream();
+                std::stringstream ss_;
             };
 
 

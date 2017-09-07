@@ -11,17 +11,22 @@
 namespace zam {
     namespace base {
         namespace log {
-            namespace default_attribute_names  = boost::log::aux::default_attribute_names;
+            namespace default_attribute_names {
 
+                boost::log::attribute_name severity();
+                boost::log::attribute_name channel();
+                boost::log::attribute_name message();
+                boost::log::attribute_name line_id();
+                boost::log::attribute_name timestamp();
+                boost::log::attribute_name process_id();
+                boost::log::attribute_name thread_id();
 
-
+                boost::log::attribute_name hostname();
+            }
 
         }
     }
 }
 
-namespace boost{ namespace log{ namespace aux{ namespace default_attribute_names{
-                boost::log::attribute_name hostname();
-}}}}
 
 #endif //ZAMLIB_BASE_LOG_LOGGERATTRNAME_H
