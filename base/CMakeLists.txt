@@ -21,8 +21,10 @@ set_target_properties(zam_base_shared PROPERTIES OUTPUT_NAME base)
 set_target_properties(zam_base_static PROPERTIES OUTPUT_NAME base)
 
 # dylib needs static libraries linkning
-set(DEPENDENT_LIBRARY_FILES jsoncpp_lib_static ${Boost_LIBRARIES})
-target_link_libraries (zam_base_shared ${DEPENDENT_LIBRARY_FILES})
+if(APPLE)
+    set(DEPENDENT_LIBRARY_FILES jsoncpp_lib_static ${Boost_LIBRARIES})
+    target_link_libraries (zam_base_shared ${DEPENDENT_LIBRARY_FILES})
+endif()
 
 # add the install targets
 install (TARGETS zam_base_shared DESTINATION zamlib/lib)
