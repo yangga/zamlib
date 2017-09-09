@@ -183,5 +183,4 @@ script:
   # Run your build commands next
   - make
   - make test
-  - sudo make install
   - cpack
