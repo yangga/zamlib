@@ -18,6 +18,8 @@ set_property(TARGET ${zambase} PROPERTY POSITION_INDEPENDENT_CODE ON)
 # shared and static libraries built from the same object files
 add_library(zam_base_shared SHARED $<TARGET_OBJECTS:zambase>)
 add_library(zam_base_static STATIC $<TARGET_OBJECTS:zambase>)
+add_library(zam_base_interface INTERFACE)
+target_include_directories(zam_base_interface INTERFACE ${PROJECT_SOURCE_DIR})
 
 # set OUTPUT NAME
 set_target_properties(zam_base_shared PROPERTIES OUTPUT_NAME base)
@@ -30,9 +32,7 @@ target_link_libraries (zam_base_shared ${DEPENDENT_LIBRARY_FILES})
 # add the install targets
 install (TARGETS zam_base_shared DESTINATION zamlib/lib)
 install (TARGETS zam_base_static DESTINATION zamlib/lib)
-
-install(DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION ${LOCAL_INSTALL_PATH}
-        FILES_MATCHING PATTERN "*.h")
+install (TARGETS zam_base_interface DESTINATION zamlib/lib)
 
 #file(GLOB DEPLOY_FILES_AND_DIRS "${PROJECT_SOURCE_DIR}/*")
 #foreach(ITEM ${DEPLOY_FILES_AND_DIRS})
