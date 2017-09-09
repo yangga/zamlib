@@ -78,6 +78,7 @@ add_subdirectory(tests)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR})
 
 include(InstallRequiredSystemLibraries)
+include(cmake/SystemSpecificInformations.cmake)
 
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "C++ library for game server")
 set(CPACK_PACKAGE_VENDOR "teamzam")
