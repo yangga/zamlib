@@ -37,14 +37,18 @@
 # CMake files
 CMakeFiles
 CMakeCache.txt
-*.cmake
+#*.cmake
 cmake-build-*
 MakeFile
 *.cbp
 _CPack_Packages/
+cmake_install.cmake
+CTestTestfile.cmake
 
 # CPack
 cpack
+CPackConfig.cmake
+CPackSourceConfig.cmake
 
 # make test
 Testing/
