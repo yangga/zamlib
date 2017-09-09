@@ -68,8 +68,13 @@ add_subdirectory(base)
 add_subdirectory(net)
 add_subdirectory(tests)
 
+######################################################################
 # CPack
-INCLUDE(InstallRequiredSystemLibraries)
+
+# reset global path
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR})
+
+include(InstallRequiredSystemLibraries)
 
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "C++ library for game server")
 set(CPACK_PACKAGE_VENDOR "teamzam")
@@ -88,6 +93,7 @@ if(WIN32 AND NOT UNIX)
 else(WIN32 AND NOT UNIX)
 endif(WIN32 AND NOT UNIX)
 
-set(CPACK_PACKAGE_FILE_NAME "cpack/${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_SYSTEM_NAME}")
+#set(CPACK_PACKAGE_FILE_NAME "cpack/${PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-${CPACK_SYSTEM_NAME}")
+#set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-abcdefg")
 
 include(CPack)

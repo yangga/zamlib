@@ -3,8 +3,6 @@ project(base)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(LOCAL_INSTALL_PATH "${ROOT_INSTALL_PATH}/${PROJECT_NAME}")
-
 include_directories (${PROJECT_SOURCE_DIR})
 include_directories (${JSONCPP_INCLUDE_DIR_ROOT})
 
