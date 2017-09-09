@@ -126,7 +126,7 @@ install:
   ############################################################################
   - |
     if [[ "${BOOST_BUILD}" == "true" ]]; then
-      (cd ${BOOST_DIR} && ./bootstrap.sh && sudo ./b2 link=static threading=multi -d0 install)
+      (cd ${BOOST_DIR} && ./bootstrap.sh && sudo ./b2 threading=multi -d0 install)
     fi
 
   ############################################################################
@@ -181,5 +181,6 @@ before_script:
 
 script:
   # Run your build commands next
-  - make && make test
-
+  - make
+  - make test
+  - cpack
