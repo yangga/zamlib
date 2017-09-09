@@ -14,7 +14,6 @@ set(SOURCE_FILES log/logger.cpp log/logger.h log/loggerDefine.h base.h log/detai
 add_library(zam_base_shared SHARED ${SOURCE_FILES})
 add_library(zam_base_static STATIC ${SOURCE_FILES})
 add_library(zam_base_interface INTERFACE)
-target_include_directories(zam_base_interface INTERFACE ${PROJECT_SOURCE_DIR})
 
 # set OUTPUT NAME
 set_target_properties(zam_base_shared PROPERTIES OUTPUT_NAME base)
@@ -27,17 +26,10 @@ if(APPLE)
 endif()
 
 # add the install targets
-install (TARGETS zam_base_shared DESTINATION zamlib/lib)
-install (TARGETS zam_base_static DESTINATION zamlib/lib)
-install (TARGETS zam_base_interface DESTINATION zamlib/lib)
+install (TARGETS zam_base_shared DESTINATION ${ROOT_INSTALL_PATH}/lib)
+install (TARGETS zam_base_static DESTINATION ${ROOT_INSTALL_PATH}/lib)
 
-#file(GLOB DEPLOY_FILES_AND_DIRS "${PROJECT_SOURCE_DIR}/*")
-#foreach(ITEM ${DEPLOY_FILES_AND_DIRS})
-#    IF( IS_DIRECTORY "${ITEM}" )
-#        LIST( APPEND DIRS_TO_DEPLOY "${ITEM}" )
-#    ELSE()
-#        LIST( APPEND FILES_TO_DEPLOY "${ITEM}" )
-#    ENDIF()
-#endforeach()
-#install( FILES ${FILES_TO_DEPLOY} DESTINATION ${LOCAL_INSTALL_PATH} )
-#install( DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION ${LOCAL_INSTALL_PATH} )
+install(DIRECTORY ${PROJECT_SOURCE_DIR} DESTINATION ${ROOT_INSTALL_PATH}
+        FILES_MATCHING PATTERN "*.h"
+        PATTERN "CMakeFiles" EXCLUDE
+        )

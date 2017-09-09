@@ -181,5 +181,6 @@ before_script:
 
 script:
   # Run your build commands next
-  - make && make test
-
+  - make
+  - make test
+  - sudo make install
