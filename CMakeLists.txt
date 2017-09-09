@@ -3,9 +3,6 @@ project(zamlib)
 
 set(CMAKE_CXX_STANDARD 14)
 
-# enable -fPIC option
-#set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
 # The version number.
 set (Zam_VERSION_MAJOR 0)
 set (Zam_VERSION_MINOR 1)
