@@ -10,9 +10,6 @@ set (Zam_VERSION_PATCH 0)
 
 set(ROOT_INSTALL_PATH ${PROJECT_NAME})
 
-# Enable testing function
-enable_testing()
-
 # configure a header file to pass some of the CMake settings
 # to the source code
 configure_file (
@@ -64,6 +61,12 @@ include_directories ("${LIBRARY_OUTPUT_PATH}")
 install (FILES "${PROJECT_BINARY_DIR}/ZamConfig.h"
 		DESTINATION ${ROOT_INSTALL_PATH})
 
+######################################################################
+# Enable testing function
+enable_testing()
+
+######################################################################
+# sub projects
 add_subdirectory(base)
 add_subdirectory(net)
 add_subdirectory(tests)
@@ -80,20 +83,46 @@ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "C++ library for game server")
 set(CPACK_PACKAGE_VENDOR "teamzam")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_PACKAGE_CONTACT "https://github.com/yangga/zamlib")
 set(CPACK_PACKAGE_VERSION_MAJOR "${Zam_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${Zam_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${Zam_VERSION_PATCH}")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "CMake ${CMake_VERSION_MAJOR}.${CMake_VERSION_MINOR}")
-if(WIN32 AND NOT UNIX)
-	set(CPACK_NSIS_DISPLAY_NAME "zamlib_${Zam_VERSION_MAJOR}_${Zam_VERSION_MINOR}_${Zam_VERSION_PATCH}")
-	set(CPACK_NSIS_HELP_LINK "https://github.com/yangga/zamlib")
-	set(CPACK_NSIS_URL_INFO_ABOUT "https://github.com/yangga/zamlib")
-	set(CPACK_NSIS_CONTACT "yangga0070@gmail.com")
-	set(CPACK_NSIS_MODIFY_PATH ON)
-else(WIN32 AND NOT UNIX)
-endif(WIN32 AND NOT UNIX)
+set(PACKAGE_VERSION "${Zam_VERSION_MAJOR}.${Zam_VERSION_MINOR}.${Zam_VERSION_PATCH}")
+set(TARGET_ARCH ${CMAKE_SYSTEM_NAME})
 
-#set(CPACK_PACKAGE_FILE_NAME "cpack/${PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-${CPACK_SYSTEM_NAME}")
-#set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-abcdefg")
+if(APPLE)
+    set(CPACK_GENERATOR DragNDrop)
+    set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PACKAGE_VERSION}-osx-${TARGET_ARCH}")
+    set(CPACK_SOURCE_PACKAGE_FILE_NAME  "${PROJECT_NAME}-${PACKAGE_VERSION}-osx-src")
+    set(CPACK_BUNDLE_NAME ${PROJECT_NAME})
+elseif(UNIX)
+    set(CPACK_GENERATOR "DEB;RPM") # Distribution packaging formats ("make package") might be overrided later
+    set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PACKAGE_VERSION}-linux-${TARGET_ARCH}")
+    set(CPACK_SOURCE_PACKAGE_FILE_NAME  "${PROJECT_NAME}-${PACKAGE_VERSION}-linux-src")
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}-${PACKAGE_VERSION}")
+elseif(MINGW)
+    set(CPACK_SET_DESTDIR FALSE)
+    set(CPACK_GENERATOR "NSIS") # Distribution packaging formats ("make package")
+    set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PACKAGE_VERSION}-${MINGW_PACK_NAME}")
+    set(CPACK_NSIS_PACKAGE_NAME "${PROJECT_NAME}-${PACKAGE_VERSION}")
+    set(CPACK_NSIS_DISPLAY_NAME "zamlib_${Zam_VERSION_MAJOR}_${Zam_VERSION_MINOR}_${Zam_VERSION_PATCH}")
+    set(CPACK_NSIS_MODIFY_PATH "ON")
+    set(CPACK_NSIS_HELP_LINK "https://github.com/yangga/zamlib")
+    set(CPACK_NSIS_URL_INFO_ABOUT "https://github.com/yangga/zamlib")
+    set(CPACK_NSIS_CONTACT "${CPACK_PACKAGE_CONTACT}")
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}-${PACKAGE_VERSION}")
+elseif(MSVC)
+    set(CPACK_SET_DESTDIR FALSE)
+    set(CPACK_GENERATOR "NSIS") # Distribution packaging formats ("make package")
+    set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PACKAGE_VERSION}")
+    set(CPACK_NSIS_PACKAGE_NAME "${PROJECT_NAME}-${PACKAGE_VERSION}")
+    set(CPACK_NSIS_DISPLAY_NAME "zamlib_${Zam_VERSION_MAJOR}_${Zam_VERSION_MINOR}_${Zam_VERSION_PATCH}")
+    set(CPACK_NSIS_MODIFY_PATH "ON")
+    set(CPACK_NSIS_HELP_LINK "https://github.com/yangga/zamlib")
+    set(CPACK_NSIS_URL_INFO_ABOUT "https://github.com/yangga/zamlib")
+    set(CPACK_NSIS_CONTACT "${CPACK_PACKAGE_CONTACT}")
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}-${PACKAGE_VERSION}")
+endif()
+
 
 include(CPack)

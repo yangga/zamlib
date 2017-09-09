@@ -63,3 +63,6 @@ ZamConfig.h
 # except directories
 .idea
 /build
+
+# big files
+*.dmg
