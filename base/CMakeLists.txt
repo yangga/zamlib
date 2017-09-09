@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(zambase)
+project(base)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -13,7 +13,7 @@ set(SOURCE_FILES log/logger.cpp log/logger.h log/loggerDefine.h base.h log/detai
 # this is the "object library" target: compiles the sources only once
 add_library(zambase OBJECT ${SOURCE_FILES})
 # shared libraries need PIC
-set_property(TARGET ${zambase} PROPERTY POSITION_INDEPENDENT_CODE 1)
+set_property(TARGET ${zambase} PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 # shared and static libraries built from the same object files
 add_library(zam_base_shared SHARED $<TARGET_OBJECTS:zambase>)
@@ -30,6 +30,9 @@ target_link_libraries (zam_base_shared ${DEPENDENT_LIBRARY_FILES})
 # add the install targets
 install (TARGETS zam_base_shared DESTINATION zamlib/lib)
 install (TARGETS zam_base_static DESTINATION zamlib/lib)
+
+install(DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION ${LOCAL_INSTALL_PATH}
+        FILES_MATCHING PATTERN "*.h")
 
 #file(GLOB DEPLOY_FILES_AND_DIRS "${PROJECT_SOURCE_DIR}/*")
 #foreach(ITEM ${DEPLOY_FILES_AND_DIRS})
