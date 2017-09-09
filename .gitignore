@@ -43,6 +43,9 @@ MakeFile
 *.cbp
 _CPack_Packages/
 
+# CPack
+cpack
+
 # make test
 Testing/
 DartConfiguration.tcl
