@@ -68,7 +68,7 @@ enable_testing()
 ######################################################################
 # sub projects
 
-include(cmake/MSVCCFlagOverride.cmake)
+include(cmake/StaticCompile.cmake)
 
 add_subdirectory(base)
 add_subdirectory(net)
