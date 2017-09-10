@@ -2,6 +2,7 @@
 // Created by SungWoo Yang on 2017. 9. 3..
 //
 
+#include "base.h"
 #include "loggerSystemInitOnce.h"
 
 #include "loggerAttrName.h"

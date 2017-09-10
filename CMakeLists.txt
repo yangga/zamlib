@@ -34,7 +34,7 @@ set(Boost_USE_STATIC_RUNTIME    OFF)
 find_package(Boost 1.55 REQUIRED COMPONENTS date_time filesystem iostreams system serialization log log_setup thread)
 if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
-	#link_directories(${Boost_LIBRARY_DIRS})
+	link_directories(${Boost_LIBRARY_DIRS})
 else(Boost_FOUND)
 	if(MSVC)
 		message("You need to add entries - BOOST_INCLUDEDIR, BOOST_LIBRARYDIR, BOOST_ROOT")
@@ -67,6 +67,9 @@ enable_testing()
 
 ######################################################################
 # sub projects
+
+include(cmake/MSVCCFlagOverride.cmake)
+
 add_subdirectory(base)
 add_subdirectory(net)
 add_subdirectory(tests)
