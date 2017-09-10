@@ -8,13 +8,14 @@ set (Zam_VERSION_MAJOR 0)
 set (Zam_VERSION_MINOR 1)
 set (Zam_VERSION_PATCH 0)
 
-set(ROOT_INSTALL_PATH ${PROJECT_NAME})
-
 # output path
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
+
+set(ZAMLIB_ROOT ${PROJECT_BINARY_DIR})
+set(ROOT_INSTALL_PATH ${PROJECT_NAME})
 
 # configure a header file to pass some of the CMake settings
 # to the source code

@@ -3,7 +3,7 @@ project(test_logging)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(${PROJECT_BINARY_DIR} ${PROJECT_SOURCE_DIR})
+include_directories(${ZAMLIB_ROOT} ${PROJECT_SOURCE_DIR})
 
 set(SOURCE_FILES main.cpp)
 add_executable(test_logging ${SOURCE_FILES})
