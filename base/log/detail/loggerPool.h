@@ -17,15 +17,15 @@ namespace zam {
 
             class loggerWriter;
 
-            class ZAMBASE_API loggerPool
+            class loggerPool
                     : public boost::serialization::singleton<loggerPool> {
                 friend class boost::serialization::singleton<loggerPool>;
 
             public:
-                static loggerPool& instance();
+				inline static loggerPool& instance() { return get_mutable_instance(); }
 
                 loggerWriter* alloc(std::string const& name);
-                loggerWriter* get(std::string const& name) const BOOST_NOEXCEPT;
+				loggerWriter* get(std::string const& name) const BOOST_NOEXCEPT;
 
             private:
                 std::map<std::string, loggerWriter*> writers_;

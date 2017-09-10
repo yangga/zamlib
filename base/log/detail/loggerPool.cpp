@@ -10,10 +10,6 @@ namespace zam {
     namespace base {
         namespace log {
 
-            loggerPool& loggerPool::instance() {
-                return boost::serialization::singleton<loggerPool>::get_mutable_instance();
-            }
-
             loggerWriter* loggerPool::alloc(std::string const& name) {
                 auto itr = writers_.find(name);
                 if (itr != writers_.end())
