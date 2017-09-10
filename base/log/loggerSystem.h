@@ -5,6 +5,8 @@
 #ifndef ZAM_BASE_LOG_LOGGERSYSTEM_H
 #define ZAM_BASE_LOG_LOGGERSYSTEM_H
 
+#include "base/base.h"
+
 #include <json/value.h>
 
 #include <unordered_map>
@@ -15,7 +17,7 @@ namespace zam {
 
             class loggerConfig;
 
-            class loggerSystem {
+            class ZAMBASE_API loggerSystem {
             public:
                 static void allocate(const char* tag, Json::Value const& vAppender);
 

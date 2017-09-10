@@ -5,6 +5,8 @@
 #ifndef ZAM_LOGGERPOOL_H
 #define ZAM_LOGGERPOOL_H
 
+#include "base/base.h"
+
 #include <boost/serialization/singleton.hpp>
 
 #include <map>
@@ -15,7 +17,7 @@ namespace zam {
 
             class loggerWriter;
 
-            class loggerPool
+            class ZAMBASE_API loggerPool
                     : public boost::serialization::singleton<loggerPool> {
                 friend class boost::serialization::singleton<loggerPool>;
 

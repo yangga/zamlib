@@ -5,13 +5,14 @@
 #ifndef __ZAM_LOG_APPENDER_LOGGERAPPENDER_TRACER_H__
 #define __ZAM_LOG_APPENDER_LOGGERAPPENDER_TRACER_H__
 
+#include "base/base.h"
 #include "loggerAppender.h"
 
 namespace zam {
     namespace base {
         namespace log {
 
-            class loggerAppenderTracer
+            class ZAMBASE_API loggerAppenderTracer
                     : public loggerAppender {
             public:
                 void load(loggerWriter &writer, Json::Value const &) override;

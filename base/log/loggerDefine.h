@@ -5,6 +5,8 @@
 #ifndef ZAM_BASE_LOG_LOGGERDEFINE_H
 #define ZAM_BASE_LOG_LOGGERDEFINE_H
 
+#include "base/base.h"
+
 #include <boost/log/expressions/keyword.hpp>
 
 #include <string>

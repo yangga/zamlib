@@ -5,6 +5,8 @@
 #ifndef ZAM_BASE_LOG_DETAIL_LOGGERWRITER_H
 #define ZAM_BASE_LOG_DETAIL_LOGGERWRITER_H
 
+#include "base/base.h"
+
 #include "../loggerDefine.h"
 
 #include <boost/log/sinks.hpp>
@@ -15,7 +17,7 @@ namespace zam {
     namespace base {
         namespace log {
 
-            class loggerWriter {
+            class ZAMBASE_API loggerWriter {
             public:
                 using sink_t = boost::shared_ptr<boost::log::sinks::sink>;
 

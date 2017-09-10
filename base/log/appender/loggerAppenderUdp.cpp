@@ -2,7 +2,6 @@
 // Created by SungWoo Yang on 2017. 9. 2..
 //
 
-#include "base.h"
 #include "loggerAppenderUdp.h"
 
 namespace zam {

@@ -2,7 +2,6 @@
 // Created by SungWoo Yang on 2017. 9. 5..
 //
 
-#include "base.h"
 #include "loggerAttrName.h"
 
 #define RETURN_BOOST_DEF_ATTR(_TAG_)    return boost::log::aux::default_attribute_names::_TAG_()

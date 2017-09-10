@@ -2,7 +2,6 @@
 // Created by SungWoo Yang on 2017. 9. 1..
 //
 
-#include "base.h"
 #include "loggerInitializer.h"
 
 #include "loggerPool.h"

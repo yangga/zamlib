@@ -5,11 +5,13 @@
 #ifndef ZAM_LOGGERSYSTEMINITONCE_H
 #define ZAM_LOGGERSYSTEMINITONCE_H
 
+#include "base/base.h"
+
 namespace zam {
     namespace base {
         namespace log {
 
-            class loggerSystemInitOnce {
+            class ZAMBASE_API loggerSystemInitOnce {
             public:
                 loggerSystemInitOnce();
             };

@@ -22,4 +22,10 @@
 
 #include <iostream>
 
+#ifdef zam_base_shared_EXPORTS
+#define ZAMBASE_API BOOST_SYMBOL_EXPORT
+#else
+#define ZAMBASE_API BOOST_SYMBOL_VISIBLE
+#endif
+
 #endif //ZAM_BASE_STDAFX_H

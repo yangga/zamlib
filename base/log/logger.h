@@ -5,6 +5,8 @@
 #ifndef ZAM_BASE_LOG_LOGGER_H
 #define ZAM_BASE_LOG_LOGGER_H
 
+#include "base/base.h"
+
 #include "loggerDefine.h"
 
 #include "detail/loggerInitializer.h"
@@ -20,7 +22,7 @@ namespace zam {
             class loggerWriter;
             class loggerInitializer;
 
-            class logger {
+            class ZAMBASE_API logger {
                 friend class loggerInitializer;
 
             public:
