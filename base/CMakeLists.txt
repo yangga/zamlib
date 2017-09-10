@@ -29,14 +29,14 @@ install (TARGETS zam_base_static DESTINATION ${ROOT_INSTALL_PATH}/lib)
 
 ###########################################################
 # shared
-foreach(flag_var
-        CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
-        CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-    if(${flag_var} MATCHES "/MT")
-        string(REGEX REPLACE "/MT" "/MD" ${flag_var} "${${flag_var}}")
-        message("${flag_var} - ${${flag_var}}")
-    endif(${flag_var} MATCHES "/MT")
-endforeach(flag_var)
+#foreach(flag_var
+#        CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+#        CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+#    if(${flag_var} MATCHES "/MT")
+#        string(REGEX REPLACE "/MT" "/MD" ${flag_var} "${${flag_var}}")
+#        message("${flag_var} - ${${flag_var}}")
+#    endif(${flag_var} MATCHES "/MT")
+#endforeach(flag_var)
 project(base)
 include_directories(${PROJECT_SOURCE_DIR} ${INCLUDE_DIRECTORIES})
 add_library(zam_base_shared SHARED ${SOURCE_FILES})
