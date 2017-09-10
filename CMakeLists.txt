@@ -71,9 +71,15 @@ enable_testing()
 
 include(cmake/StaticCompile.cmake)
 
-add_subdirectory(base)
-add_subdirectory(net)
+add_subdirectory(zam/base)
+add_subdirectory(zam/net)
 add_subdirectory(tests)
+
+# install header files
+install(DIRECTORY zam DESTINATION ${ROOT_INSTALL_PATH}/zam
+        FILES_MATCHING PATTERN "*.h"
+        PATTERN "CMakeFiles" EXCLUDE
+        )
 
 ######################################################################
 # CPack
@@ -97,7 +103,7 @@ set(TARGET_ARCH ${CMAKE_SYSTEM_NAME})
 
 if(APPLE)
     set(CPACK_GENERATOR DragNDrop)
-    set(CMAKE_INSTALL_PREFIX /usr/local)
+    set(CMAKE_INSTALL_PREFIX "/")
     set(CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
     set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PACKAGE_VERSION}-osx-${TARGET_ARCH}")
     set(CPACK_SOURCE_PACKAGE_FILE_NAME  "${PROJECT_NAME}-${PACKAGE_VERSION}-osx-src")

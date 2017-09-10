@@ -6,14 +6,14 @@
 
 #include "loggerDefine.h"
 
-#include "detail/loggerWriter.h"
-#include "detail/loggerPool.h"
-#include "detail/loggerSystemInitOnce.h"
+#include "zam/base/log/detail/loggerWriter.h"
+#include "zam/base/log/detail/loggerPool.h"
+#include "zam/base/log/detail/loggerSystemInitOnce.h"
 
-#include "appender/loggerAppenderConsole.h"
-#include "appender/loggerAppenderFile.h"
-#include "appender/loggerAppenderTracer.h"
-#include "appender/loggerAppenderUdp.h"
+#include "zam/base/log/appender/loggerAppenderConsole.h"
+#include "zam/base/log/appender/loggerAppenderFile.h"
+#include "zam/base/log/appender/loggerAppenderTracer.h"
+#include "zam/base/log/appender/loggerAppenderUdp.h"
 
 #include <json/json.h>
 

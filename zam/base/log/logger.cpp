@@ -7,7 +7,7 @@
 #include <iostream>
 
 #include "loggerDefine.h"
-#include "base/log/detail/loggerWriter.h"
+#include "zam/base/log/detail/loggerWriter.h"
 
 namespace zam {
     namespace base {

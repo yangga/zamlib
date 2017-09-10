@@ -3,8 +3,8 @@
 //
 
 #include <ZamConfig.h>
-#include <base/logger.h>
-#include <base/filesystem/whereami.h>
+#include <zam/base/logger.h>
+#include <zam/base/filesystem/whereami.h>
 
 #include <iostream>
 

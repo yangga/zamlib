@@ -5,7 +5,8 @@
 #ifndef __ZAM_LOG_APPENDER_LOGGERAPPENDER_FILE_H__
 #define __ZAM_LOG_APPENDER_LOGGERAPPENDER_FILE_H__
 
-#include "base/base.h"
+#include <zam/base/base.h>
+
 #include "loggerAppender.h"
 
 namespace zam {

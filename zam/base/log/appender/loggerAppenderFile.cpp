@@ -4,10 +4,10 @@
 
 #include "loggerAppenderFile.h"
 
-#include "../detail/loggerAttrName.h"
-#include "../detail/loggerWriter.h"
+#include "zam/base/log/detail/loggerAttrName.h"
+#include "zam/base/log/detail/loggerWriter.h"
 
-#include "collector/collectorDefault.h"
+#include "zam/base/log/appender/collector/collectorDefault.h"
 
 #include <boost/core/null_deleter.hpp>
 #include <boost/filesystem.hpp>

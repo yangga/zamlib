@@ -5,7 +5,7 @@
 #ifndef ZAMLIB_WHEREAMI_H
 #define ZAMLIB_WHEREAMI_H
 
-#include <base/3rdParty/whereami-cpp/whereami++.hpp>
+#include <zam/base/3rdParty/whereami-cpp/whereami++.hpp>
 
 namespace zam {
     namespace base {

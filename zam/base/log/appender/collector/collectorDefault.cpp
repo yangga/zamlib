@@ -2,7 +2,8 @@
 // Created by SungWoo Yang on 2017. 9. 5..
 //
 
-#include "base.h"
+#include <zam/base/base.h>
+
 #include "collectorDefault.h"
 
 #include <boost/filesystem.hpp>

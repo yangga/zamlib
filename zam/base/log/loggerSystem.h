@@ -5,7 +5,7 @@
 #ifndef ZAM_BASE_LOG_LOGGERSYSTEM_H
 #define ZAM_BASE_LOG_LOGGERSYSTEM_H
 
-#include "base/base.h"
+#include <zam/base/base.h>
 
 #include <json/value.h>
 

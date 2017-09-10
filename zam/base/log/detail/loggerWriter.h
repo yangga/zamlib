@@ -5,9 +5,8 @@
 #ifndef ZAM_BASE_LOG_DETAIL_LOGGERWRITER_H
 #define ZAM_BASE_LOG_DETAIL_LOGGERWRITER_H
 
-#include "base/base.h"
-
-#include "../loggerDefine.h"
+#include <zam/base/base.h>
+#include <zam/base/log/loggerDefine.h>
 
 #include <boost/log/sinks.hpp>
 #include <boost/smart_ptr.hpp>

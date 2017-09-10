@@ -5,12 +5,12 @@
 #ifndef ZAM_BASE_LOG_LOGGER_H
 #define ZAM_BASE_LOG_LOGGER_H
 
-#include "base/base.h"
+#include <zam/base/base.h>
 
 #include "loggerDefine.h"
 
 #include "detail/loggerInitializer.h"
-#include "base/log/detail/loggerWriter.h"
+#include "detail/loggerWriter.h"
 
 #include <sstream>
 

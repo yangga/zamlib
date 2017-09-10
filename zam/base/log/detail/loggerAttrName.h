@@ -5,7 +5,7 @@
 #ifndef ZAMLIB_BASE_LOG_LOGGERATTRNAME_H
 #define ZAMLIB_BASE_LOG_LOGGERATTRNAME_H
 
-#include "base/base.h"
+#include <zam/base/base.h>
 
 #include <boost/log/attributes.hpp>
 #include <boost/log/detail/default_attribute_names.hpp>

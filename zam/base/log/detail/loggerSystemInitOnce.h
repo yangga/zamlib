@@ -5,7 +5,7 @@
 #ifndef ZAM_LOGGERSYSTEMINITONCE_H
 #define ZAM_LOGGERSYSTEMINITONCE_H
 
-#include "base/base.h"
+#include <zam/base/base.h>
 
 namespace zam {
     namespace base {

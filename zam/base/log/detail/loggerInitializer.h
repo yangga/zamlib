@@ -5,8 +5,8 @@
 #ifndef ZAM_BASE_LOG_LOGGERINITIALIZER_H
 #define ZAM_BASE_LOG_LOGGERINITIALIZER_H
 
-#include "base/base.h"
-#include "base/log/loggerDefine.h"
+#include <zam/base/base.h>
+#include <zam/base/log/loggerDefine.h>
 
 namespace zam {
     namespace base {

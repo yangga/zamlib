@@ -4,8 +4,8 @@
 
 #include "loggerAppenderConsole.h"
 
-#include "../detail/loggerAttrName.h"
-#include "../detail/loggerWriter.h"
+#include "zam/base/log/detail/loggerAttrName.h"
+#include "zam/base/log/detail/loggerWriter.h"
 
 #include <boost/core/null_deleter.hpp>
 #include <boost/log/attributes.hpp>

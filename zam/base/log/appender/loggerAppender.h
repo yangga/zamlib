@@ -5,8 +5,8 @@
 #ifndef __ZAM_LOG_APPENDER_LOGGERAPPENDER_H__
 #define __ZAM_LOG_APPENDER_LOGGERAPPENDER_H__
 
-#include "base/base.h"
-#include "../loggerDefine.h"
+#include <zam/base/base.h>
+#include <zam/base/log/loggerDefine.h>
 
 #include <json/value.h>
 

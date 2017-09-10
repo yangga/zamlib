@@ -5,7 +5,7 @@
 #ifndef ZAM_LOGGERPOOL_H
 #define ZAM_LOGGERPOOL_H
 
-#include "base/base.h"
+#include <zam/base/base.h>
 
 #include <boost/serialization/singleton.hpp>
 
