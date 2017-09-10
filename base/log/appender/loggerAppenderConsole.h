@@ -12,7 +12,7 @@ namespace zam {
     namespace base {
         namespace log {
 
-            class ZAMBASE_API loggerAppenderConsole
+            class loggerAppenderConsole
                     : public loggerAppender {
             public:
                 void load(loggerWriter &writer, Json::Value const &) override;

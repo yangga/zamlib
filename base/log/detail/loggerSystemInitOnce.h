@@ -11,7 +11,7 @@ namespace zam {
     namespace base {
         namespace log {
 
-            class ZAMBASE_API loggerSystemInitOnce {
+            class loggerSystemInitOnce {
             public:
                 loggerSystemInitOnce();
             };
