@@ -9,9 +9,13 @@ set(SOURCE_FILES log/logger.cpp log/logger.h log/loggerDefine.h base.h log/detai
 
 ###########################################################
 # static
-set(CMAKE_USER_MAKE_RULES_OVERRIDE ../cmake/c_flag_overrides_mt.cmake)
-set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX ../cmake/cxx_flag_overrides_mt.cmake)
-message("CMAKE_USER_MAKE_RULES_OVERRIDE - ${CMAKE_USER_MAKE_RULES_OVERRIDE}")
+foreach(flag_var
+        CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+    if(${flag_var} MATCHES "/MD")
+        string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+    endif(${flag_var} MATCHES "/MD")
+endforeach(flag_var)
 project(baseStatic)
 include_directories(${PROJECT_SOURCE_DIR} ${INCLUDE_DIRECTORIES})
 add_library(zam_base_static STATIC ${SOURCE_FILES})
@@ -24,9 +28,13 @@ install (TARGETS zam_base_static DESTINATION ${ROOT_INSTALL_PATH}/lib)
 
 ###########################################################
 # shared
-set(CMAKE_USER_MAKE_RULES_OVERRIDE ../cmake/c_flag_overrides_md.cmake)
-set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX ../cmake/cxx_flag_overrides_md.cmake)
-message("CMAKE_USER_MAKE_RULES_OVERRIDE - ${CMAKE_USER_MAKE_RULES_OVERRIDE}")
+foreach(flag_var
+        CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+    if(${flag_var} MATCHES "/MT")
+        string(REGEX REPLACE "/MT" "/MD" ${flag_var} "${${flag_var}}")
+    endif(${flag_var} MATCHES "/MT")
+endforeach(flag_var)
 project(base)
 include_directories(${PROJECT_SOURCE_DIR} ${INCLUDE_DIRECTORIES})
 add_library(zam_base_shared SHARED ${SOURCE_FILES})
