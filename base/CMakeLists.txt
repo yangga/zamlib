@@ -9,7 +9,9 @@ set(SOURCE_FILES log/logger.cpp log/logger.h log/loggerDefine.h base.h log/detai
 
 ###########################################################
 # static
-EnableMTFlag()
+set(CMAKE_USER_MAKE_RULES_OVERRIDE ../cmake/c_flag_overrides_mt.cmake)
+set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX ../cmake/cxx_flag_overrides_mt.cmake)
+message("CMAKE_USER_MAKE_RULES_OVERRIDE - ${CMAKE_USER_MAKE_RULES_OVERRIDE}")
 project(baseStatic)
 include_directories(${PROJECT_SOURCE_DIR} ${INCLUDE_DIRECTORIES})
 add_library(zam_base_static STATIC ${SOURCE_FILES})
@@ -22,7 +24,9 @@ install (TARGETS zam_base_static DESTINATION ${ROOT_INSTALL_PATH}/lib)
 
 ###########################################################
 # shared
-EnableMDFlag()
+set(CMAKE_USER_MAKE_RULES_OVERRIDE ../cmake/c_flag_overrides_md.cmake)
+set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX ../cmake/cxx_flag_overrides_md.cmake)
+message("CMAKE_USER_MAKE_RULES_OVERRIDE - ${CMAKE_USER_MAKE_RULES_OVERRIDE}")
 project(base)
 include_directories(${PROJECT_SOURCE_DIR} ${INCLUDE_DIRECTORIES})
 add_library(zam_base_shared SHARED ${SOURCE_FILES})

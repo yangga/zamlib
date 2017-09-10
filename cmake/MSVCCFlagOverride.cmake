@@ -1,13 +1,15 @@
 function(EnableMDFlag)
+    message("called EnableMDFlag")
     set(CMAKE_USER_MAKE_RULES_OVERRIDE
-            ${CMAKE_CURRENT_SOURCE_DIR}/c_flag_overrides_md.cmake)
+            cmake/c_flag_overrides_md.cmake)
     set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX
-            ${CMAKE_CURRENT_SOURCE_DIR}/cxx_flag_overrides_md.cmake)
+            cmake/cxx_flag_overrides_md.cmake)
 endfunction()
 
-function(EnableMTFlag)
+function(EnableMTFlag CMAKE_USER_MAKE_RULES_OVERRIDE)
+    message("called EnableMTFlag")
     set(CMAKE_USER_MAKE_RULES_OVERRIDE
-            ${CMAKE_CURRENT_SOURCE_DIR}/c_flag_overrides_mt.cmake)
+            cmake/c_flag_overrides_mt.cmake)
     set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX
-            ${CMAKE_CURRENT_SOURCE_DIR}/cxx_flag_overrides_mt.cmake)
+            cmake/cxx_flag_overrides_mt.cmake)
 endfunction()
