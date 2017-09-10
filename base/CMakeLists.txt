@@ -17,6 +17,9 @@ add_library(zam_base_static STATIC ${SOURCE_FILES})
 # set OUTPUT NAME
 set_target_properties(zam_base_static PROPERTIES OUTPUT_NAME base_static)
 
+# install lib
+install (TARGETS zam_base_static DESTINATION ${ROOT_INSTALL_PATH}/lib)
+
 ###########################################################
 # shared
 project(base)
@@ -33,11 +36,12 @@ if(APPLE OR MSVC)
     target_link_libraries (zam_base_shared ${DEPENDENT_LIBRARY_FILES})
 endif()
 
-###########################################################
-# add the install targets
-project(baseInstall)
+# install lib
 install (TARGETS zam_base_shared DESTINATION ${ROOT_INSTALL_PATH}/lib)
-install (TARGETS zam_base_static DESTINATION ${ROOT_INSTALL_PATH}/lib)
+
+###########################################################
+# install headers
+project(baseHeader)
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR} DESTINATION ${ROOT_INSTALL_PATH}
         FILES_MATCHING PATTERN "*.h"
