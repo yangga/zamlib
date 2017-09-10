@@ -1,12 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
 
-function(StaticCompile)
-#    target_compile_options(${PROJECT_NAME}
-#            PUBLIC "/MT$<$<CONFIG:$<CONFIGURATION>,Debug>:d>"
-#            )
-    target_compile_options(${PROJECT_NAME} PRIVATE "/MT$<$<CONFIG:Debug>:d>")
-endfunction()
-
 set(CMAKE_CXX_STANDARD 14)
 
 set(INCLUDE_DIRECTORIES ${JSONCPP_INCLUDE_DIR_ROOT})
@@ -24,9 +17,18 @@ set(SOURCE_FILES log/logger.cpp log/logger.h log/loggerDefine.h base.h log/detai
 #    endif(${flag_var} MATCHES "/MD")
 #endforeach(flag_var)
 project(baseStatic)
+
+function(StaticCompile target)
+        target_compile_options(${target}
+                PUBLIC "/MT$<$<STREQUAL:$<CONFIGURATION>,Debug>:d>"
+                )
+#    target_compile_options(zam_base_static PRIVATE "/MT$<$<CONFIG:Debug>:d>")
+endfunction()
+
 include_directories(${PROJECT_SOURCE_DIR} ${INCLUDE_DIRECTORIES})
+
 add_library(zam_base_static STATIC ${SOURCE_FILES})
-StaticCompile()
+StaticCompile(zam_base_static)
 
 # set OUTPUT NAME
 set_target_properties(zam_base_static PROPERTIES OUTPUT_NAME base_static)
