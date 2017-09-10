@@ -9,8 +9,8 @@ set(SOURCE_FILES log/logger.cpp log/logger.h log/loggerDefine.h base.h log/detai
 
 ###########################################################
 # static
-project(baseStatic)
 EnableMTFlag()
+project(baseStatic)
 include_directories(${PROJECT_SOURCE_DIR} ${INCLUDE_DIRECTORIES})
 add_library(zam_base_static STATIC ${SOURCE_FILES})
 
@@ -22,8 +22,8 @@ install (TARGETS zam_base_static DESTINATION ${ROOT_INSTALL_PATH}/lib)
 
 ###########################################################
 # shared
-project(base)
 EnableMDFlag()
+project(base)
 include_directories(${PROJECT_SOURCE_DIR} ${INCLUDE_DIRECTORIES})
 add_library(zam_base_shared SHARED ${SOURCE_FILES})
 
