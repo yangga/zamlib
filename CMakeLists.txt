@@ -8,6 +8,7 @@ set (Zam_VERSION_MAJOR 0)
 set (Zam_VERSION_MINOR 1)
 set (Zam_VERSION_PATCH 0)
 
+set(ROOT_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 set(ROOT_INSTALL_PATH ${PROJECT_NAME})
 
 # configure a header file to pass some of the CMake settings

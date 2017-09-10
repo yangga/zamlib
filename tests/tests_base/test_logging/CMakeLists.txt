@@ -3,6 +3,8 @@ project(test_logging)
 
 set(CMAKE_CXX_STANDARD 14)
 
+include_directories(${ROOT_SOURCE_DIR} ${PROJECT_SOURCE_DIR})
+
 set(SOURCE_FILES main.cpp)
 add_executable(test_logging ${SOURCE_FILES})
 

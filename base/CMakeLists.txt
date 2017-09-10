@@ -17,6 +17,13 @@ set_target_properties(zam_base_shared PROPERTIES OUTPUT_NAME base)
 # dylib needs static libraries linkning
 if(APPLE OR MSVC)
     set(DEPENDENT_LIBRARY_FILES ${JSONCPP_LIBRARY} ${Boost_LIBRARIES})
+
+    if(MSVC)
+        set(DEPENDENT_LIBRARY_FILES ${DEPENDENT_LIBRARY_FILES} Ws2_32)
+    else(MSVC)
+        set(DEPENDENT_LIBRARY_FILES ${DEPENDENT_LIBRARY_FILES} pthread)
+    endif(MSVC)
+
     target_link_libraries (zam_base_shared ${DEPENDENT_LIBRARY_FILES})
 endif()
 
