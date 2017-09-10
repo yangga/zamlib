@@ -8,20 +8,21 @@ set (Zam_VERSION_MAJOR 0)
 set (Zam_VERSION_MINOR 1)
 set (Zam_VERSION_PATCH 0)
 
-set(ROOT_INSTALL_PATH ${PROJECT_NAME})
-
-# configure a header file to pass some of the CMake settings
-# to the source code
-configure_file (
-		"${PROJECT_SOURCE_DIR}/ZamConfig.h.in"
-		"${PROJECT_BINARY_DIR}/ZamConfig.h"
-)
-
 # output path
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
+
+set(ZAMLIB_ROOT ${PROJECT_BINARY_DIR})
+set(ROOT_INSTALL_PATH ${PROJECT_NAME})
+
+# configure a header file to pass some of the CMake settings
+# to the source code
+configure_file (
+        "${PROJECT_SOURCE_DIR}/ZamConfig.h.in"
+        "${PROJECT_BINARY_DIR}/ZamConfig.h"
+)
 
 # setup directory where we should look for cmake files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -34,7 +35,7 @@ set(Boost_USE_STATIC_RUNTIME    OFF)
 find_package(Boost 1.55 REQUIRED COMPONENTS date_time filesystem iostreams system serialization log log_setup thread)
 if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
-	#link_directories(${Boost_LIBRARY_DIRS})
+	link_directories(${Boost_LIBRARY_DIRS})
 else(Boost_FOUND)
 	if(MSVC)
 		message("You need to add entries - BOOST_INCLUDEDIR, BOOST_LIBRARYDIR, BOOST_ROOT")
@@ -67,9 +68,18 @@ enable_testing()
 
 ######################################################################
 # sub projects
-add_subdirectory(base)
-add_subdirectory(net)
+
+include(cmake/StaticCompile.cmake)
+
+add_subdirectory(zam/base)
+add_subdirectory(zam/net)
 add_subdirectory(tests)
+
+# install header files
+install(DIRECTORY zam DESTINATION ${ROOT_INSTALL_PATH}
+        FILES_MATCHING PATTERN "*.h"
+        PATTERN "CMakeFiles" EXCLUDE
+        )
 
 ######################################################################
 # CPack
@@ -93,8 +103,7 @@ set(TARGET_ARCH ${CMAKE_SYSTEM_NAME})
 
 if(APPLE)
     set(CPACK_GENERATOR DragNDrop)
-    set(CMAKE_INSTALL_PREFIX /usr/local)
-    set(CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+    set(CPACK_PACKAGING_INSTALL_PREFIX "/")
     set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PACKAGE_VERSION}-osx-${TARGET_ARCH}")
     set(CPACK_SOURCE_PACKAGE_FILE_NAME  "${PROJECT_NAME}-${PACKAGE_VERSION}-osx-src")
     set(CPACK_BUNDLE_NAME ${PROJECT_NAME})

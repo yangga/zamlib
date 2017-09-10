@@ -2,20 +2,21 @@
 // Created by SungWoo Yang on 2017. 8. 31..
 //
 
-#include <base/logger.h>
-#include <base/filesystem/whereami.h>
+#include <ZamConfig.h>
+#include <zam/base/logger.h>
+#include <zam/base/filesystem/whereami.h>
 
 #include <iostream>
 
 int main(int argc, char* argv[]) {
 
     try {
-        std::cout << "zam::base::filesystem::whereami::module_dir() - " << zam::base::filesystem::whereami::module_dir() << std::endl;
-        chdir(zam::base::filesystem::whereami::module_dir().c_str());
-
         using namespace zam::base::log;
 
-        loggerSystem::load("../misc/tests/test_logging/test_logging.json");
+        std::string cfgPath(Zam_CMAKE_BUILT_PATH);
+        cfgPath += "/misc/tests/test_logging/test_logging.json";
+
+        loggerSystem::load(cfgPath.c_str());
     } catch(std::exception& e) {
         std::cerr << e.what() << std::endl;
         return -1;
