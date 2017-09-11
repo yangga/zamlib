@@ -66,4 +66,12 @@ ZamConfig.h
 .idea
 /build
 /logs
+/lib
 
+# visual studio
+.vs/
+*.VC.db
+*.VC.opendb
+*.vcxproj
+*.vcxproj.filters
+*.sln
