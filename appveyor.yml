@@ -24,13 +24,13 @@ environment:
     - CMAKE_GENERATOR: Visual Studio 14 2015 Win64
       BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib64-msvc-14.0
 
-platform:
-  - x86
-  - x64
-
-configuration:
-  - Debug
-  - Release
+#platform:
+#  - x86
+#  - x64
+#
+#configuration:
+#  - Debug
+#  - Release
 
 #matrix:
 #  allow_failures:
@@ -53,9 +53,11 @@ install:
   - cd c:\projects\jsoncpp
   - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:/projects/sdk/jsoncpp/release -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON .
   - cmake --build . --config Release --target install
+  - dir /s c:\projects\jsoncpp\release
   - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:/projects/sdk/jsoncpp/debug -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON .
   - cmake --build . --config Debug --target install
   - dir /s c:\projects\jsoncpp\release
+  - dir /s c:\projects\jsoncpp\debug
 
 build_script:
   - cd c:\projects\zamlib
