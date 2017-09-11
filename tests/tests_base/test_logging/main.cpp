@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 
         loggerSystem::load(cfgPath.c_str());
     } catch(std::exception& e) {
-        std::cerr << "failed to load - " << e.what() << std::endl;
+        std::cout << "failed to load - " << e.what() << std::endl;
         return -1;
     }
 //
