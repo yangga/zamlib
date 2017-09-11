@@ -53,16 +53,26 @@ install:
   # install jsoncpp
   - git clone https://github.com/open-source-parsers/jsoncpp.git c:\projects\jsoncpp
   - cd c:\projects\jsoncpp
-  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_RELEASE%" -DBUILD_SHARED_LIBS=ON -Wno-deprecated .
+  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_RELEASE%" -DBUILD_SHARED_LIBS=ON .
   - cmake --build . --config Release --target install
   - dir /b /s "%JSONCPP_INSTALL_DIR_RELEASE%"
-  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_DEBUG%" -DBUILD_SHARED_LIBS=ON -Wno-deprecated .
+  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_DEBUG%" -DBUILD_SHARED_LIBS=ON .
   - cmake --build . --config Debug --target install
   - dir /b /s "%JSONCPP_INSTALL_DIR_DEBUG%"
 
-build_script:
+before_build:
   - cd c:\projects\zamlib
   - git submodule update --init --recursive
-  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=%CD:\=/%/install -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DJSONCPP_INCLUDE_DIR_ROOT="%JSONCPP_INCLUDE_DIR_ROOT%" -DJSONCPP_LIBRARY="%JSONCPP_LIBRARY%" -DJSONCPP_LIBRARY_DEBUG="%JSONCPP_LIBRARY_DEBUG%" .
+
+build_script:
+  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=%CD:\=/%/install -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DJSONCPP_INCLUDE_DIR_ROOT="%JSONCPP_INCLUDE_DIR_ROOT%" -DJSONCPP_LIBRARY="%JSONCPP_LIBRARY%" -DJSONCPP_LIBRARY_DEBUG="%JSONCPP_LIBRARY_DEBUG%" .
   - cmake --build . --config Release --target all_build
-  - cmake --target run_tests
+
+#after_build:
+
+#before_test:
+
+test_script:
+  - cmake --build . --config Release --target run_tests
+
+#after_test:
