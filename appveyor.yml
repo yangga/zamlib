@@ -1,0 +1,57 @@
+# version format
+version: 1.0.{build}
+
+branches:
+
+os: Windows Server 2012
+
+init:
+
+clone_folder: c:\projects\zamlib
+
+hosts:
+
+environment:
+  MSVC_DEFAULT_OPTIONS: ON
+  BOOST_ROOT: C:\Libraries\boost_1_59_0
+  BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib32-msvc-14.0
+  JSONCPP_INCLUDE_DIR_ROOT: cd c:\projects\jsoncpp\release\jsoncpp\include
+  JSONCPP_LIBRARY: cd c:\projects\jsoncpp\release\jsoncpp\lib\jsoncpp.lib
+  JSONCPP_LIBRARY_DEBUG: cd c:\projects\jsoncpp\debug\jsoncpp\lib\jsoncpp.lib
+
+  matrix:
+    - CMAKE_GENERATOR: Visual Studio 14 2015
+
+platform: x86
+
+configuration: Release
+
+matrix:
+  allow_failures:
+    - platform: x86
+      configuration: Debug
+    - platform: x64
+      configuration: Release
+
+services:
+
+install:
+  # printing environment infos
+  - cmake --version
+
+  # preparing sdk
+  - mkdir c:\projects\sdk
+
+  # install jsoncpp
+  - git clone https://github.com/open-source-parsers/jsoncpp.git cd c:\projects\jsoncpp
+  - cd c:\projects\jsoncpp
+  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:/projects/sdk/jsoncpp/release -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON .
+  - cmake --build . --config Release --target install
+  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:/projects/sdk/jsoncpp/debug -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON .
+  - cmake --build . --config Debug --target install
+  - dir /s c:\projects\sdk\jsoncpp\release
+
+build_script:
+  - cd c:\projects\zamlib
+  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=%CD:\=/%/install -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBOOST_ROOT=%BOOST_ROOT% -DBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% -DJSONCPP_INCLUDE_DIR_ROOT=%JSONCPP_INCLUDE_DIR_ROOT% -DJSONCPP_LIBRARY=%JSONCPP_LIBRARY% -DJSONCPP_LIBRARY_DEBUG=%JSONCPP_LIBRARY_DEBUG% .
+  - cmake --build . --config Release --target test
