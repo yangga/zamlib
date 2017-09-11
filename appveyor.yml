@@ -68,7 +68,7 @@ before_build:
 
 build_script:
   # execute cmake normal way. cause to generate CTestTestfile.cmake file
-  - cmake .
+  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DJSONCPP_INCLUDE_DIR_ROOT="%JSONCPP_INCLUDE_DIR_ROOT%" -DJSONCPP_LIBRARY="%JSONCPP_LIBRARY%" -DJSONCPP_LIBRARY_DEBUG="%JSONCPP_LIBRARY_DEBUG%" .
   # execute cmake specified way. cause reduce build time
   - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=%CD:\=/%/install -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DJSONCPP_INCLUDE_DIR_ROOT="%JSONCPP_INCLUDE_DIR_ROOT%" -DJSONCPP_LIBRARY="%JSONCPP_LIBRARY%" -DJSONCPP_LIBRARY_DEBUG="%JSONCPP_LIBRARY_DEBUG%" .
   # then, build it !
