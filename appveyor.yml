@@ -44,6 +44,8 @@ environment:
 #services:
 
 install:
+  - set PATH=%PATH%;%BOOST_LIBRARYDIR%
+
   # printing environment infos
   - cmake --version
 
