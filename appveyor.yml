@@ -73,6 +73,6 @@ build_script:
 #before_test:
 
 test_script:
-  - cmake --build . --config Release --target run_tests
+  - ps: ctest
 
 #after_test:
