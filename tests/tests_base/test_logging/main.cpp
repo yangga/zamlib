@@ -10,17 +10,17 @@
 
 int main(int argc, char* argv[]) {
 
-//    try {
-//        using namespace zam::base::log;
-//
-//        std::string cfgPath(Zam_CMAKE_BUILT_PATH);
-//        cfgPath += "/misc/tests/test_logging/test_logging.json";
-//
-//        loggerSystem::load(cfgPath.c_str());
-//    } catch(std::exception& e) {
-//        std::cerr << "failed to load - " << e.what() << std::endl;
-//        return -1;
-//    }
+    try {
+        using namespace zam::base::log;
+
+        std::string cfgPath(Zam_CMAKE_BUILT_PATH);
+        cfgPath += "/misc/tests/test_logging/test_logging.json";
+
+        loggerSystem::load(cfgPath.c_str());
+    } catch(std::exception& e) {
+        std::cerr << "failed to load - " << e.what() << std::endl;
+        return -1;
+    }
 //
 //    try {
 //        for (int i=0; i<10; ++i) {
