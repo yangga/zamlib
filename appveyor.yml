@@ -71,6 +71,7 @@ build_script:
   - cmake --build . --config Release --target all_build
   - dir
   - dir /b /s c:\projects\zamlib\build
+  - type ZamConfig.h
 
 #after_build:
 

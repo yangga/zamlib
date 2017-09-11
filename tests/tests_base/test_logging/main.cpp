@@ -10,6 +10,8 @@
 
 int main(int argc, char* argv[]) {
 
+    const auto path_sep = boost::filesystem::path::preferred_separator;
+
     try {
         using namespace zam::base::log;
 
