@@ -45,7 +45,7 @@ environment:
 
 install:
   # appending additional paths
-  - set PATH=%PATH%;%BOOST_LIBRARYDIR%;%JSONCPP_INSTALL_DIR_RELEASE%\lib;%JSONCPP_INSTALL_DIR_DEBUG%\lib;c:\projects\zamlib\build\Release
+  - set PATH=%PATH%;%BOOST_LIBRARYDIR%;%JSONCPP_INSTALL_DIR_RELEASE%\bin;%JSONCPP_INSTALL_DIR_DEBUG%\bin
   - PATH
 
   # printing environment infos
