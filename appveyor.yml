@@ -3,7 +3,7 @@ version: 1.0.{build}
 
 #branches:
 
-os: Windows Server 2012
+os: Windows Server 2016
 
 #init:
 
