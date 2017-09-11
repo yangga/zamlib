@@ -44,7 +44,9 @@ environment:
 #services:
 
 install:
-  - set PATH=%PATH%;%BOOST_LIBRARYDIR%
+  # appending additional paths
+  - set PATH=%PATH%;%BOOST_LIBRARYDIR%;%JSONCPP_INSTALL_DIR_RELEASE%\lib;%JSONCPP_INSTALL_DIR_DEBUG%\lib;
+  - PATH
 
   # printing environment infos
   - cmake --version
