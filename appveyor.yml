@@ -1,0 +1,88 @@
+# version format
+version: 1.0.{build}
+
+#branches:
+
+os: Windows Server 2012 R2
+
+#init:
+
+clone_folder: c:\projects\zamlib
+
+#hosts:
+
+environment:
+  MSVC_DEFAULT_OPTIONS: ON
+  BOOST_ROOT: C:\Libraries\boost_1_60_0
+  JSONCPP_INSTALL_DIR_RELEASE: c:\projects\sdk\jsoncpp\release
+  JSONCPP_INSTALL_DIR_DEBUG: c:\projects\sdk\jsoncpp\debug
+  JSONCPP_INCLUDE_DIR_ROOT: c:\projects\sdk\jsoncpp\release\include
+  JSONCPP_LIBRARY: c:\projects\sdk\jsoncpp\release\lib\jsoncpp.lib
+  JSONCPP_LIBRARY_DEBUG: c:\projects\sdk\jsoncpp\debug\lib\jsoncpp.lib
+
+  matrix:
+    - CMAKE_GENERATOR: Visual Studio 14 2015
+      BOOST_LIBRARYDIR: C:\Libraries\boost_1_60_0\lib32-msvc-14.0
+    - CMAKE_GENERATOR: Visual Studio 14 2015 Win64
+      BOOST_LIBRARYDIR: C:\Libraries\boost_1_60_0\lib64-msvc-14.0
+
+#platform:
+#  - x86
+#  - x64
+#
+#configuration:
+#  - Debug
+#  - Release
+
+#matrix:
+#  allow_failures:
+#    - platform: x86
+#      configuration: Debug
+#    - platform: x64
+#      configuration: Release
+
+#services:
+
+install:
+  # printing environment infos
+  - cmake --version
+
+  # preparing sdk
+  - mkdir c:\projects\sdk
+
+  # install jsoncpp
+  - git clone https://github.com/open-source-parsers/jsoncpp.git c:\projects\jsoncpp
+  - cd c:\projects\jsoncpp
+  ## (release)
+  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_RELEASE%" -DBUILD_SHARED_LIBS=ON .
+  - cmake --build . --config Release --target install
+  - dir /b /s "%JSONCPP_INSTALL_DIR_RELEASE%"
+  - set PATH=%PATH%;%JSONCPP_INSTALL_DIR_RELEASE%\bin
+  ## (debug)
+  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_DEBUG%" -DBUILD_SHARED_LIBS=ON .
+  - cmake --build . --config Debug --target install
+  - dir /b /s "%JSONCPP_INSTALL_DIR_DEBUG%"
+  - set PATH=%PATH%;%JSONCPP_INSTALL_DIR_DEBUG%\bin
+
+  # appending additional paths
+  - set PATH=%PATH%;%BOOST_LIBRARYDIR%
+  - PATH
+
+before_build:
+  - cd c:\projects\zamlib
+  - git submodule update --init --recursive
+
+build_script:
+  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=%CD:\=/%/install -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DJSONCPP_INCLUDE_DIR_ROOT="%JSONCPP_INCLUDE_DIR_ROOT%" -DJSONCPP_LIBRARY="%JSONCPP_LIBRARY%" -DJSONCPP_LIBRARY_DEBUG="%JSONCPP_LIBRARY_DEBUG%" .
+  - cmake --build . --config Release --target install
+  - type ZamConfig.h
+
+#after_build:
+
+#before_test:
+
+test_script:
+  - ps: ctest
+  - ps: cpack
+
+#after_test:
