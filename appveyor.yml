@@ -1,15 +1,15 @@
 # version format
 version: 1.0.{build}
 
-branches:
+#branches:
 
 os: Windows Server 2012
 
-init:
+#init:
 
 clone_folder: c:\projects\zamlib
 
-hosts:
+#hosts:
 
 environment:
   MSVC_DEFAULT_OPTIONS: ON
@@ -33,7 +33,7 @@ matrix:
     - platform: x64
       configuration: Release
 
-services:
+#services:
 
 install:
   # printing environment infos
