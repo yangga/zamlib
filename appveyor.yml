@@ -12,8 +12,15 @@ clone_folder: c:\projects\zamlib
 #hosts:
 
 environment:
+  MSVC_DEFAULT_OPTIONS: ON
+  BOOST_ROOT: C:\Libraries\boost_1_59_0
+  JSONCPP_INCLUDE_DIR_ROOT: cd c:\projects\jsoncpp\release\include
+  JSONCPP_LIBRARY: cd c:\projects\jsoncpp\release\lib\jsoncpp.lib
+  JSONCPP_LIBRARY_DEBUG: cd c:\projects\jsoncpp\debug\lib\jsoncpp.lib
+
   matrix:
     - CMAKE_GENERATOR: Visual Studio 14 2015
+      BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib32-msvc-14.0
 
 platform: x86
 
@@ -21,13 +28,6 @@ configuration: Release
 
 matrix:
   allow_failures:
-    - environment:
-        MSVC_DEFAULT_OPTIONS: ON
-        BOOST_ROOT: C:\Libraries\boost_1_59_0
-        BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib32-msvc-14.0
-        JSONCPP_INCLUDE_DIR_ROOT: cd c:\projects\jsoncpp\release\include
-        JSONCPP_LIBRARY: cd c:\projects\jsoncpp\release\lib\jsoncpp.lib
-        JSONCPP_LIBRARY_DEBUG: cd c:\projects\jsoncpp\debug\lib\jsoncpp.lib
     - platform: x86
       configuration: Release
     - platform: x64
@@ -49,6 +49,7 @@ install:
   - cmake --build . --config Release --target install
   - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:/projects/sdk/jsoncpp/debug -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON .
   - cmake --build . --config Debug --target install
+  - dir /s c:\projects\jsoncpp\release
 
 build_script:
   - cd c:\projects\zamlib
