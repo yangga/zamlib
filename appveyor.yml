@@ -73,6 +73,6 @@ build_script:
 #before_test:
 
 test_script:
-  - ps: ctest
+  - ps: ctest -V --output-on-failure -C Release
 
 #after_test:
