@@ -14,9 +14,9 @@ clone_folder: c:\projects\zamlib
 environment:
   MSVC_DEFAULT_OPTIONS: ON
   BOOST_ROOT: C:\Libraries\boost_1_59_0
-  JSONCPP_INCLUDE_DIR_ROOT: cd c:\projects\jsoncpp\release\include
-  JSONCPP_LIBRARY: cd c:\projects\jsoncpp\release\lib\jsoncpp.lib
-  JSONCPP_LIBRARY_DEBUG: cd c:\projects\jsoncpp\debug\lib\jsoncpp.lib
+  JSONCPP_INCLUDE_DIR_ROOT: c:\projects\jsoncpp\release\include
+  JSONCPP_LIBRARY: c:\projects\jsoncpp\release\lib\jsoncpp.lib
+  JSONCPP_LIBRARY_DEBUG: c:\projects\jsoncpp\debug\lib\jsoncpp.lib
 
   matrix:
     - CMAKE_GENERATOR: Visual Studio 14 2015
