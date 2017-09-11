@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
         cfgPath += "/misc/tests/test_logging/test_logging.json";
 
 #ifdef BOOST_WINDOWS_API
-        boost::replace_all(cfgPath, "/", boost::filesystem::path::preferred_separator);
+        std::replace(cfgPath.begin(), cfgPath.end(), '/', '\\');
 #endif
 
         loggerSystem::load(cfgPath.c_str());
