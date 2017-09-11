@@ -71,6 +71,7 @@ build_script:
   - cmake --build . --config Release --target all_build
   - dir
   - dir /b /s c:\projects\zamlib\build
+  - dir /b /s c:\projects\zamlib\misc
   - type ZamConfig.h
 
 #after_build:
@@ -79,6 +80,7 @@ build_script:
 
 test_script:
   - ps: c:\projects\zamlib\build\Release\test_logging.exe
+  - ps: type c:\projects\zamlib\build\Release\output.txt
   - ps: ctest
 
 #after_test:
