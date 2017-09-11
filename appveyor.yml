@@ -51,13 +51,14 @@ install:
   # install jsoncpp
   - git clone https://github.com/open-source-parsers/jsoncpp.git c:\projects\jsoncpp
   - cd c:\projects\jsoncpp
-  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:\projects\sdk\jsoncpp\release -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON .
+  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:\projects\sdk\jsoncpp\release -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -Wno-deprecated .
   - cmake --build . --config Release --target install
-  - dir /b /s c:\projects\jsoncpp\release
-  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:\projects\sdk\jsoncpp\debug -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON .
+  - dir /s c:\projects\jsoncpp\release
+  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:\projects\sdk\jsoncpp\debug -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON -Wno-deprecated .
   - cmake --build . --config Debug --target install
-  - dir /b /s c:\projects\jsoncpp\release
-  - dir /b /s c:\projects\jsoncpp\debug
+  - dir /s c:\projects\jsoncpp\release
+  - dir /s c:\projects\jsoncpp\debug
+  - dir /s %JSONCPP_INCLUDE_DIR_ROOT%
 
 build_script:
   - cd c:\projects\zamlib
