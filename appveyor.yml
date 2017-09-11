@@ -43,7 +43,7 @@ install:
   - mkdir c:\projects\sdk
 
   # install jsoncpp
-  - git clone https://github.com/open-source-parsers/jsoncpp.git cd c:\projects\jsoncpp
+  - git clone https://github.com/open-source-parsers/jsoncpp.git c:\projects\jsoncpp
   - cd c:\projects\jsoncpp
   - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:/projects/sdk/jsoncpp/release -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON .
   - cmake --build . --config Release --target install
