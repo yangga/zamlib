@@ -3,7 +3,7 @@ version: 1.0.{build}
 
 #branches:
 
-os: Windows Server 2016
+os: Windows Server 2012 R2
 
 #init:
 
@@ -13,7 +13,7 @@ clone_folder: c:\projects\zamlib
 
 environment:
   MSVC_DEFAULT_OPTIONS: ON
-  BOOST_ROOT: C:\Libraries\boost_1_59_0
+  BOOST_ROOT: C:\Libraries\boost_1_60_0
   JSONCPP_INSTALL_DIR_RELEASE: c:\projects\sdk\jsoncpp\release
   JSONCPP_INSTALL_DIR_DEBUG: c:\projects\sdk\jsoncpp\debug
   JSONCPP_INCLUDE_DIR_ROOT: c:\projects\sdk\jsoncpp\release\include
@@ -22,9 +22,9 @@ environment:
 
   matrix:
     - CMAKE_GENERATOR: Visual Studio 14 2015
-      BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib32-msvc-14.0
+      BOOST_LIBRARYDIR: C:\Libraries\boost_1_60_0\lib32-msvc-14.0
     - CMAKE_GENERATOR: Visual Studio 14 2015 Win64
-      BOOST_LIBRARYDIR: C:\Libraries\boost_1_59_0\lib64-msvc-14.0
+      BOOST_LIBRARYDIR: C:\Libraries\boost_1_60_0\lib64-msvc-14.0
 
 #platform:
 #  - x86
