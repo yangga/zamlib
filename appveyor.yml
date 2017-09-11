@@ -51,15 +51,16 @@ install:
   # install jsoncpp
   - git clone https://github.com/open-source-parsers/jsoncpp.git c:\projects\jsoncpp
   - cd c:\projects\jsoncpp
-  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:/projects/sdk/jsoncpp/release -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON .
+  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:\projects\sdk\jsoncpp\release -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON .
   - cmake --build . --config Release --target install
-  - dir /s c:\projects\jsoncpp\release
-  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:/projects/sdk/jsoncpp/debug -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON .
+  - dir /b /s c:\projects\jsoncpp\release
+  - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=c:\projects\sdk\jsoncpp\debug -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON .
   - cmake --build . --config Debug --target install
-  - dir /s c:\projects\jsoncpp\release
-  - dir /s c:\projects\jsoncpp\debug
+  - dir /b /s c:\projects\jsoncpp\release
+  - dir /b /s c:\projects\jsoncpp\debug
 
 build_script:
   - cd c:\projects\zamlib
   - cmake -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=%CD:\=/%/install -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBOOST_ROOT=%BOOST_ROOT% -DBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% -DJSONCPP_INCLUDE_DIR_ROOT=%JSONCPP_INCLUDE_DIR_ROOT% -DJSONCPP_LIBRARY=%JSONCPP_LIBRARY% -DJSONCPP_LIBRARY_DEBUG=%JSONCPP_LIBRARY_DEBUG% .
-  - cmake --build . --config Release --target run_tests
+  - cmake --build . --config Release --target all_build
+  - cmake --target run_tests
