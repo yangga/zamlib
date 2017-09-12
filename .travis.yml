@@ -43,8 +43,9 @@ matrix:
       compiler: gcc
 
     - os: osx
-      env: UNIT_TESTS=true BOOST_VERSION=default BOOST_BUILD=true
+      env: UNIT_TESTS=true COMPILER=g++-6 BOOST_VERSION=default BOOST_BUILD=true
       osx_image: xcode8
+      compiler: gcc
 
   allow_failures:
       # - env: UNIT_TESTS=true LLVM_VERSION=trunk BOOST_VERSION=default
