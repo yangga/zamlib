@@ -54,12 +54,12 @@ install:
   - git clone https://github.com/open-source-parsers/jsoncpp.git c:\projects\jsoncpp
   - cd c:\projects\jsoncpp
   ## (release)
-  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_RELEASE%" -DBUILD_SHARED_LIBS=ON .
+  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_CXX_FLAGS="/wd4996" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_RELEASE%" -DBUILD_SHARED_LIBS=ON .
   - cmake --build . --config Release --target install
   - dir /b /s "%JSONCPP_INSTALL_DIR_RELEASE%"
   - set PATH=%PATH%;%JSONCPP_INSTALL_DIR_RELEASE%\bin
   ## (debug)
-  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_DEBUG%" -DBUILD_SHARED_LIBS=ON .
+  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_CXX_FLAGS="/wd4996" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_DEBUG%" -DBUILD_SHARED_LIBS=ON .
   - cmake --build . --config Debug --target install
   - dir /b /s "%JSONCPP_INSTALL_DIR_DEBUG%"
   - set PATH=%PATH%;%JSONCPP_INSTALL_DIR_DEBUG%\bin

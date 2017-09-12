@@ -11,6 +11,8 @@ add_executable(test_logging ${SOURCE_FILES})
 set(LIBRARY_FILES zam_base_shared ${Boost_LIBRARIES} ${JSONCPP_LIBRARY})
 
 if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4996")   # turn off deprecated warning (latest jsoncpp has lots of deprecated warning)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4819")   # trun off code page warning
     set(LIBRARY_FILES ${LIBRARY_FILES} Ws2_32)
 else(MSVC)
     set(LIBRARY_FILES ${LIBRARY_FILES} pthread)
