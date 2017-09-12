@@ -133,11 +133,7 @@ install:
   ############################################################################
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      if brew ls --versions boost > /dev/null; then
-        brew install boost
-      else
-        brew upgrade boost
-      fi
+      brew upgrade boost || brew install boost
     else
       if [[ "${BOOST_BUILD}" == "true" ]]; then
         (cd ${BOOST_DIR} && ./bootstrap.sh && sudo ./b2 threading=multi -d0 install)
@@ -149,11 +145,7 @@ install:
   ############################################################################
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      if brew ls --versions jsoncpp > /dev/null; then
-        brew install jsoncpp
-      else
-        brew upgrade jsoncpp
-      fi
+      brew upgrade jsoncpp || brew install jsoncpp
     fi
 
   ############################################################################
