@@ -19,6 +19,7 @@ if(APPLE OR MSVC)
     set(DEPENDENT_LIBRARY_FILES ${JSONCPP_LIBRARY} ${Boost_LIBRARIES})
 
     if(MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4996")   # turn off deprecated warning (latest jsoncpp has lots of deprecated warning)
         set(DEPENDENT_LIBRARY_FILES ${DEPENDENT_LIBRARY_FILES} Ws2_32)
     else(MSVC)
         set(DEPENDENT_LIBRARY_FILES ${DEPENDENT_LIBRARY_FILES} pthread)
