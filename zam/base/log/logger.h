@@ -22,14 +22,17 @@ namespace zam {
             class loggerWriter;
             class loggerInitializer;
 
-            class ZAMBASE_API logger {
+            class logger {
                 friend class loggerInitializer;
 
             public:
                 logger() = default;
                 logger(const logger&) = delete;
                 logger(logger&&) = delete;
-                ~logger();
+				~logger() {
+					if (writer_ && writer_->checkLevel(lv_))
+						flush();
+				}
 
                 bool operator! () const BOOST_NOEXCEPT {
                     return (nullptr != writer_);
@@ -56,7 +59,9 @@ namespace zam {
                 logger&& operator=(logger&&) = delete;
 
             private:
-                void flush();
+				void flush() {
+					writer_->flush(lv_, ss_.str().c_str());
+				}
 
             private:
                 level lv_ = level::all;
