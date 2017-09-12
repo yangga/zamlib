@@ -16,7 +16,7 @@ namespace zam {
             class loggerAppenderConsole
                     : public loggerAppender {
             public:
-                void load(loggerWriter &writer, Json::Value const &) override;
+                void load(loggerWriter &writer, Json::Value const &vAppender) override;
             };
 
         }

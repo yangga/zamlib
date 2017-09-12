@@ -13,10 +13,11 @@ namespace zam {
     namespace base {
         namespace log {
 
+            /// only working on windows platform
             class loggerAppenderTracer
                     : public loggerAppender {
             public:
-                void load(loggerWriter &writer, Json::Value const &) override;
+                void load(loggerWriter &writer, Json::Value const &vAppender) override;
             };
 
         }

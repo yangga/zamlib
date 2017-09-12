@@ -2,12 +2,12 @@
   "root" : {
     "appender": [
       {
-        "level": "error",
-        "stream" : "console"
+        "stream" : "console",
+        "level": "error"
       },
       {
-        "level": "error",
         "stream" : "file",
+        "level": "error",
         "path" : "./logs",
         "fileName" : "%HostName%_root_%Y%m%d_%H%M%S_%N.log.log",
         "maxFileByte" : 1024000,
@@ -20,16 +20,24 @@
     "level" : "trace",
     "appender": [
       {
+        "stream" : "console",
         "level": "trace",
-        "stream" : "console"
+        "color" : true,
+        "unorder" : true
       },
       {
-        "level": "trace",
         "stream" : "file",
+        "level": "trace",
         "path" : "./logs",
         "fileName" : "test1_%Y%m%d_%H%M%S_%N.log",
         "maxFileByte" : 1024000,
-        "rollSecond" : 3600
+        "rollSecond" : 3600,
+        "unorder" : true
+      },
+      {
+        "stream" : "tracer",
+        "level": "trace",
+        "unorder" : true
       }
     ]
   }

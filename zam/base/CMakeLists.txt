@@ -11,7 +11,7 @@ set(SOURCE_FILES log/logger.h log/loggerDefine.h base.h log/detail/loggerWriter.
 # setting libraries
 
 # shared
-add_library(zam_base_shared SHARED ${SOURCE_FILES})
+add_library(zam_base_shared SHARED ${SOURCE_FILES} log/appender/detail/frontendCreator.h)
 set_target_properties(zam_base_shared PROPERTIES OUTPUT_NAME base)
 
 # dylib needs static libraries linkning
