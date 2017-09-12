@@ -8,7 +8,7 @@ namespace zam {
     namespace base {
         namespace log {
 
-            void loggerAppenderUdp::load(loggerWriter &writer, Json::Value const &) {
+            void loggerAppenderUdp::load(loggerWriter &writer, Json::Value const &vAppender) {
 
             }
 

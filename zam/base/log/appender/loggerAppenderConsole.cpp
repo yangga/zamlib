@@ -4,29 +4,17 @@
 
 #include "loggerAppenderConsole.h"
 
-#include "zam/base/log/detail/loggerAttrName.h"
+#include "detail/frontendCreator.h"
+
 #include "zam/base/log/detail/loggerWriter.h"
 
 #include <boost/core/null_deleter.hpp>
-#include <boost/log/attributes.hpp>
-#include <boost/log/common.hpp>
-#include <boost/log/utility/setup/common_attributes.hpp>
-#include <boost/log/expressions.hpp>
-#include <boost/log/trivial.hpp>
-#include <boost/log/utility/record_ordering.hpp>
-#include <boost/log/support/date_time.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/format.hpp>
 
 #include "external/JsonValueCaster/JsonValueCaster.h"
 
 
 namespace logging = boost::log;
-namespace attrs = boost::log::attributes;
-namespace src = boost::log::sources;
 namespace sinks = boost::log::sinks;
-namespace expr = boost::log::expressions;
-namespace keywords = boost::log::keywords;
 
 namespace zam {
     namespace base {
@@ -96,37 +84,30 @@ namespace zam {
             };
 #endif
 
+            template <typename Backend_t>
+            boost::shared_ptr<Backend_t> createTextOStreamBackend() {
+                auto backend = boost::make_shared<Backend_t>();
+                backend->add_stream(boost::shared_ptr<std::ostream>(&std::clog, boost::null_deleter()));
+                backend->auto_flush(true);
+                return backend;
+            }
+
             void loggerAppenderConsole::load(loggerWriter &writer, Json::Value const & vAppender) {
                 Json::CasterCoverDef const c(vAppender);
                 auto const thisLevel = toLevel(c.get<std::string>("level", "all").c_str());
 
-                auto consoleSinkCreator = [thisLevel=thisLevel, &writer](auto backend) mutable {
-                    backend->add_stream(boost::shared_ptr<std::ostream>(&std::clog, boost::null_deleter()));
-                    backend->auto_flush(true);
+                Json::CasterBoolean jcb(vAppender);
+                auto const isColor = jcb.get("color", false);
+                auto const isUnorder = jcb.get("unorder", false);
 
-                    using sink_t = sinks::synchronous_sink<typename std::decay_t<decltype(backend)>::element_type>;
-                    auto sink = boost::make_shared<sink_t>(backend);
+                boost::shared_ptr<boost::log::sinks::sink> sink;
+                if (isColor)
+                    sink = detail::createGeneralFrontend(writer.getName(), createTextOStreamBackend<clr_text_ostream_backend>(), thisLevel, isUnorder);
+                else
+                    sink = detail::createGeneralFrontend(writer.getName(), createTextOStreamBackend<sinks::text_ostream_backend>(), thisLevel, isUnorder);
 
-                    sink->set_formatter(
-                            expr::format("%1% (%2%) [%3%] %4%")
-                            % expr::format_date_time< boost::posix_time::ptime >(default_attribute_names::timestamp(), "%d %H:%M:%S.%f")
-                            % expr::attr<attrs::current_thread_id::value_type>(default_attribute_names::thread_id())
-                            % zam_severity
-                            % expr::message
-                    );
-
-                    sink->set_filter
-                            (
-                                    expr::attr<level>("Severity") >= thisLevel
-                                    && expr::attr< std::string >("Channel") == writer.getName()
-                            );
-
-                    logging::core::get()->add_sink(sink);
-                    writer.addSink(sink);
-                };
-
-                consoleSinkCreator(boost::make_shared<clr_text_ostream_backend>());
-                //consoleSinkCreator(boost::make_shared<sinks::text_ostream_backend>());
+                logging::core::get()->add_sink(sink);
+                writer.addSink(sink);
             }
 
         }

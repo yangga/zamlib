@@ -18,7 +18,7 @@ namespace zam {
 
             class loggerAppender {
             public:
-                virtual void load(loggerWriter &writer, Json::Value const &) = 0;
+                virtual void load(loggerWriter &writer, Json::Value const &vAppender) = 0;
             };
 
         }

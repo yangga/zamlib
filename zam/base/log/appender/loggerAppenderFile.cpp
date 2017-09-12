@@ -4,28 +4,16 @@
 
 #include "loggerAppenderFile.h"
 
-#include "zam/base/log/detail/loggerAttrName.h"
+#include "detail/frontendCreator.h"
+
 #include "zam/base/log/detail/loggerWriter.h"
 
 #include "zam/base/log/appender/collector/collectorDefault.h"
 
-#include <boost/core/null_deleter.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/format.hpp>
-#include <boost/log/common.hpp>
-#include <boost/log/utility/setup/common_attributes.hpp>
-#include <boost/log/expressions.hpp>
-#include <boost/log/trivial.hpp>
-#include <boost/log/utility/record_ordering.hpp>
-#include <boost/log/support/date_time.hpp>
-
 #include "external/JsonValueCaster/JsonValueCaster.h"
 
 namespace logging = boost::log;
-namespace attrs = boost::log::attributes;
-namespace src = boost::log::sources;
 namespace sinks = boost::log::sinks;
-namespace expr = boost::log::expressions;
 namespace keywords = boost::log::keywords;
 
 namespace zam {
@@ -39,7 +27,7 @@ namespace zam {
                 auto const dirPath(c.get<std::string>("path", "./logs"));
                 auto const thisLevel = toLevel(c.get<std::string>("level", "all").c_str());
 
-                boost::shared_ptr< sinks::text_file_backend > file_backend = boost::make_shared< sinks::text_file_backend >(
+                auto file_backend = boost::make_shared<sinks::text_file_backend>(
                         keywords::file_name = boost::filesystem::path(dirPath) / boost::filesystem::path(filename)
                 );
 
@@ -53,36 +41,19 @@ namespace zam {
 
                 file_backend->auto_flush(true);
 
-                using sink_t = sinks::synchronous_sink<sinks::text_file_backend>;
-                boost::shared_ptr< sink_t > sink(new sink_t(file_backend));
+                file_backend->set_file_collector(boost::make_shared <collector::collectorDefault>(filename, dirPath));
 
-                auto my_col = boost::make_shared <collector::collectorDefault>(filename, dirPath);
-                sink->locked_backend()->set_file_collector(my_col);
+                Json::CasterBoolean jcb(vAppender);
+                auto const isUnorder = jcb.get("unorder", false);
 
-                sink->set_formatter(
-                        expr::format("%1% (%2%) [%3%] %4%")
-                        % expr::format_date_time< boost::posix_time::ptime >(default_attribute_names::timestamp(), "%d %H:%M:%S.%f")
-                        % expr::attr<attrs::current_thread_id::value_type>(default_attribute_names::thread_id())
-                        % zam_severity
-                        % expr::message
-                );
-
-                sink->set_filter
-                        (
-                                expr::attr<level>("Severity") >= thisLevel
-                                && expr::attr< std::string >("Channel") == writer.getName()
-                        );
-
+                auto sink = detail::createGeneralFrontend(writer.getName(), file_backend, thisLevel, isUnorder);
                 logging::core::get()->add_sink(sink);
                 writer.addSink(sink);
 
-                try
-                {
-                    sink->locked_backend()->scan_for_files();
+                try {
+                    file_backend->scan_for_files();
                 }
-                catch (...)
-                {
-                }
+                catch(...){}
             }
 
         }
