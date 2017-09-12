@@ -42,6 +42,11 @@ matrix:
       env: UNIT_TESTS=true COMPILER=g++-6 ENABLE_MEMCHECK=true BOOST_VERSION=default BOOST_BUILD=true
       compiler: gcc
 
+    - os: osx
+      env: UNIT_TESTS=true COMPILER=g++ BOOST_VERSION=default BOOST_BUILD=true
+      osx_image: xcode8.3.3
+      compiler: gcc
+
   allow_failures:
       # - env: UNIT_TESTS=true LLVM_VERSION=trunk BOOST_VERSION=default
       - env: UNIT_TESTS=true LLVM_VERSION=default BOOST_VERSION=trunk
@@ -105,19 +110,21 @@ install:
   # Download Boost
   ############################################################################
   - |
-    if [[ "${BOOST_VERSION}" != "" ]]; then
-      BOOST_DIR=${DEPS_DIR}/boost-${BOOST_VERSION}
-      if [[ -z "$(ls -A ${BOOST_DIR})" ]]; then
-        if [[ "${BOOST_VERSION}" == "trunk" ]]; then
-          BOOST_URL="http://github.com/boostorg/boost.git"
-          travis_retry git clone --depth 1 --recursive --quiet ${BOOST_URL} ${BOOST_DIR} || exit 1
-        else
-          BOOST_URL="http://sourceforge.net/projects/boost/files/boost/${BOOST_VERSION}/boost_${BOOST_VERSION//\./_}.tar.gz"
-          mkdir -p ${BOOST_DIR}
-          { travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xz -C ${BOOST_DIR}; } || exit 1
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      if [[ "${BOOST_VERSION}" != "" ]]; then
+        BOOST_DIR=${DEPS_DIR}/boost-${BOOST_VERSION}
+        if [[ -z "$(ls -A ${BOOST_DIR})" ]]; then
+          if [[ "${BOOST_VERSION}" == "trunk" ]]; then
+            BOOST_URL="http://github.com/boostorg/boost.git"
+            travis_retry git clone --depth 1 --recursive --quiet ${BOOST_URL} ${BOOST_DIR} || exit 1
+          else
+            BOOST_URL="http://sourceforge.net/projects/boost/files/boost/${BOOST_VERSION}/boost_${BOOST_VERSION//\./_}.tar.gz"
+            mkdir -p ${BOOST_DIR}
+            { travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xz -C ${BOOST_DIR}; } || exit 1
+          fi
+          # Make sure we don't conflict with the Hana shipped with Boost
+          rm -rf ${BOOST_ROOT}/include/boost/{hana,hana.hpp}
         fi
-        # Make sure we don't conflict with the Hana shipped with Boost
-        rm -rf ${BOOST_ROOT}/include/boost/{hana,hana.hpp}
       fi
     fi
 
@@ -125,8 +132,20 @@ install:
   # Install Boost.Build
   ############################################################################
   - |
-    if [[ "${BOOST_BUILD}" == "true" ]]; then
-      (cd ${BOOST_DIR} && ./bootstrap.sh && sudo ./b2 threading=multi -d0 install)
+    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+      brew upgrade boost || brew install boost
+    else
+      if [[ "${BOOST_BUILD}" == "true" ]]; then
+        (cd ${BOOST_DIR} && ./bootstrap.sh && sudo ./b2 threading=multi -d0 install)
+      fi
+    fi
+
+  ############################################################################
+  # Install Jsoncpp.Build
+  ############################################################################
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+      brew upgrade jsoncpp || brew install jsoncpp
     fi
 
   ############################################################################
