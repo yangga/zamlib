@@ -54,13 +54,13 @@ install:
   - git clone https://github.com/open-source-parsers/jsoncpp.git c:\projects\jsoncpp
   - cd c:\projects\jsoncpp
   ## (release)
-  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_CXX_FLAGS="/wd4996" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_RELEASE%" -DBUILD_SHARED_LIBS=ON .
-  - cmake --build . --config Release --target install
+  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_RELEASE%" -DBUILD_SHARED_LIBS=ON .
+  - cmake --build . --config Release --target install -- /consoleloggerparameters:ErrorsOnly
   - dir /b /s "%JSONCPP_INSTALL_DIR_RELEASE%"
   - set PATH=%PATH%;%JSONCPP_INSTALL_DIR_RELEASE%\bin
   ## (debug)
-  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_CXX_FLAGS="/wd4996" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_DEBUG%" -DBUILD_SHARED_LIBS=ON .
-  - cmake --build . --config Debug --target install
+  - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="%JSONCPP_INSTALL_DIR_DEBUG%" -DBUILD_SHARED_LIBS=ON .
+  - cmake --build . --config Debug --target install -- /consoleloggerparameters:ErrorsOnly
   - dir /b /s "%JSONCPP_INSTALL_DIR_DEBUG%"
   - set PATH=%PATH%;%JSONCPP_INSTALL_DIR_DEBUG%\bin
 
@@ -74,7 +74,7 @@ before_build:
 
 build_script:
   - cmake -Wno-deprecated -Wno-dev -G "%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX=%CD:\=/%/install -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DJSONCPP_INCLUDE_DIR_ROOT="%JSONCPP_INCLUDE_DIR_ROOT%" -DJSONCPP_LIBRARY="%JSONCPP_LIBRARY%" -DJSONCPP_LIBRARY_DEBUG="%JSONCPP_LIBRARY_DEBUG%" .
-  - cmake --build . --config Release --target install
+  - cmake --build . --config Release --target install -- /verbosity:minimal
   - type ZamConfig.h
 
 #after_build:
