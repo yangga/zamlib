@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/yangga/zamlib.png)](https://travis-ci.org/yangga/zamlib)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/yangga/zamlib?svg=true)](https://ci.appveyor.com/project/yangga/zamlib)
+
 zamlib
 ======
 > Library for game server.
