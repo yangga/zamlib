@@ -59,6 +59,13 @@
         "stream" : "tracer",
         "level": "trace",
         "unorder" : false
+      },
+      {
+        "stream" : "syslog",
+        "level": "trace",
+        "url" : "localhost",
+        "port" : 514,
+        "unorder" : false
       }
     ]
   }

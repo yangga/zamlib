@@ -13,6 +13,7 @@
 #include "zam/base/log/appender/loggerAppenderConsole.h"
 #include "zam/base/log/appender/loggerAppenderFile.h"
 #include "zam/base/log/appender/loggerAppenderTracer.h"
+#include "zam/base/log/appender/loggerAppenderSyslog.h"
 #include "zam/base/log/appender/loggerAppenderUdp.h"
 
 #include <json/json.h>
@@ -32,6 +33,7 @@ namespace zam {
                     { streamType::console, new loggerAppenderConsole },
                     { streamType::file, new loggerAppenderFile },
                     { streamType::tracer, new loggerAppenderTracer },
+                    { streamType::syslog, new loggerAppenderSyslog },
                     { streamType::udp, new loggerAppenderUdp }
             };
 
