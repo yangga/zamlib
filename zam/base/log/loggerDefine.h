@@ -37,7 +37,8 @@ namespace zam {
                 console = 1 << 0,
                 file = 1 << 1,
                 tracer = 1 << 2,
-                udp = 1 << 3
+                syslog = 1 << 3,
+                udp = 1 << 4
             };
             ZAMBASE_API const char* toString(streamType type);
             ZAMBASE_API streamType toStreamType(const char *name);

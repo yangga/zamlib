@@ -71,6 +71,7 @@ namespace zam {
                     {streamType::console, "console", "c"},
                     {streamType::file,    "file",    "f"},
                     {streamType::tracer,  "tracer",  "t"},
+                    {streamType::syslog,  "syslog",  "s"},
                     {streamType::udp,     "udp",     "u"}
             };
 

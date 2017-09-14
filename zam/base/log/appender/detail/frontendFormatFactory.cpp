@@ -43,8 +43,11 @@ namespace zam {
                                     default_attribute_names::thread_id())
                                    % zam_severity
                                    % expr::message;
+                        default:
+                            break;
                     }
 
+                    throw std::invalid_argument("invalid log format type");
                     return expr::format("");
                 }
             }
