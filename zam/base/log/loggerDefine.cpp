@@ -27,7 +27,7 @@ namespace zam {
                     {level::fatal, "fatal", "f", "fatal"}
             };
 
-            std::string toString(level lv) {
+            const char* toString(level lv) {
                 for (auto const& dic : __logLevelDic__) {
                     if (dic.lv == lv)
                         return dic.name;
@@ -74,7 +74,7 @@ namespace zam {
                     {streamType::udp,     "udp",     "u"}
             };
 
-            std::string toString(streamType type) {
+            const char* toString(streamType type) {
                 for (auto const& dic : __streamTypeDic__) {
                     if (dic.type == type)
                         return dic.name;
@@ -101,6 +101,47 @@ namespace zam {
                 }
 
                 return __streamTypeDic__[0].type;
+            }
+
+
+            /// format
+            struct {
+                formatType type;
+                const char* name;
+                const char* initial;
+            } __formatTypeDic__ [] = {
+                    {formatType::normal,    "normal",   "n"},
+                    {formatType::xml,       "xml",      "x"},
+                    {formatType::json,      "json",     "j"}
+            };
+
+            const char* toString(formatType type) {
+                for (auto const& dic : __formatTypeDic__) {
+                    if (dic.type == type)
+                        return dic.name;
+                }
+
+                return __formatTypeDic__[0].name;
+            }
+
+            formatType toFormatType(const char *name) {
+                if (nullptr == name || 0 == strlen(name))
+                    throw std::invalid_argument("invalid format type");
+
+                std::string lname(name);
+                std::transform(lname.begin(), lname.end(), lname.begin(), ::tolower);
+
+                for (auto const& dic : __formatTypeDic__) {
+                    if (lname == dic.name)
+                        return dic.type;
+                }
+
+                for (auto const& dic : __formatTypeDic__) {
+                    if (lname == dic.initial)
+                        return dic.type;
+                }
+
+                return __formatTypeDic__[0].type;
             }
 
         }

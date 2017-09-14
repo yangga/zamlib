@@ -27,6 +27,8 @@ namespace zam {
                 loggerWriter* alloc(std::string const& name);
 				loggerWriter* get(std::string const& name) const BOOST_NOEXCEPT;
 
+                ~loggerPool();
+
             private:
                 std::map<std::string, loggerWriter*> writers_;
             };

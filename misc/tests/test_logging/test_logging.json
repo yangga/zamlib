@@ -23,21 +23,42 @@
         "stream" : "console",
         "level": "trace",
         "color" : true,
-        "unorder" : true
+        "unorder" : false
       },
       {
         "stream" : "file",
+        "format" : "normal",
         "level": "trace",
         "path" : "./logs",
-        "fileName" : "test1_%Y%m%d_%H%M%S_%N.log",
+        "fileName" : "test_normal_%Y%m%d_%H%M%S_%N.log",
         "maxFileByte" : 1024000,
         "rollSecond" : 3600,
-        "unorder" : true
+        "unorder" : false
+      },
+      {
+        "stream" : "file",
+        "format" : "xml",
+        "level": "trace",
+        "path" : "./logs",
+        "fileName" : "test_xml_%Y%m%d_%H%M%S_%N.log",
+        "maxFileByte" : 1024000,
+        "rollSecond" : 3600,
+        "unorder" : false
+      },
+      {
+        "stream" : "file",
+        "format" : "json",
+        "level": "trace",
+        "path" : "./logs",
+        "fileName" : "test_json_%Y%m%d_%H%M%S_%N.log",
+        "maxFileByte" : 1024000,
+        "rollSecond" : 3600,
+        "unorder" : false
       },
       {
         "stream" : "tracer",
         "level": "trace",
-        "unorder" : true
+        "unorder" : false
       }
     ]
   }

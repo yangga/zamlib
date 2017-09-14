@@ -10,6 +10,13 @@ namespace zam {
     namespace base {
         namespace log {
 
+            loggerPool::~loggerPool() {
+                for (auto itr : writers_) {
+                    delete itr.second;
+                }
+                writers_.clear();
+            }
+
             loggerWriter* loggerPool::alloc(std::string const& name) {
                 auto itr = writers_.find(name);
                 if (itr != writers_.end())
