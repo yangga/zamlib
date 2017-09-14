@@ -94,17 +94,22 @@ namespace zam {
 
             void loggerAppenderConsole::load(loggerWriter &writer, Json::Value const & vAppender) {
                 Json::CasterCoverDef const c(vAppender);
-                auto const thisLevel = toLevel(c.get<std::string>("level", "all").c_str());
+                auto const thisLevel = toLevel(c.get<std::string>("all", "level").c_str());
+                auto const fmtType = toFormatType(c.get<std::string>("normal", "format").c_str());
 
                 Json::CasterBoolean jcb(vAppender);
                 auto const isColor = jcb.get("color", false);
                 auto const isUnorder = jcb.get("unorder", false);
 
-                boost::shared_ptr<boost::log::sinks::sink> sink;
+                boost::shared_ptr<detail::frontendCreatorIf> creator;
                 if (isColor)
-                    sink = detail::createGeneralFrontend(writer.getName(), createTextOStreamBackend<clr_text_ostream_backend>(), thisLevel, isUnorder);
+                    creator = detail::frontendCreatorFactory::get(writer.getName(), createTextOStreamBackend<clr_text_ostream_backend>(), fmtType);
                 else
-                    sink = detail::createGeneralFrontend(writer.getName(), createTextOStreamBackend<sinks::text_ostream_backend>(), thisLevel, isUnorder);
+                    creator = detail::frontendCreatorFactory::get(writer.getName(), createTextOStreamBackend<sinks::text_ostream_backend>(), fmtType);
+
+                creator->thisLevel = thisLevel;
+                creator->isUnorder = isUnorder;
+                auto sink = creator->generate();
 
                 logging::core::get()->add_sink(sink);
                 writer.addSink(sink);

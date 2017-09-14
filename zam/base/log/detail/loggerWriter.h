@@ -36,6 +36,9 @@ namespace zam {
                 }
 
 				void flush(level lvContext, const char* txt) {
+					if (lvContext < lv_)
+						return;
+
 					namespace src = boost::log::sources;
 					namespace keywords = boost::log::keywords;
 
