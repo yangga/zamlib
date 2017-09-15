@@ -79,11 +79,11 @@ namespace zam {
                         namespace bll = boost::lambda;
                         file_backend->set_open_handler
                                 (
-                                        bll::_1 << "{" << newline
+                                        bll::_1 << "{\"log:\":[" << newline
                                 );
                         file_backend->set_close_handler
                                 (
-                                        bll::_1 << "{}}" << newline
+                                        bll::_1 << "{}]}" << newline
                                 );
                     }
                         break;
