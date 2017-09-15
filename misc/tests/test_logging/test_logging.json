@@ -66,6 +66,13 @@
         "url" : "localhost",
         "port" : 514,
         "unorder" : false
+      },
+      {
+        "stream" : "udp",
+        "level": "trace",
+        "url" : "localhost",
+        "port" : 5050,
+        "unorder" : false
       }
     ]
   }
