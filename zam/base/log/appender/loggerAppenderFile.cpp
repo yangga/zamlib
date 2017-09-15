@@ -28,7 +28,7 @@ namespace zam {
                 auto const filename(c.get<std::string>("log.log", "fileName"));
                 auto const dirPath(c.get<std::string>("./logs", "path"));
                 auto const thisLevel = toLevel(c.get<std::string>("all", "level").c_str());
-                auto const fmtType = toFormatType(c.get<std::string>("normal", "format").c_str());
+                auto const fmtType = toFormatType(c.get<std::string>("plain", "format").c_str());
 
                 auto file_backend = boost::make_shared<sinks::text_file_backend>(
                         keywords::file_name = boost::filesystem::path(dirPath) / boost::filesystem::path(filename)
