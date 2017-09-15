@@ -28,9 +28,10 @@ namespace zam {
 
                 loggerAppender* getAppender(streamType type);
 
-            private:
+            protected:
                 appenderPool();
 
+            private:
                 std::array<loggerAppender*, streamType::count> appenders_;
             };
 

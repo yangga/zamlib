@@ -30,9 +30,10 @@ namespace zam {
 
                 ~loggerPool();
 
-            private:
+            protected:
                 loggerPool();
 
+            private:
                 std::map<std::string, loggerWriter*> writers_;
 
                 boost::shared_ptr<loggerWriter> defaultWriter_;
