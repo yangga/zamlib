@@ -7,15 +7,13 @@
 
 #include <zam/base/base.h>
 
-#include <json/value.h>
+#include "loggerDefine.h"
 
-#include <unordered_map>
+#include <json/value.h>
 
 namespace zam {
     namespace base {
         namespace log {
-
-            class loggerConfig;
 
             class ZAMBASE_API loggerSystem {
             public:

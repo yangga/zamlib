@@ -4,9 +4,6 @@
 
 #include <ZamConfig.h>
 #include <zam/base/logger.h>
-#include <zam/base/filesystem/whereami.h>
-
-#include <iostream>
 
 int main(int argc, char* argv[]) {
     try {

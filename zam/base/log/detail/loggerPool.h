@@ -8,6 +8,7 @@
 #include <zam/base/base.h>
 
 #include <boost/serialization/singleton.hpp>
+#include <boost/smart_ptr.hpp>
 
 #include <map>
 
@@ -29,8 +30,13 @@ namespace zam {
 
                 ~loggerPool();
 
+            protected:
+                loggerPool();
+
             private:
                 std::map<std::string, loggerWriter*> writers_;
+
+                boost::shared_ptr<loggerWriter> defaultWriter_;
             };
 
         }

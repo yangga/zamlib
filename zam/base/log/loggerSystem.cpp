@@ -6,15 +6,11 @@
 
 #include "loggerDefine.h"
 
+#include "appender/appenderPool.h"
+
 #include "zam/base/log/detail/loggerWriter.h"
 #include "zam/base/log/detail/loggerPool.h"
 #include "zam/base/log/detail/loggerSystemInitOnce.h"
-
-#include "zam/base/log/appender/loggerAppenderConsole.h"
-#include "zam/base/log/appender/loggerAppenderFile.h"
-#include "zam/base/log/appender/loggerAppenderTracer.h"
-#include "zam/base/log/appender/loggerAppenderSyslog.h"
-#include "zam/base/log/appender/loggerAppenderUdp.h"
 
 #include <json/json.h>
 
@@ -26,28 +22,12 @@ namespace zam {
     namespace base {
         namespace log {
 
-            struct {
-                streamType type;
-                loggerAppender* allocator;
-            } __log_appenders__[] = {
-                    { streamType::console, new loggerAppenderConsole },
-                    { streamType::file, new loggerAppenderFile },
-                    { streamType::tracer, new loggerAppenderTracer },
-                    { streamType::syslog, new loggerAppenderSyslog },
-                    { streamType::udp, new loggerAppenderUdp }
-            };
-
-
             void loggerSystem::allocate(const char* tag, Json::Value const& vAppenderList) {
                 static loggerSystemInitOnce __loggerSystemInitOnce__;
 
                 static auto getAppender = [&](Json::Value const& vAppender) -> loggerAppender* {
                     auto type = toStreamType(vAppender["stream"].asString().c_str());
-                    for (auto const& ele : __log_appenders__) {
-                        if (ele.type == type)
-                            return ele.allocator;
-                    }
-                    return nullptr;
+                    return appenderPool::instance().getAppender(type);
                 };
 
                 try {

@@ -1,1 +1,2 @@
 add_subdirectory(test_logging)
+add_subdirectory(test_logging_udp)

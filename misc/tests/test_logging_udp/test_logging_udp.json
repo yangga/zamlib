@@ -1,0 +1,31 @@
+{
+  "root" : {
+    "appender": [
+      {
+        "stream" : "console",
+        "level": "error"
+      },
+      {
+        "stream" : "file",
+        "level": "error",
+        "path" : "./logs/test_logging_udp",
+        "fileName" : "%HostName%_root_%Y%m%d_%H%M%S_%N.log.log",
+        "maxFileByte" : 1024000,
+        "rollSecond" : 3600
+      }
+    ]
+  },
+
+  "test1": {
+    "level" : "trace",
+    "appender": [
+      {
+        "stream" : "udp",
+        "level": "trace",
+        "url" : "localhost",
+        "port" : 5050,
+        "unorder" : false
+      }
+    ]
+  }
+}
