@@ -33,7 +33,7 @@ namespace zam {
                         return dic.name;
                 }
 
-                return __logLevelDic__[0].name;
+                return "unknown";
             }
 
             level toLevel(const char* name) {
@@ -67,7 +67,6 @@ namespace zam {
                 const char* name;
                 const char* initial;
             } __streamTypeDic__ [] = {
-                    {streamType::none,    "none",    "n"},
                     {streamType::console, "console", "c"},
                     {streamType::file,    "file",    "f"},
                     {streamType::tracer,  "tracer",  "t"},
@@ -81,7 +80,7 @@ namespace zam {
                         return dic.name;
                 }
 
-                return __streamTypeDic__[0].name;
+                return "unknown";
             }
 
             streamType toStreamType(const char *name) {
@@ -122,7 +121,7 @@ namespace zam {
                         return dic.name;
                 }
 
-                return __formatTypeDic__[0].name;
+                return "unknown";
             }
 
             formatType toFormatType(const char *name) {

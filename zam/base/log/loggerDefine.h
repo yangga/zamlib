@@ -33,12 +33,13 @@ namespace zam {
 
             /// streamType
             enum streamType : uint32_t {
-                none = 0,
-                console = 1 << 0,
-                file = 1 << 1,
-                tracer = 1 << 2,
-                syslog = 1 << 3,
-                udp = 1 << 4
+                console = 0,
+                file,
+                tracer,
+                syslog,
+                udp,
+
+                count
             };
             ZAMBASE_API const char* toString(streamType type);
             ZAMBASE_API streamType toStreamType(const char *name);

@@ -6,9 +6,23 @@
 
 #include "loggerWriter.h"
 
+#include "../appender/appenderPool.h"
+
+#include <json/value.h>
+
 namespace zam {
     namespace base {
         namespace log {
+
+            loggerPool::loggerPool()
+            : defaultWriter_(boost::make_shared<loggerWriter>("$$__default__$$")){
+                /// allocated default logger for unexpected situation. (ex. no logger is configured)
+                Json::Value vCfg;
+                vCfg["level"] = "trace";
+                vCfg["format"] = "plain";
+
+                appenderPool::instance().getAppender(streamType::console)->load(*defaultWriter_.get(), vCfg);
+            }
 
             loggerPool::~loggerPool() {
                 for (auto itr : writers_) {
@@ -30,7 +44,7 @@ namespace zam {
                 if (itr != writers_.end())
                     return itr->second;
 
-                return nullptr;
+                return defaultWriter_.get();
             }
 
         }
