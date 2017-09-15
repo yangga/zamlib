@@ -30,7 +30,7 @@ namespace zam {
                             , uint16_t portListen
                             , delegate_recv deleRecv=coutRecvBufDelegator);
 
-                    void start_receive();
+                    ZAMBASE_API void start_receive();
 
                 private:
                     void handle_receive(const boost::system::error_code& ec, std::size_t bytes_transferred);
