@@ -8,7 +8,7 @@
       {
         "stream" : "file",
         "level": "error",
-        "path" : "./logs",
+        "path" : "./logs/test_logging",
         "fileName" : "%HostName%_root_%Y%m%d_%H%M%S_%N.log.log",
         "maxFileByte" : 1024000,
         "rollSecond" : 3600
@@ -29,7 +29,7 @@
         "stream" : "file",
         "format" : "plain",
         "level": "trace",
-        "path" : "./logs",
+        "path" : "./logs/test_logging",
         "fileName" : "test_plain_%Y%m%d_%H%M%S_%N.log",
         "maxFileByte" : 1024000,
         "rollSecond" : 3600,
@@ -39,7 +39,7 @@
         "stream" : "file",
         "format" : "xml",
         "level": "trace",
-        "path" : "./logs",
+        "path" : "./logs/test_logging",
         "fileName" : "test_xml_%Y%m%d_%H%M%S_%N.log",
         "maxFileByte" : 1024000,
         "rollSecond" : 3600,
@@ -49,7 +49,7 @@
         "stream" : "file",
         "format" : "json",
         "level": "trace",
-        "path" : "./logs",
+        "path" : "./logs/test_logging",
         "fileName" : "test_json_%Y%m%d_%H%M%S_%N.log",
         "maxFileByte" : 1024000,
         "rollSecond" : 3600,
@@ -65,13 +65,6 @@
         "level": "trace",
         "url" : "localhost",
         "port" : 514,
-        "unorder" : false
-      },
-      {
-        "stream" : "udp",
-        "level": "trace",
-        "url" : "localhost",
-        "port" : 5050,
         "unorder" : false
       }
     ]

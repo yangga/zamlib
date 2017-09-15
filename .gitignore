@@ -55,7 +55,6 @@ CPackSourceConfig.cmake
 # ctest
 Testing/
 DartConfiguration.tcl
-tests/
 
 # make install
 install_manifest.txt
@@ -76,3 +75,4 @@ ZamConfig.h
 *.vcxproj
 *.vcxproj.filters
 *.sln
+
