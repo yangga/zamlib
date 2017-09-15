@@ -52,6 +52,8 @@ namespace zam {
             ZAMBASE_API const char* toString(formatType type);
             ZAMBASE_API formatType toFormatType(const char *name);
 
+            /// udp
+            constexpr unsigned int MAX_REMOTE_LOG_SIZE = 8192;
 
 
         }   // namespace log

@@ -20,6 +20,8 @@ namespace ip = asio::ip;
 namespace logging = boost::log;
 namespace sinks = boost::log::sinks;
 
+using udp = ip::udp;
+
 namespace zam {
     namespace base {
         namespace log {
@@ -29,17 +31,20 @@ namespace zam {
             {
             public:
                 udp_ostream_backend(std::string url, uint16_t port)
-                : socket_(io_service_, ip::udp::endpoint(ip::udp::v4(), 0))
+                : socket_(io_service_, udp::endpoint(udp::v4(), 0))
                 {
-                    ip::udp::resolver resolver(io_service_);
-                    ip::udp::resolver::query query(ip::udp::v4(), url, boost::lexical_cast<std::string>(port));
+                    udp::resolver resolver(io_service_);
+                    udp::resolver::query query(udp::v4(), url, boost::lexical_cast<std::string>(port));
                     server_endpoint_ = *resolver.resolve(query);
                 }
 
             public:
                 void consume(boost::log::record_view const& rec, string_type const& formatted_string) {
                     try {
-                        socket_.send_to(asio::buffer(formatted_string), server_endpoint_);
+                        if (MAX_REMOTE_LOG_SIZE < formatted_string.size())
+                            socket_.send_to(asio::buffer(formatted_string.substr(0, MAX_REMOTE_LOG_SIZE)), server_endpoint_);
+                        else
+                            socket_.send_to(asio::buffer(formatted_string), server_endpoint_);
                     } catch(std::exception& e) {
                         std::cout << e.what() << std::endl;
                     }
@@ -47,8 +52,8 @@ namespace zam {
 
             private:
                 asio::io_service io_service_;
-                ip::udp::endpoint server_endpoint_;
-                ip::udp::socket socket_;
+                udp::endpoint server_endpoint_;
+                udp::socket socket_;
             };
 
             void loggerAppenderUdp::load(loggerWriter &writer, Json::Value const &vAppender) {
