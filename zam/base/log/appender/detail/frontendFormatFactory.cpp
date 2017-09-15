@@ -19,7 +19,7 @@ namespace zam {
                     namespace attrs = boost::log::attributes;
 
                     switch (fmt) {
-                        case formatType::normal:
+                        case formatType::plain:
                             return expr::format("%1% (%2%) [%3%] %4%")
                                    % expr::format_date_time<boost::posix_time::ptime>(
                                     default_attribute_names::timestamp(), "%d %H:%M:%S.%f")

@@ -111,7 +111,7 @@ namespace zam {
                 const char* name;
                 const char* initial;
             } __formatTypeDic__ [] = {
-                    {formatType::normal,    "normal",   "n"},
+                    {formatType::plain,    "plain",     "n"},
                     {formatType::xml,       "xml",      "x"},
                     {formatType::json,      "json",     "j"}
             };

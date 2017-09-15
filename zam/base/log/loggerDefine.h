@@ -45,7 +45,7 @@ namespace zam {
 
             /// streamType
             enum formatType : uint32_t {
-                normal = 0,
+                plain = 0,
                 xml = 1 << 0,
                 json = 1 << 1
             };

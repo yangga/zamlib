@@ -1,6 +1,0 @@
-11 17:46:10.120447 (0x00007fffa6d103c0) [trace] trace
-11 17:46:10.121276 (0x00007fffa6d103c0) [debug] debug
-11 17:46:10.121342 (0x00007fffa6d103c0) [info ] info
-11 17:46:10.121393 (0x00007fffa6d103c0) [warn ] warning
-11 17:46:10.121444 (0x00007fffa6d103c0) [error] error
-11 17:46:10.121496 (0x00007fffa6d103c0) [fatal] fatal

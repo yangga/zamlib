@@ -24,7 +24,7 @@ namespace zam {
 #ifdef BOOST_WINDOWS
                 Json::CasterCoverDef const c(vAppender);
                 auto const thisLevel = toLevel(c.get<std::string>("all", "level").c_str());
-                auto const fmtType = toFormatType(c.get<std::string>("normal", "format").c_str());
+                auto const fmtType = toFormatType(c.get<std::string>("plain", "format").c_str());
 
                 Json::CasterBoolean jcb(vAppender);
                 auto const isUnorder = jcb.get("unorder", false);

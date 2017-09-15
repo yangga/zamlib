@@ -27,10 +27,10 @@
       },
       {
         "stream" : "file",
-        "format" : "normal",
+        "format" : "plain",
         "level": "trace",
         "path" : "./logs",
-        "fileName" : "test_normal_%Y%m%d_%H%M%S_%N.log",
+        "fileName" : "test_plain_%Y%m%d_%H%M%S_%N.log",
         "maxFileByte" : 1024000,
         "rollSecond" : 3600,
         "unorder" : false

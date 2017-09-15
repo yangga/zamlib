@@ -29,7 +29,7 @@ namespace zam {
                 auto const url(c.get<std::string>("localhost", "url"));
                 auto const port(c.get<unsigned short>(514, "port"));
                 auto const thisLevel = toLevel(c.get<std::string>("all", "level").c_str());
-                auto const fmtType = toFormatType(c.get<std::string>("normal", "format").c_str());
+                auto const fmtType = toFormatType(c.get<std::string>("plain", "format").c_str());
 
                 auto backend = boost::make_shared<sinks::syslog_backend>();
 
