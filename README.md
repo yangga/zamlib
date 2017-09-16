@@ -21,7 +21,7 @@ or
 * ...
 
 #### # more help for Windows
-> It's pretty hard to cmake detect dependencies automatically.
+> It's pretty hard to cmake detects dependencies automatically.
 ##### You should focus on these additional entries to use cmake
 ###### Boost
 * BOOST_ROOT - root path of boost library
