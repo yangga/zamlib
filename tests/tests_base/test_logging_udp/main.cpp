@@ -12,16 +12,18 @@
 #include <thread>
 
 void start_udp_log_server();
+void wait_udp_log_server_end();
 void udpLogHandler(char* buf, size_t buf_len, const boost::asio::ip::udp::endpoint& epRecv);
 
 
-boost::asio::io_service ios;
+zam::base::io::ioSystem ios;
 zam::base::log::server::loggerUdpServer udpServer(ios, 5050, udpLogHandler);
 
 
 
 int main(int argc, char* argv[]) {
     try {
+        /// begin server
         start_udp_log_server();
 
         using namespace zam::base::log;
@@ -42,15 +44,7 @@ int main(int argc, char* argv[]) {
     ZAM_LOGE("test1") << "error";
     ZAM_LOGF("test1") << "fatal";
 
-    /// wait to finish udp logging
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(1s);
-
-    /// stop to io_service
-    ios.stop();
-
-    /// wait to end io_service thread
-    std::this_thread::sleep_for(1s);
+    wait_udp_log_server_end();
 
     return 0;
 }
@@ -58,23 +52,26 @@ int main(int argc, char* argv[]) {
 void start_udp_log_server() {
     udpServer.start_receive();
 
-    auto io_thread = [&](){
-        while (!ios.stopped()){
-            try {
-                ios.run();
-            }
-            catch (const std::exception& e) {
-                ZAM_LOGE("root") << "io_service exception: " << e.what();
-            }
-            catch (...) {
-                ZAM_LOGE("root") << "io_service exception: unknown";
-            }
-        }
-        ZAM_LOGI("root") << "io_service thread stopped";
+    auto io_thread_starter = [&]() {
+        ios.start();
     };
 
-    std::thread t(io_thread);
-    t.detach();
+    auto io_thread_stopper = [&](){
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(1s);
+        ios.stop();
+    };
+
+    std::thread(io_thread_starter).detach();
+    std::thread(io_thread_stopper).detach();
+}
+
+void wait_udp_log_server_end() {
+    /// waitting for end server jobs
+    while(!ios.stopped()){
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(100ms);
+    }
 }
 
 void udpLogHandler(char* buf, size_t buf_len, const boost::asio::ip::udp::endpoint& epRecv) {
