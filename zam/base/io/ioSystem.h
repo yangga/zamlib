@@ -21,7 +21,7 @@ namespace zam {
             class ioSystem : boost::noncopyable {
             public:
                 ZAMBASE_API
-                ioSystem() = default;
+                ioSystem();
 
                 inline boost::asio::io_service &getIos() { return ios_; }
 
@@ -37,6 +37,7 @@ namespace zam {
 
             private:
                 boost::asio::io_service ios_;
+                boost::asio::io_service::work iosHolder_;
 
                 using thread_ptr = boost::shared_ptr<std::thread>;
                 std::vector<thread_ptr> workers_;

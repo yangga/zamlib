@@ -1,0 +1,13 @@
+{
+  "test1": {
+    "level" : "trace",
+    "appender": [
+      {
+        "stream" : "console",
+        "level": "trace",
+        "color" : true,
+        "unorder" : false
+      }
+    ]
+  }
+}

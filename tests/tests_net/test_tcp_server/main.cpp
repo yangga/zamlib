@@ -4,26 +4,40 @@
 
 #include <ZamConfig.h>
 #include <zam/base/logger.h>
+#include <zam/base/io/ioSystem.h>
+
+zam::base::io::ioSystem ios;
+
+void init_log_system();
+
+
 
 int main(int argc, char* argv[]) {
+    init_log_system();
+
+//    zam::net::acceptor acceptor(ios);
+//
+//    protocol
+//    handler
+//    updateTime <= 이건 공용 service로 올리자
+
+    return 0;
+}
+
+
+
+
+void init_log_system() {
     try {
         using namespace zam::base::log;
 
         std::string cfgPath(Zam_CMAKE_BUILT_PATH);
-        cfgPath += "/misc/tests/test_logging/test_logging.json";
+        cfgPath += "/misc/tests/test_net_common/logger.json";
 
         loggerSystem::load(cfgPath.c_str());
     } catch(std::exception& e) {
         std::cerr << "failed to load - " << e.what() << std::endl;
-        return -1;
+        throw e;
     }
-
-    ZAM_LOGT("test1") << "trace";
-    ZAM_LOGD("test1") << "debug";
-    ZAM_LOGI("test1") << "info";
-    ZAM_LOGW("test1") << "warning";
-    ZAM_LOGE("test1") << "error";
-    ZAM_LOGF("test1") << "fatal";
-
-    return 0;
 }
+

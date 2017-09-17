@@ -11,6 +11,11 @@ namespace zam {
     namespace base {
         namespace io {
 
+            ioSystem::ioSystem()
+            : iosHolder_(ios_)
+            {
+            }
+
             void ioSystem::start(size_t workerCnt) {
                 assert(0 < workerCnt);
 
