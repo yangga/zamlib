@@ -16,7 +16,7 @@ set_target_properties(zam_net_shared PROPERTIES OUTPUT_NAME net)
 
 # dylib needs static libraries linkning
 if(APPLE OR MSVC)
-    set(DEPENDENT_LIBRARY_FILES ${JSONCPP_LIBRARY} ${Boost_LIBRARIES})
+    set(DEPENDENT_LIBRARY_FILES zam_base_shared ${JSONCPP_LIBRARY} ${Boost_LIBRARIES})
 
     if(MSVC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4996")   # turn off deprecated warning (latest jsoncpp has lots of deprecated warning)

@@ -24,7 +24,7 @@
 
 #include <zam/base/io/ioSystem.h>
 
-#ifdef zam_base_shared_EXPORTS
+#ifdef zam_net_shared_EXPORTS
 #define ZAMNET_API BOOST_SYMBOL_EXPORT
 #else
 #define ZAMNET_API BOOST_SYMBOL_VISIBLE
