@@ -15,10 +15,24 @@ void init_log_system();
 int main(int argc, char* argv[]) {
     init_log_system();
 
+    using namespace zam;
+
+//    net::acceptorCfg<
+//            net::proto::tcp,
+//            net::chiper::dev3,
+//            net::handler
+//            > cfg;
+//
+//    net::acceptor acceptor(ios);
+
+
 //    zam::net::acceptor acceptor(ios);
 //
 //    protocol
+//    cyper (en/decryptor)
+//    parser
 //    handler
+//         single, multi
 //    updateTime <= 이건 공용 service로 올리자
 
     return 0;
