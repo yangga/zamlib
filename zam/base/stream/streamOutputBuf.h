@@ -10,6 +10,8 @@
 #include <boost/smart_ptr.hpp>
 
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace zam {
     namespace base {
@@ -43,6 +45,21 @@ namespace zam {
 
                 void skip(size_t count);
 
+                template< typename T >
+                inline streamOutputBuf<BUFFER>& operator << (const T& b);
+
+                template< typename T >
+                inline streamOutputBuf<BUFFER>& operator << (T&& b);
+
+                template< typename T >
+                inline streamOutputBuf<BUFFER>& operator << (const std::vector<T>& b);
+
+                template< typename T >
+                inline streamOutputBuf<BUFFER>& operator << (std::vector<T>&& b);
+
+                inline streamOutputBuf<BUFFER>& operator << (const std::string& b);
+                inline streamOutputBuf<BUFFER>& operator << (std::string&& b);
+
             private:
                 buffer_t& buf_;
             };
@@ -72,6 +89,56 @@ namespace zam {
             template <class BUFFER>
             void streamOutputBuf<BUFFER>::skip(size_t count) {
                 pbump(static_cast<int>(count));
+            }
+
+
+            template <class BUFFER>
+            template< typename T >
+            streamOutputBuf<BUFFER>& streamOutputBuf<BUFFER>::operator << (const T& b) {
+                write((char*)&b, sizeof(b));
+                return *this;
+            }
+
+            template <class BUFFER>
+            template< typename T >
+            streamOutputBuf<BUFFER>& streamOutputBuf<BUFFER>::operator << (T&& b) {
+                write((char*)&b, sizeof(b));
+                return *this;
+            }
+
+            template <class BUFFER>
+            template< typename T >
+            streamOutputBuf<BUFFER>& streamOutputBuf<BUFFER>::operator << (const std::vector<T>& b) {
+                (*this) << static_cast<uint16_t>(b.size());
+
+                for (auto& d : b)
+                    (void)((*this) << d);
+
+                return *this;
+            }
+
+            template <class BUFFER>
+            template< typename T >
+            streamOutputBuf<BUFFER>& streamOutputBuf<BUFFER>::operator << (std::vector<T>&& b) {
+                return operator <<((const std::vector<T>&)b);
+            }
+
+            template <class BUFFER>
+            streamOutputBuf<BUFFER>& streamOutputBuf<BUFFER>::operator << (const std::string& b)
+            {
+                const auto size = static_cast<uint16_t>(b.length());
+                (*this) << size;
+                if (0 < size) {
+                    write(b.c_str(), b.length() * sizeof(char));
+                }
+
+                return *this;
+            }
+
+            template <class BUFFER>
+            streamOutputBuf<BUFFER>& streamOutputBuf<BUFFER>::operator << (std::string&& b)
+            {
+                return operator<<((const std::string&)b);
             }
 
         }

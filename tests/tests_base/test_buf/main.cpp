@@ -66,6 +66,20 @@ void test_buf_read_from_writor() {
     std::cout << "i2 sizeLeft : " << readStream.sizeLeft() << std::endl;
 }
 
+void test_operators() {
+    buffer_t buf;
+    ostreambuf_t os(buf);
+    os << (int)1;
+    os << (float)3.14;
+    os << std::string("hello");
+
+    int v1;
+    float v2;
+    std::string v3;
+    istreambuf_t is(os);
+    is >> v1 >> v2 >> v3;
+    std::cout << "operator result - " << v1 << ", " << v2 << ", " << v3 << std::endl;
+}
 
 int main(int argc, char* argv[]) {
 
@@ -73,6 +87,7 @@ int main(int argc, char* argv[]) {
     test_buf_read();
     test_more_write();
     test_buf_read_from_writor();
+    test_operators();
 
     return 0;
 }

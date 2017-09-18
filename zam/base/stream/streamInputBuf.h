@@ -10,6 +10,8 @@
 #include <boost/smart_ptr.hpp>
 
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace zam {
     namespace base {
@@ -46,6 +48,14 @@ namespace zam {
 
                 void skip(size_t count);
 
+                template< typename T >
+                inline streamInputBuf<BUFFER>& operator >> (T& b);
+
+                template< typename T >
+                inline streamInputBuf<BUFFER>& operator >> (std::vector<T>& b);
+
+                inline streamInputBuf<BUFFER>& operator >> (std::string& b);
+
             private:
                 buffer_t& buf_;
             };
@@ -80,6 +90,44 @@ namespace zam {
             template <class BUFFER>
             void streamInputBuf<BUFFER>::skip(size_t count) {
                 gbump(static_cast<int>(count));
+            }
+
+
+            template <class BUFFER>
+            template< typename T >
+            streamInputBuf<BUFFER>& streamInputBuf<BUFFER>::operator >> (T& b) {
+                read((char*)&b, sizeof(b));
+                return *this;
+            }
+
+            template <class BUFFER>
+            template< typename T >
+            streamInputBuf<BUFFER>& streamInputBuf<BUFFER>::operator >> (std::vector<T>& b) {
+                uint16_t size;
+                (*this) >> size;
+                b.reserve(size);
+                b.resize(0);
+
+                for (size_t i = 0; i < size; ++i)
+                {
+                    T e;
+                    (*this) >> e;
+                    b.push_back(std::move(e));
+                }
+                return *this;
+            }
+
+            template <class BUFFER>
+            streamInputBuf<BUFFER>& streamInputBuf<BUFFER>::operator >> (std::string& b) {
+                uint16_t size;
+                (*this) >> size;
+                if (0 < size)
+                {
+                    b.assign(current(), size);
+                    skip(size * sizeof(char));
+                }
+
+                return *this;
             }
 
 
