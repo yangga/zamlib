@@ -23,6 +23,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <iostream>
+#include <string>
 
 #ifdef zam_base_shared_EXPORTS
 #define ZAMBASE_API BOOST_SYMBOL_EXPORT

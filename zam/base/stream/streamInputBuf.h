@@ -43,14 +43,14 @@ namespace zam {
 
                 inline size_t dataSize() const BOOST_NOEXCEPT { return end()-begin(); }
 
-                size_t read(void* dst, size_t size);
+                size_t read(void* dst, size_t count);
                 size_t readAll();
 
-                bool readable(void* dst, size_t size) const;
-                inline bool readable(size_t size) const BOOST_NOEXCEPT;
+                bool readable(void* dst, size_t count) const;
+                inline bool readable(size_t count) const BOOST_NOEXCEPT;
                 inline size_t readableSize() const BOOST_NOEXCEPT { return end()-current(); }
 
-                void skip(size_t size);
+                void skip(size_t count);
 
                 template< typename T >
                 inline streamInputBuf<BUFFER>& operator >> (T& b);
@@ -80,8 +80,8 @@ namespace zam {
             }
 
             template <class BUFFER>
-            size_t streamInputBuf<BUFFER>::read(void* dst, size_t size) {
-                return static_cast<size_t>(sgetn((char*)dst, size));
+            size_t streamInputBuf<BUFFER>::read(void* dst, size_t count) {
+                return static_cast<size_t>(sgetn((char*)dst, count));
             }
 
             template <class BUFFER>
@@ -92,22 +92,22 @@ namespace zam {
             }
 
             template <class BUFFER>
-            bool streamInputBuf<BUFFER>::readable(void* dst, size_t size) const {
-                if (!readable(size))
+            bool streamInputBuf<BUFFER>::readable(void* dst, size_t count) const {
+                if (!readable(count))
                     return false;
 
-                memcpy(dst, current(), size);
+                memcpy(dst, current(), count);
                 return true;
             }
 
             template <class BUFFER>
-            bool streamInputBuf<BUFFER>::readable(size_t size) const BOOST_NOEXCEPT {
-                return (size <= readableSize());
+            bool streamInputBuf<BUFFER>::readable(size_t count) const BOOST_NOEXCEPT {
+                return (count <= readableSize());
             }
 
             template <class BUFFER>
-            void streamInputBuf<BUFFER>::skip(size_t size) {
-                gbump(static_cast<int>(size));
+            void streamInputBuf<BUFFER>::skip(size_t count) {
+                gbump(static_cast<int>(count));
             }
 
 

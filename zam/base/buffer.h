@@ -20,6 +20,7 @@ namespace zam {
 
         public:
             inline char* ptr() { return &buf_.front(); }
+            inline const char* const ptr() const { return &buf_.front(); }
 
             inline constexpr size_t size() const BOOST_NOEXCEPT { return size_v; }
 
