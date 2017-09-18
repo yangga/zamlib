@@ -20,28 +20,28 @@ namespace zam {
             {
             public:
                 static void* operator new(size_t size) {
-                    boost::lock_guard<__mutexname> lock(_mutex);
-                    return static_cast<__classname*>(_thisPool.malloc());
+                    boost::lock_guard<__mutexname> lock(mutex_);
+                    return static_cast<__classname*>(thisPool_.malloc());
                 }
 
                 static void operator delete(void* ptr, size_t size) {
-                    boost::lock_guard<__mutexname> lock(_mutex);
-                    _thisPool.free(ptr);
+                    boost::lock_guard<__mutexname> lock(mutex_);
+                    thisPool_.free(ptr);
                 }
                 static void destruct(__classname* ptr){
                     delete ptr;
                 }
 
             private:
-                static boost::pool<> _thisPool;
-                static __mutexname _mutex;
+                static boost::pool<> thisPool_;
+                static __mutexname mutex_;
             };
 
             template< typename __classname, typename __mutexname >
-            boost::pool<> pool<__classname, __mutexname>::_thisPool(sizeof(__classname));
+            boost::pool<> pool<__classname, __mutexname>::thisPool_(sizeof(__classname));
 
             template< typename __classname, typename __mutexname >
-            __mutexname pool<__classname, __mutexname>::_mutex;
+            __mutexname pool<__classname, __mutexname>::mutex_;
 
         }
     }
