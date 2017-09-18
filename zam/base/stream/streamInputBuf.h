@@ -35,18 +35,22 @@ namespace zam {
 
                 inline buffer_t& buf() const BOOST_NOEXCEPT { return buf_; }
 
+                inline constexpr size_t bufferSize() const BOOST_NOEXCEPT { return BUFFER::size_v; }
+
                 inline char* begin() const BOOST_NOEXCEPT { return eback(); }
                 inline char* current() const BOOST_NOEXCEPT { return gptr(); }
                 inline char* end() const BOOST_NOEXCEPT { return egptr(); }
 
-                size_t sizeBuffer() const BOOST_NOEXCEPT { return BUFFER::size_v; }
-                size_t sizeData() const BOOST_NOEXCEPT { return end()-begin(); }
-                size_t sizeLeft() const BOOST_NOEXCEPT { return end()-current(); }
+                inline size_t dataSize() const BOOST_NOEXCEPT { return end()-begin(); }
 
-                size_t read(char* dst, size_t count);
+                size_t read(void* dst, size_t size);
                 size_t readAll();
 
-                void skip(size_t count);
+                bool readable(void* dst, size_t size) const;
+                inline bool readable(size_t size) const BOOST_NOEXCEPT;
+                inline size_t readableSize() const BOOST_NOEXCEPT { return end()-current(); }
+
+                void skip(size_t size);
 
                 template< typename T >
                 inline streamInputBuf<BUFFER>& operator >> (T& b);
@@ -72,24 +76,38 @@ namespace zam {
             streamInputBuf<BUFFER>::streamInputBuf(streamOutputBuf<BUFFER>& streamOutBuf)
                     : buf_(streamOutBuf.buf_)
             {
-                setg(buf_.ptr(), buf_.ptr(), buf_.ptr() + streamOutBuf.sizeData());
+                setg(buf_.ptr(), buf_.ptr(), buf_.ptr() + streamOutBuf.dataSize());
             }
 
             template <class BUFFER>
-            size_t streamInputBuf<BUFFER>::read(char* dst, size_t count) {
-                return static_cast<size_t>(sgetn(dst, count));
+            size_t streamInputBuf<BUFFER>::read(void* dst, size_t size) {
+                return static_cast<size_t>(sgetn((char*)dst, size));
             }
 
             template <class BUFFER>
             size_t streamInputBuf<BUFFER>::readAll() {
-                const auto leftLen = sizeLeft();
-                skip(sizeLeft());
+                const auto leftLen = readableSize();
+                skip(readableSize());
                 return leftLen;
             }
 
             template <class BUFFER>
-            void streamInputBuf<BUFFER>::skip(size_t count) {
-                gbump(static_cast<int>(count));
+            bool streamInputBuf<BUFFER>::readable(void* dst, size_t size) const {
+                if (!readable(size))
+                    return false;
+
+                memcpy(dst, current(), size);
+                return true;
+            }
+
+            template <class BUFFER>
+            bool streamInputBuf<BUFFER>::readable(size_t size) const BOOST_NOEXCEPT {
+                return (size <= readableSize());
+            }
+
+            template <class BUFFER>
+            void streamInputBuf<BUFFER>::skip(size_t size) {
+                gbump(static_cast<int>(size));
             }
 
 

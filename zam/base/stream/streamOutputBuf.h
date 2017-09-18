@@ -33,17 +33,20 @@ namespace zam {
 
                 inline buffer_t& buf() const BOOST_NOEXCEPT { return buf_; }
 
+                inline constexpr size_t bufferSize() const BOOST_NOEXCEPT { return BUFFER::size_v; }
+
                 inline char* begin() const BOOST_NOEXCEPT { return pbase(); }
                 inline char* current() const BOOST_NOEXCEPT { return pptr(); }
                 inline char* end() const BOOST_NOEXCEPT { return epptr(); }
 
-                size_t sizeBuffer() const BOOST_NOEXCEPT { return BUFFER::size_v; }
-                size_t sizeData() const BOOST_NOEXCEPT { return current()-begin(); }
-                size_t sizeLeft() const BOOST_NOEXCEPT { return end()-current(); }
+                inline size_t dataSize() const BOOST_NOEXCEPT { return current()-begin(); }
 
-                size_t write(const char* src, size_t count);
+                size_t write(const char* src, size_t size);
 
-                void skip(size_t count);
+                inline bool writable(size_t size) const;
+                inline size_t writableSize() const BOOST_NOEXCEPT { return end()-current(); }
+
+                void skip(size_t size);
 
                 template< typename T >
                 inline streamOutputBuf<BUFFER>& operator << (const T& b);
@@ -69,7 +72,7 @@ namespace zam {
                 : buf_(buf)
             {
                 assert(offset <= BUFFER::size_v && "offset must be smaller than buffer size");
-                this->setp(buf_.ptr(), buf_.ptr()+sizeBuffer());
+                this->setp(buf_.ptr(), buf_.ptr()+ bufferSize());
                 skip(offset);
             }
 
@@ -77,18 +80,23 @@ namespace zam {
             streamOutputBuf<BUFFER>::streamOutputBuf(streamInputBuf<BUFFER>& streamOutBuf)
                 : buf_(streamOutBuf.buf_)
             {
-                this->setp(buf_.ptr(), buf_.ptr()+sizeBuffer());
-                skip(streamOutBuf.sizeData());
+                this->setp(buf_.ptr(), buf_.ptr()+ bufferSize());
+                skip(streamOutBuf.dataSize());
             }
 
             template <class BUFFER>
-            size_t streamOutputBuf<BUFFER>::write(const char* src, size_t count) {
-                return static_cast<size_t>(sputn(src, count));
+            size_t streamOutputBuf<BUFFER>::write(const char* src, size_t size) {
+                return static_cast<size_t>(sputn(src, size));
             }
 
             template <class BUFFER>
-            void streamOutputBuf<BUFFER>::skip(size_t count) {
-                pbump(static_cast<int>(count));
+            bool streamOutputBuf<BUFFER>::writable(size_t size) const {
+                return (size <= writableSize());
+            }
+
+            template <class BUFFER>
+            void streamOutputBuf<BUFFER>::skip(size_t size) {
+                pbump(static_cast<int>(size));
             }
 
 
