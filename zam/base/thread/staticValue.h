@@ -7,8 +7,6 @@
 
 #include <boost/thread/tss.hpp>
 
-#include <type_traits>
-
 namespace zam {
     namespace base {
         namespace thread {
