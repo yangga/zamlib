@@ -5,6 +5,8 @@
 #ifndef ZAMLIB_MESSAGESTREAM_H
 #define ZAMLIB_MESSAGESTREAM_H
 
+#include <zam/net/net.h>
+
 #include "message.h"
 
 #include <zam/base/stream/streamInputBuf.h>
@@ -16,7 +18,7 @@ namespace zam {
                 : public zam::base::stream::streamInputBuf<message>
         {
         public:
-            explicit messageIStream(message& m, size_t dataLen);
+            ZAMNET_API explicit messageIStream(message& m, size_t dataLen);
         };
 
     }

@@ -5,6 +5,8 @@
 #ifndef ZAMLIB_MESSAGEOSTREAM_H
 #define ZAMLIB_MESSAGEOSTREAM_H
 
+#include <zam/net/net.h>
+
 #include "message.h"
 
 #include <zam/base/stream/streamOutputBuf.h>
@@ -16,7 +18,7 @@ namespace zam {
         : public zam::base::stream::streamOutputBuf<message>
         {
         public:
-            explicit messageOStream(message& m);
+            ZAMNET_API explicit messageOStream(message& m);
         };
 
     }
