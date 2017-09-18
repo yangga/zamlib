@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(../.. ${JSONCPP_INCLUDE_DIR_ROOT})
 
-set(SOURCE_FILES library.cpp library.h net.h acceptor/acceptor.cpp acceptor/acceptor.h)
+set(SOURCE_FILES acceptor/acceptor.cpp acceptor/acceptor.h message.cpp message.h messageIStream.cpp messageIStream.h messageOStream.cpp messageOStream.h)
 
 ###########################################################
 # setting libraries

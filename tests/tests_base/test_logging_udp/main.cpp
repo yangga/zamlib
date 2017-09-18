@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 
         using namespace zam::base::log;
 
-        std::string cfgPath(Zam_CMAKE_BUILT_PATH);
+        std::string cfgPath(ZAM_CMAKE_BUILT_PATH);
         cfgPath += "/misc/tests/test_logging_udp/test_logging_udp.json";
 
         loggerSystem::load(cfgPath.c_str());

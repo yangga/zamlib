@@ -23,7 +23,7 @@ void init_log_system() {
     try {
         using namespace zam::base::log;
 
-        std::string cfgPath(Zam_CMAKE_BUILT_PATH);
+        std::string cfgPath(ZAM_CMAKE_BUILT_PATH);
         cfgPath += "/misc/tests/test_net_common/logger.json";
 
         loggerSystem::load(cfgPath.c_str());

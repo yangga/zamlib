@@ -16,7 +16,7 @@ namespace zam {
         namespace memory {
 
             template< typename __classname, typename __mutexname=boost::mutex >
-            class memory_pool
+            class pool
             {
             public:
                 static void* operator new(size_t size) {
@@ -38,10 +38,10 @@ namespace zam {
             };
 
             template< typename __classname, typename __mutexname >
-            boost::pool<> memory_pool<__classname, __mutexname>::_thisPool(sizeof(__classname));
+            boost::pool<> pool<__classname, __mutexname>::_thisPool(sizeof(__classname));
 
             template< typename __classname, typename __mutexname >
-            __mutexname memory_pool<__classname, __mutexname>::_mutex;
+            __mutexname pool<__classname, __mutexname>::_mutex;
 
         }
     }

@@ -5,6 +5,8 @@
 #ifndef ZAM_STDAFX_H
 #define ZAM_STDAFX_H
 
+#include <ZamConfig.h>
+
 #include <boost/config.hpp>
 
 #ifdef BOOST_MSVC
