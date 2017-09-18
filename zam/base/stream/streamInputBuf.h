@@ -9,6 +9,7 @@
 
 #include <boost/smart_ptr.hpp>
 
+#include <cstring>
 #include <memory>
 #include <string>
 #include <vector>
