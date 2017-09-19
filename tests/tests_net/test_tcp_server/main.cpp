@@ -7,8 +7,9 @@
 #include <zam/base/io/ioSystem.h>
 
 #include <zam/net/acceptor/acceptorTcp.h>
-
+#include <zam/net/cipher/cipherNull.h>
 #include <zam/net/handler/eventDispatcher.h>
+#include <zam/net/packer/packerDefault.h>
 
 #include "my_handler.h"
 
@@ -28,8 +29,15 @@ int main(int argc, char* argv[]) {
     init_log_system();
 
     warehouse::warehouse wh;
+    wh.getCipher = []() -> net::cipher_ptr_t {
+        return boost::make_shared<net::cipher::cipherNull>();
+    };
     wh.getEventHandler = []() -> net::eventHandler_ptr_t {
-        return net::eventHandler_ptr_t(new handler::eventDispatcherSingleThread<my_handler>(ios));
+        static net::eventHandler_ptr_t s_event_handler(new handler::eventDispatcherSingleThread<my_handler>(ios));
+        return s_event_handler;
+    };
+    wh.getPacker = []() -> net::packer_ptr_t {
+        return boost::make_shared<net::packer::packerDefault>();
     };
 
     net::acceptor::acceptorTcp::Config cfg {"0.0.0.0", 5050};
@@ -41,8 +49,15 @@ int main(int argc, char* argv[]) {
         ZAM_LOGE("test1") << "err - " << e.what();
     }
 
-
-
+//    net::message msgRecved;
+//    size_t transported = 80;
+//    net::messageIStream istreamRecv(msgRecved, transported);
+//
+//    net::packer::packer* packer;
+//
+//    net::message msgUnpacked;
+//    auto const msgUnpackedLen = packer->unpack(msgUnpacked, istreamRecv);
+//    msgRecved.squash(istreamRecv.readSize(), transported-istreamRecv.readSize());
 
 
 //    net::acceptorCfg<
@@ -65,7 +80,7 @@ int main(int argc, char* argv[]) {
 
     auto do_shomething = [](){
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(1s);
+        std::this_thread::sleep_for(10s);
 
         ios.stop();
     };

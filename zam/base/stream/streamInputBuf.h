@@ -46,6 +46,7 @@ namespace zam {
 
                 size_t read(void* dst, size_t count);
                 size_t readAll();
+                size_t readSize() const;
 
                 bool readable(void* dst, size_t count) const;
                 inline bool readable(size_t count) const BOOST_NOEXCEPT;
@@ -90,6 +91,11 @@ namespace zam {
                 const auto leftLen = readableSize();
                 skip(readableSize());
                 return leftLen;
+            }
+
+            template <class BUFFER>
+            size_t streamInputBuf<BUFFER>::readSize() const {
+                return (current()-begin());
             }
 
             template <class BUFFER>

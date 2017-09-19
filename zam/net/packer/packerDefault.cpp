@@ -24,22 +24,19 @@ namespace zam {
             };
 #pragma pack()
 
-            size_t packerDefault::pack(message& out, message& in, size_t in_len)
+            size_t packerDefault::pack(message& out, messageOStream& os)
             {
-                messageOStream os(out);
-                os << PACKER_DEFAULT_HEADER{PACKER_DEFAULT_ID, static_cast<uint16_t>(in_len)};
+                os << PACKER_DEFAULT_HEADER{PACKER_DEFAULT_ID, static_cast<uint16_t>(os.dataSize())};
 
-                if (!os.writable(in_len))
+                if (!os.writable(os.dataSize()))
                     throw base::zamException(netError::overflow, "input message is too large");
 
-                os.write(in.ptr(), in_len);
+                os.write(os.buf().ptr(), os.dataSize());
                 return os.dataSize();
             }
 
-            size_t packerDefault::unpack(message& out, message& in, size_t in_len)
+            size_t packerDefault::unpack(message& out, messageIStream& is)
             {
-                messageIStream is(in, in_len);
-
                 PACKER_DEFAULT_HEADER header{0,};
                 if (sizeof(header) != is.read(&header, sizeof(header)))
                     throw base::zamException(netError::incompleted_packet, "input message is too short");

@@ -25,6 +25,7 @@ namespace zam {
                     return endPoint{ sock_.remote_endpoint().address().to_string(), sock_.remote_endpoint().port() };
                 }
 
+            public:
                 boost::asio::ip::tcp::socket& socket() { return sock_; }
 
             private:

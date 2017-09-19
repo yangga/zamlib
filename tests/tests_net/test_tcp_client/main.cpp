@@ -11,7 +11,7 @@ void init_log_system();
 int main(int argc, char* argv[]) {
     init_log_system();
 
-
+    ZAM_LOGD("test1") << __FUNCTION__;
 
     return 0;
 }

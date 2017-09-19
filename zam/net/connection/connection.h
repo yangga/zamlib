@@ -24,7 +24,7 @@ namespace zam {
                 virtual endPoint remote_endpoint() = 0;
 
             public:
-                void active(warehouse::warehouse& wh) {
+                void initialize(warehouse::warehouse& wh) {
                     cipher_     = wh.getCipher();
                     evtHandler_ = wh.getEventHandler();
                     packer_     = wh.getPacker();

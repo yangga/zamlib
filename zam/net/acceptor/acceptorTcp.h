@@ -27,7 +27,8 @@ namespace zam {
                 explicit acceptorTcp(base::io::ioSystem &ios, warehouse::warehouse w, Config cfg)
                         : acceptor(ios, std::move(w))
                         , cfg_(std::move(cfg))
-                        , acceptorSocket_(ios.getIos()) {}
+                        , acceptorSocket_(ios.getIos())
+                {}
 
                 void startAccept() override {
                     using tcp = boost::asio::ip::tcp;
@@ -52,12 +53,12 @@ namespace zam {
                     acceptorSocket_.set_option(boost::asio::socket_base::linger(true, 0));
                     acceptorSocket_.bind(endpoint, ec);
 
-                    if (ec) {
+                    if (!!ec) {
                         throw base::zamException(netError::failed_bind, ec.message());
                     }
 
                     acceptorSocket_.listen(boost::asio::socket_base::max_connections, ec);
-                    if (ec) {
+                    if (!!ec) {
                         throw base::zamException(netError::failed_listen, ec.message());
                     }
 
@@ -75,7 +76,7 @@ namespace zam {
 
                 void startAcceptInternal() {
                     auto c = new connection::connectionTcp(ios());
-                    c->active(this->warehouse());
+                    c->initialize(this->warehouse());
                     conn_.reset(c);
 
                     acceptorSocket_.async_accept(c->socket(), strand().wrap(

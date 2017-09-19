@@ -5,9 +5,11 @@
 #ifndef ZAMLIB_CIPHER_H
 #define ZAMLIB_CIPHER_H
 
+#include <boost/shared_ptr.hpp>
+
 namespace zam {
     namespace net {
-        namespace ciper {
+        namespace cipher {
 
             struct cipher {
 
@@ -15,7 +17,7 @@ namespace zam {
 
         }
 
-        using cipher_ptr_t = boost::shared_ptr<ciper::cipher>;
+        using cipher_ptr_t = boost::shared_ptr<cipher::cipher>;
     }
 }
 

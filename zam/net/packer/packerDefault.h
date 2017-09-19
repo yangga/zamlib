@@ -13,8 +13,8 @@ namespace zam {
 
             class packerDefault : public packer {
             public:
-                size_t pack(message& out, message& in, size_t in_len) override;
-                size_t unpack(message& out, message& in, size_t in_len) override;
+                size_t pack(message& out, messageOStream& os) override;
+                size_t unpack(message& out, messageIStream& is) override;
             };
 
         }
