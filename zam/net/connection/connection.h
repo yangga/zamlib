@@ -9,19 +9,27 @@
 
 #include "../warehouse/warehouse.h"
 
+#include <zam/base/io/ioObject.h>
+
 #include <boost/enable_shared_from_this.hpp>
 
 namespace zam {
     namespace net {
 
         namespace connection {
-            struct connection
-                    : public boost::enable_shared_from_this<connection>
+            class connection
+                : public base::io::ioObject
+                , public boost::enable_shared_from_this<connection>
             {
             public:
-                virtual ~connection() = default;
+                enum class status : unsigned char {
+                    open = 0,
+                    closing = 1,
+                    close = 2,
+                };
 
                 virtual endPoint remote_endpoint() = 0;
+                virtual void startAccept() = 0;
 
             public:
                 void initialize(warehouse::warehouse& wh) {
@@ -33,6 +41,10 @@ namespace zam {
                 cipher_ptr_t& cipher() { return cipher_; }
                 eventHandler_ptr_t& eventHandler() { return evtHandler_; }
                 packer_ptr_t& packer() { return packer_; }
+
+            protected:
+                explicit connection(base::io::ioSystem& ios) : base::io::ioObject(ios)
+                {}
 
             private:
                 cipher_ptr_t cipher_;

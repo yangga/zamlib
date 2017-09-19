@@ -66,9 +66,11 @@ namespace zam {
                 }
 
             private:
-                void accept_handler(const boost::system::error_code &ec) {
+                void acceptHandler(const boost::system::error_code &ec) {
                     if (!ec) {
-                        conn_->eventHandler()->onAccept(conn_);
+                        conn_->startAccept();
+
+                        conn_->ioPost(boost::bind(&handler::eventHandler::onAccept, conn_->eventHandler(), conn_));
 
                         startAcceptInternal();
                     }
@@ -80,7 +82,7 @@ namespace zam {
                     conn_.reset(c);
 
                     acceptorSocket_.async_accept(c->socket(), strand().wrap(
-                            boost::bind(&acceptorTcp::accept_handler, this, boost::asio::placeholders::error)));
+                            boost::bind(&acceptorTcp::acceptHandler, this, boost::asio::placeholders::error)));
                 }
 
             private:

@@ -11,7 +11,7 @@ namespace zam {
     namespace net {
 
         namespace connection {
-            struct connection;
+            class connection;
         }
 
         class message;
