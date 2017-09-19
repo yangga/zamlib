@@ -20,7 +20,11 @@ namespace zam {
                 explicit acceptor(base::io::ioSystem& ios, warehouse::warehouse w)
                         : base::io::ioObject(ios)
                         , warehouse_(std::move(w))
-                {}
+                {
+                    assert(warehouse_.getPacker);
+                    assert(warehouse_.getCipher);
+                    assert(warehouse_.getEventHandler);
+                }
 
             public:
                 virtual void startAccept() = 0;
