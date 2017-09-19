@@ -15,8 +15,10 @@ namespace zam {
             none = 0,
 
             overflow = 2000000,
-            incompleted_packet = 2000001,
-            invalid_packet = 2000002,
+            incompleted_packet,
+            invalid_packet,
+            failed_bind,
+            failed_listen,
         };
 
     }

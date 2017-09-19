@@ -7,12 +7,17 @@
 
 #include <zam/net/net.h>
 
+#include <zam/base/io/ioObject.h>
+
 namespace zam {
     namespace net {
 
-        class ZAMNET_API acceptor {
+        class acceptor : public base::io::ioObject {
+        protected:
+            explicit acceptor(base::io::ioSystem& ios) : base::io::ioObject(ios) {}
+
         public:
-            acceptor(base::io::ioSystem& ios);
+            virtual void startAccept() = 0;
         };
 
     }

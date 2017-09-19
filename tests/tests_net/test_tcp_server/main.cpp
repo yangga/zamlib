@@ -6,6 +6,12 @@
 #include <zam/base/logger.h>
 #include <zam/base/io/ioSystem.h>
 
+#include <zam/net/acceptor/acceptorTcp.h>
+
+namespace base = zam::base;
+namespace io = zam::base::io;
+namespace net = zam::net;
+
 zam::base::io::ioSystem ios;
 
 void init_log_system();
@@ -15,7 +21,18 @@ void init_log_system();
 int main(int argc, char* argv[]) {
     init_log_system();
 
-    using namespace zam;
+    net::acceptorTcp::Config cfg {"0.0.0.0", 5050};
+    net::acceptorTcp acceptor(ios, cfg);
+
+    try {
+        acceptor.startAccept();
+    } catch(std::exception& e) {
+        ZAM_LOGE("test1") << "err - " << e.what();
+    }
+
+
+
+
 
 //    net::acceptorCfg<
 //            net::proto::tcp,
@@ -34,6 +51,17 @@ int main(int argc, char* argv[]) {
 //    handler
 //         single, multi
 //    updateTime <= 이건 공용 service로 올리자
+
+    auto do_shomething = [](){
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(1s);
+
+        ios.stop();
+    };
+
+    std::thread(do_shomething).detach();
+
+    ios.start();
 
     return 0;
 }

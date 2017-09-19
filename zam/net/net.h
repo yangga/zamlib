@@ -32,4 +32,6 @@
 #define ZAMNET_API BOOST_SYMBOL_VISIBLE
 #endif
 
+#include "netError.h"
+
 #endif //ZAM_STDAFX_H

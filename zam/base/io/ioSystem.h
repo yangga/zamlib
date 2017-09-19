@@ -27,7 +27,7 @@ namespace zam {
 
                 /// start io service. It gonna be blocked until io_service is stopped.
                 ZAMBASE_API
-                void start(size_t workerCnt = std::thread::hardware_concurrency());
+                void start(size_t workerCnt = std::thread::hardware_concurrency()*2);
 
                 ZAMBASE_API
                 void stop();
