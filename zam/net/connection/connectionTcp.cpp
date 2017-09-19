@@ -6,11 +6,13 @@
 
 namespace zam {
     namespace net {
+        namespace connection {
 
-        connectionTcp::connectionTcp(base::io::ioSystem& ios)
-        : connectionIO(ios)
-        , sock_(ios.getIos())
-        {}
+            connectionTcp::connectionTcp(base::io::ioSystem& ios)
+                    : connectionIO(ios)
+                    , sock_(ios.getIos())
+            {}
 
+        }
     }
 }

@@ -13,19 +13,26 @@
 
 namespace zam {
     namespace net {
+        namespace connection {
+            class connectionTcp
+                    : public connectionIO
+                            , public base::memory::pool<connectionTcp>
+            {
+            public:
+                explicit connectionTcp(base::io::ioSystem& ios);
 
-        class connectionTcp
-                : public connectionIO
-                , public base::memory::pool<connectionTcp>
-        {
-        public:
-            explicit connectionTcp(base::io::ioSystem& ios);
+                endPoint remote_endpoint() override {
+                    return endPoint{ sock_.remote_endpoint().address().to_string(), sock_.remote_endpoint().port() };
+                }
 
-            boost::asio::ip::tcp::socket& socket() { return sock_; }
+                boost::asio::ip::tcp::socket& socket() { return sock_; }
 
-        private:
-            boost::asio::ip::tcp::socket sock_;
-        };
+            private:
+                boost::asio::ip::tcp::socket sock_;
+            };
+
+        }
+
 
     }
 }

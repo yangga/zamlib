@@ -20,6 +20,8 @@ namespace zam {
             };
 
         }
+
+        using packer_ptr_t = boost::shared_ptr<packer::packer>;
     }
 }
 

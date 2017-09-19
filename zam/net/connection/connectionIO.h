@@ -11,15 +11,17 @@
 
 namespace zam {
     namespace net {
+        namespace connection {
 
-        class connectionIO
-                : public base::io::ioObject
-                , public connection
-        {
-        protected:
-            connectionIO(base::io::ioSystem& ios) : base::io::ioObject(ios) {}
-        };
+            class connectionIO
+                    : public base::io::ioObject
+                            , public connection
+            {
+            protected:
+                connectionIO(base::io::ioSystem& ios) : base::io::ioObject(ios) {}
+            };
 
+        }
     }
 }
 

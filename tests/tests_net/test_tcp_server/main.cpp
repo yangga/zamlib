@@ -11,6 +11,7 @@
 namespace base = zam::base;
 namespace io = zam::base::io;
 namespace net = zam::net;
+namespace warehouse = zam::net::warehouse;
 
 zam::base::io::ioSystem ios;
 
@@ -21,8 +22,10 @@ void init_log_system();
 int main(int argc, char* argv[]) {
     init_log_system();
 
-    net::acceptorTcp::Config cfg {"0.0.0.0", 5050};
-    net::acceptorTcp acceptor(ios, cfg);
+    warehouse::warehouse wh;
+
+    net::acceptor::acceptorTcp::Config cfg {"0.0.0.0", 5050};
+    net::acceptor::acceptorTcp acceptor(ios, wh, cfg);
 
     try {
         acceptor.startAccept();
