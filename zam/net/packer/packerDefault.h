@@ -5,6 +5,8 @@
 #ifndef ZAMLIB_PACKERDEFAULT_H
 #define ZAMLIB_PACKERDEFAULT_H
 
+#include <zam/net/net.h>
+
 #include "packer.h"
 
 namespace zam {
@@ -13,8 +15,8 @@ namespace zam {
 
             class packerDefault : public packer {
             public:
-                size_t pack(message& out, messageOStream& os) override;
-                size_t unpack(message& out, messageIStream& is) override;
+                ZAMNET_API size_t pack(message& out, messageOStream& os) override;
+                ZAMNET_API size_t unpack(message& out, messageIStream& is) override;
             };
 
         }

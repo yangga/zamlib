@@ -21,9 +21,9 @@ namespace zam {
             public:
                 ZAMNET_API explicit connectionTcp(base::io::ioSystem& ios);
 
-                endPoint remote_endpoint() override;
+                ZAMNET_API endPoint remote_endpoint() override;
 
-                void startAccept() override;
+                ZAMNET_API void startAccept() override;
 
             public:
                 boost::asio::ip::tcp::socket& socket() { return sock_; }
