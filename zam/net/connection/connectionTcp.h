@@ -19,7 +19,7 @@ namespace zam {
                             , public base::memory::pool<connectionTcp>
             {
             public:
-                explicit connectionTcp(base::io::ioSystem& ios);
+                ZAMNET_API explicit connectionTcp(base::io::ioSystem& ios);
 
                 endPoint remote_endpoint() override {
                     return endPoint{ sock_.remote_endpoint().address().to_string(), sock_.remote_endpoint().port() };
