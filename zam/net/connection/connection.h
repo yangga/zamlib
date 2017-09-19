@@ -13,11 +13,14 @@
 
 namespace zam {
     namespace net {
+
         namespace connection {
             struct connection
                     : public boost::enable_shared_from_this<connection>
             {
             public:
+                virtual ~connection() = default;
+
                 virtual endPoint remote_endpoint() = 0;
 
             public:

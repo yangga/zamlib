@@ -12,6 +12,8 @@ namespace zam {
         namespace packer {
 
             struct packer {
+                virtual ~packer() = default;
+
                 /// returns : length of out
                 virtual size_t pack(message& out, message& in, size_t in_len) = 0;
 

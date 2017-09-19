@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(${PROJECT_SOURCE_DIR} ${ZAMLIB_ROOT} ${JSONCPP_INCLUDE_DIR_ROOT})
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp my_handler.h)
 add_executable(test_tcp_server ${SOURCE_FILES})
 
 set(LIBRARY_FILES zam_base_shared zam_net_shared ${Boost_LIBRARIES} ${JSONCPP_LIBRARY})

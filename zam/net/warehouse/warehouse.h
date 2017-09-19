@@ -18,9 +18,9 @@ namespace zam {
 
             struct warehouse
             {
-                boost::function<cipher_ptr_t(void)> getCipher;
-                boost::function<eventHandler_ptr_t(void)> getEventHandler;
-                boost::function<packer_ptr_t(void)> getPacker;
+                boost::function<cipher_ptr_t()> getCipher;
+                boost::function<eventHandler_ptr_t()> getEventHandler;
+                boost::function<packer_ptr_t()> getPacker;
             };
 
         }

@@ -19,6 +19,7 @@ namespace zam {
             {
             protected:
                 connectionIO(base::io::ioSystem& ios) : base::io::ioObject(ios) {}
+                virtual ~connectionIO() = default;
             };
 
         }

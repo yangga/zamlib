@@ -8,8 +8,13 @@
 
 #include <zam/net/acceptor/acceptorTcp.h>
 
+#include <zam/net/handler/eventDispatcher.h>
+
+#include "my_handler.h"
+
 namespace base = zam::base;
 namespace io = zam::base::io;
+namespace handler = zam::net::handler;
 namespace net = zam::net;
 namespace warehouse = zam::net::warehouse;
 
@@ -23,6 +28,9 @@ int main(int argc, char* argv[]) {
     init_log_system();
 
     warehouse::warehouse wh;
+    wh.getEventHandler = []() -> net::eventHandler_ptr_t {
+        return net::eventHandler_ptr_t(new handler::eventDispatcherSingleThread<my_handler>(ios));
+    };
 
     net::acceptor::acceptorTcp::Config cfg {"0.0.0.0", 5050};
     net::acceptor::acceptorTcp acceptor(ios, wh, cfg);
