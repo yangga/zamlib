@@ -18,20 +18,6 @@ namespace zam {
 
             struct warehouse
             {
-//                warehouse() = default;
-//                warehouse(const warehouse& rh)
-//                : getCipher(rh.getCipher)
-//                , getEventHandler(rh.getEventHandler)
-//                , getPacker(rh.getPacker)
-//                {
-//
-//                }
-//                warehouse(warehouse&& rh) BOOST_NOEXCEPT {
-//                    std::swap(getCipher, rh.getCipher);
-//                    std::swap(getEventHandler, rh.getEventHandler);
-//                    std::swap(getPacker, rh.getPacker);
-//                }
-
                 boost::function<cipher_ptr_t()> getCipher;
                 boost::function<eventHandler_ptr_t()> getEventHandler;
                 boost::function<packer_ptr_t()> getPacker;
