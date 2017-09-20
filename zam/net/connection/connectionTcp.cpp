@@ -68,7 +68,7 @@ namespace zam {
 
                         ioPost(
                                 boost::bind(
-                                        &handler::eventHandler::onPacket
+                                        &handler::eventHandler::onRecv
                                         , eventHandler()
                                         , shared_from_this()
                                         , msgUnpacked

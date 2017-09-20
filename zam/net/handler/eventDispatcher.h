@@ -35,15 +35,15 @@ namespace zam {
 
             public:
                 void onAccept(boost::shared_ptr<connection::connection>& c) override {
-                    ioPost(boost::bind(&eventHandler::onAccept, handler_, c));
+                    ioPost(boost::bind(&eventHandler_t::onAccept, handler_, c));
                 }
 
                 void onClose(boost::shared_ptr<connection::connection>& c) override {
-                    ioPost(boost::bind(&eventHandler::onClose, handler_, c));
+                    ioPost(boost::bind(&eventHandler_t::onClose, handler_, c));
                 }
 
-                void onPacket(boost::shared_ptr<connection::connection>& c, boost::shared_ptr<message>& msg, size_t length) override {
-                    ioPost(boost::bind(&eventHandler::onPacket, handler_, c, msg, length));
+                void onRecv(boost::shared_ptr<connection::connection> &c, boost::shared_ptr<message> &msg, size_t length) override {
+                    ioPost(boost::bind(&eventHandler_t::onRecv, handler_, c, msg, length));
                 }
 
             private:

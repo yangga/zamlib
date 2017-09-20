@@ -24,7 +24,7 @@ public:
         ZAM_LOGD("test1") << __FUNCTION__;
     }
 
-    void onPacket(boost::shared_ptr<connection::connection>& c, boost::shared_ptr<net::message>& msg, size_t length) override {
+    void onRecv(boost::shared_ptr<connection::connection> &c, boost::shared_ptr<net::message> &msg, size_t length) override {
         ZAM_LOGD("test1") << __FUNCTION__;
     }
 };

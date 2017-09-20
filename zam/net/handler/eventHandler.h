@@ -23,7 +23,7 @@ namespace zam {
 
                 virtual void onAccept(boost::shared_ptr<connection::connection>& c) = 0;
                 virtual void onClose(boost::shared_ptr<connection::connection>& c) = 0;
-                virtual void onPacket(boost::shared_ptr<connection::connection>& c, boost::shared_ptr<message>& msg, size_t length) = 0;
+                virtual void onRecv(boost::shared_ptr<connection::connection> &c, boost::shared_ptr<message> &msg, size_t length) = 0;
             };
 
         }
