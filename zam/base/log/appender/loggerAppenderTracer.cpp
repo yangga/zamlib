@@ -19,7 +19,7 @@ namespace sinks = boost::log::sinks;
 namespace zam {
     namespace base {
         namespace log {
-
+#ifdef BOOST_WINDOWS
 			class debug_output_backend_newline : public sinks::debug_output_backend
 			{
 			public:
@@ -27,6 +27,7 @@ namespace zam {
 					sinks::debug_output_backend::consume(rec, formatted_message + "\n");
 				}
 			};
+#endif
 
             void loggerAppenderTracer::load(loggerWriter &writer, Json::Value const &vAppender) {
 #ifdef BOOST_WINDOWS
