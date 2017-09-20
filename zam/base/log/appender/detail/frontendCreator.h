@@ -54,12 +54,12 @@ namespace zam {
                         namespace aux = boost::log::sinks::aux;
 
                         using sink_t = typename aux::make_sink_frontend_base<typename std::decay_t<decltype(backend)>::element_type>::type;
-                        boost::shared_ptr<sink_t> sink;
+						sink_t* sink(nullptr);
 
                         if (isUnorder)
-                            sink.reset(new sinks::asynchronous_sink<typename std::decay_t<decltype(backend)>::element_type>(backend));
+                            sink = new sinks::asynchronous_sink<typename std::decay_t<decltype(backend)>::element_type>(backend);
                         else
-                            sink.reset(new sinks::synchronous_sink<typename std::decay_t<decltype(backend)>::element_type>(backend));
+                            sink = new sinks::synchronous_sink<typename std::decay_t<decltype(backend)>::element_type>(backend);
 
                         sink->set_formatter(this->fmt);
                         sink->set_filter(
@@ -67,7 +67,7 @@ namespace zam {
                                 && expr::attr< std::string >("Channel") == channelName
                         );
 
-                        return sink;
+                        return boost::shared_ptr<boost::log::sinks::sink>(static_cast<boost::log::sinks::sink*>(sink));
                     }
 
                 private:
@@ -84,7 +84,7 @@ namespace zam {
                     static boost::shared_ptr< frontendCreator<SinkBackendT> >
                     get(
                             std::string channelName,
-                            boost::shared_ptr<SinkBackendT> backend,
+                            boost::shared_ptr<SinkBackendT>& backend,
                             formatType fmtType
                     ) {
                         auto c = boost::shared_ptr< frontendCreator<SinkBackendT> >(new frontendCreator<SinkBackendT>());
