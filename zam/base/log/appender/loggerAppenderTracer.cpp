@@ -20,6 +20,14 @@ namespace zam {
     namespace base {
         namespace log {
 
+			class debug_output_backend_newline : public sinks::debug_output_backend
+			{
+			public:
+				void consume(boost::log::record_view const& rec, string_type const& formatted_message) {
+					sinks::debug_output_backend::consume(rec, formatted_message + "\n");
+				}
+			};
+
             void loggerAppenderTracer::load(loggerWriter &writer, Json::Value const &vAppender) {
 #ifdef BOOST_WINDOWS
                 Json::CasterCoverDef const c(vAppender);
@@ -28,8 +36,8 @@ namespace zam {
 
                 Json::CasterBoolean jcb(vAppender);
                 auto const isUnorder = jcb.get("unorder", false);
-
-                auto creator = detail::frontendCreatorFactory::get(writer.getName(), boost::make_shared<sinks::debug_output_backend>(), fmtType);
+				
+                auto creator = detail::frontendCreatorFactory::get(writer.getName(), boost::make_shared<debug_output_backend_newline>(), fmtType);
                 creator->thisLevel = thisLevel;
                 creator->isUnorder = isUnorder;
                 auto sink = creator->generate();
