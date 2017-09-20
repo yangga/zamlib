@@ -10,14 +10,17 @@
 void udpLogHandler(char* buf, size_t buf_len, const boost::asio::ip::udp::endpoint& epRecv);
 
 
-zam::base::io::ioSystem ios;
-zam::base::log::server::loggerUdpServer udpServer(ios, 5050, udpLogHandler);
+boost::shared_ptr<zam::base::io::ioSystem> ios;
+boost::shared_ptr<zam::base::log::server::loggerUdpServer> udpServer;
 
 
 int main(int argc, char* argv[]) {
     try {
+		ios = boost::make_shared<zam::base::io::ioSystem>();
+		udpServer = boost::make_shared<zam::base::log::server::loggerUdpServer>(*ios, 7070, udpLogHandler);
+
         /// begin server
-        udpServer.start_receive();
+        udpServer->start_receive();
 
         using namespace zam::base::log;
 
@@ -39,13 +42,13 @@ int main(int argc, char* argv[]) {
         ZAM_LOGF("test1") << "fatal";
 
         /// after logging, stop ios service
-        ios.stop();
+        ios->stop();
     };
 
     std::thread(sample_logging).detach();
 
     /// blocked till finish ios service
-    ios.start();
+    ios->start();
 
     return 0;
 }

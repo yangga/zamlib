@@ -19,7 +19,7 @@ namespace handler = zam::net::handler;
 namespace net = zam::net;
 namespace warehouse = zam::net::warehouse;
 
-zam::base::io::ioSystem ios;
+boost::shared_ptr<zam::base::io::ioSystem> ios;
 
 void init_log_system();
 
@@ -28,20 +28,22 @@ void init_log_system();
 int main(int argc, char* argv[]) {
     init_log_system();
 
+	ios = boost::make_shared<zam::base::io::ioSystem>();
+
     warehouse::warehouse wh;
     wh.getCipher = []() -> net::cipher_ptr_t {
         return boost::make_shared<net::cipher::cipherNull>();
     };
     wh.getEventHandler = []() -> net::eventHandler_ptr_t {
-        static net::eventHandler_ptr_t s_event_handler(new handler::eventDispatcherSingleThread<my_handler>(ios));
+        static net::eventHandler_ptr_t s_event_handler(new handler::eventDispatcherSingleThread<my_handler>(*ios));
         return s_event_handler;
     };
     wh.getPacker = []() -> net::packer_ptr_t {
         return boost::make_shared<net::packer::packerDefault>();
     };
 
-    net::acceptor::acceptorTcp::Config cfg {"0.0.0.0", 5050};
-    net::acceptor::acceptorTcp acceptor(ios, wh, cfg);
+    net::acceptor::acceptorTcp::Config cfg {"0.0.0.0", 8080};
+    net::acceptor::acceptorTcp acceptor(*ios, wh, cfg);
 
     try {
         acceptor.startAccept();
@@ -82,12 +84,12 @@ int main(int argc, char* argv[]) {
         using namespace std::chrono_literals;
         std::this_thread::sleep_for(10s);
 
-        ios.stop();
+        ios->stop();
     };
 
     std::thread(do_shomething).detach();
 
-    ios.start();
+    ios->start();
 
     return 0;
 }
