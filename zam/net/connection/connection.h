@@ -43,6 +43,12 @@ namespace zam {
                 eventHandler_ptr_t& eventHandler() { return evtHandler_; }
                 packer_ptr_t& packer() { return packer_; }
 
+                template <class CHILD_CONNECTION>
+                CHILD_CONNECTION& toChild() {
+                    static_assert(std::is_base_of<connection, CHILD_CONNECTION>::value, "child connection must be child of connection");
+                    return dynamic_cast<CHILD_CONNECTION&>(*this);
+                }
+
             protected:
                 explicit connection(base::io::ioSystem& ios) : base::io::ioObject(ios)
                 {}

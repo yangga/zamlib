@@ -41,7 +41,7 @@ namespace zam {
 
                 boost::function<void(const boost::system::error_code& ec, size_t bytes_transferred)> readLambda (
                         [s=shared_from_this()](const boost::system::error_code& ec, size_t bytes_transferred) {
-                            dynamic_cast<connectionTcp*>(s.get())->readHandler(ec, bytes_transferred);
+                            s->toChild<connectionTcp>().readHandler(ec, bytes_transferred);
                         });
 
                 sock_.async_read_some(
@@ -106,7 +106,7 @@ namespace zam {
 
                     ioPost(
                             [s=shared_from_this()]() {
-                                dynamic_cast<connectionTcp*>(s.get())->close();
+                                s->toChild<connectionTcp>().close();
                             });
                 }
             }
