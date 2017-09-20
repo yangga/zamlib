@@ -33,6 +33,10 @@ namespace zam {
                 status_ = status::open;
             }
 
+            void connectionTcp::closing() {
+                closing(boost::asio::ip::tcp::socket::shutdown_receive);
+            }
+
             void connectionTcp::startRead() {
 
                 boost::function<void(const boost::system::error_code& ec, size_t bytes_transferred)> readLambda (
@@ -77,10 +81,13 @@ namespace zam {
                             startRead();
                         }
                         else {
-                            closing(boost::asio::ip::tcp::socket::shutdown_receive);
+                            ZAM_LOGD("default") << "connectionTcp::readHandler -"
+                                                << " exception:" << e.errorNo()
+                                                << ", msg:" << e.what();
+                            closing();
                         }
                     } catch(std::exception& e) {
-                        ZAM_LOGW("default") << "exception in connectionTcp::readHandler - " << e.what();
+                        ZAM_LOGD("default") << "exception in connectionTcp::readHandler - " << e.what();
                         closing(boost::asio::ip::tcp::socket::shutdown_receive);
                     }
                 }
@@ -120,7 +127,9 @@ namespace zam {
                 }
                 else
                 {
-                    ZAM_LOGW("default") << "shutdown error - " << ec.message().data();
+                    if (boost::system::errc::not_connected != ec.value()) {
+                        ZAM_LOGD("default") << "shutdown error - " << ec.message();
+                    }
                 }
             }
         }

@@ -25,6 +25,8 @@ namespace zam {
 
                 ZAMNET_API void startAccept() override;
 
+                ZAMNET_API void closing() override;
+
             public:
                 boost::asio::ip::tcp::socket& socket() { return sock_; }
 

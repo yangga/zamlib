@@ -30,6 +30,7 @@ namespace zam {
 
                 virtual endPoint remote_endpoint() = 0;
                 virtual void startAccept() = 0;
+                virtual void closing() = 0;
 
             public:
                 void initialize(warehouse::warehouse& wh) {
