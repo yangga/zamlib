@@ -27,6 +27,10 @@ namespace zam {
 
             void squash(size_t pos, size_t length);
 
+            void swap(buffer<SIZE>& rh) BOOST_NOEXCEPT {
+                std::swap(buf_, rh.buf_);
+            }
+
         protected:
             std::array<char, SIZE> buf_ = {0,};
         };

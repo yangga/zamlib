@@ -47,8 +47,8 @@ namespace zam {
             /// streamType
             enum formatType : uint32_t {
                 plain = 0,
-                xml = 1 << 0,
-                json = 1 << 1
+                xml,
+                json
             };
             ZAMBASE_API const char* toString(formatType type);
             ZAMBASE_API formatType toFormatType(const char *name);

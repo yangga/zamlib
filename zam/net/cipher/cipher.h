@@ -5,6 +5,10 @@
 #ifndef ZAMLIB_CIPHER_H
 #define ZAMLIB_CIPHER_H
 
+#include "../message/message.h"
+#include "../message/messageIStream.h"
+#include "../message/messageOStream.h"
+
 #include <boost/shared_ptr.hpp>
 
 namespace zam {
@@ -12,7 +16,13 @@ namespace zam {
         namespace cipher {
 
             struct cipher {
+                virtual ~cipher() = default;
 
+                /// returns : length of out
+                virtual size_t encrypt(message& out, messageOStream& os) = 0;
+
+                /// returns : length of out
+                virtual size_t decrypt(message& out, messageIStream& is) = 0;
             };
 
         }

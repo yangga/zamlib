@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.2.2)
 project(test_tcp_client)
 
 set(CMAKE_CXX_STANDARD 14)

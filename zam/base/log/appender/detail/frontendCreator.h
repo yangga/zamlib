@@ -84,7 +84,7 @@ namespace zam {
                     static boost::shared_ptr< frontendCreator<SinkBackendT> >
                     get(
                             std::string channelName,
-                            boost::shared_ptr<SinkBackendT>& backend,
+                            boost::shared_ptr<SinkBackendT> backend,
                             formatType fmtType
                     ) {
                         auto c = boost::shared_ptr< frontendCreator<SinkBackendT> >(new frontendCreator<SinkBackendT>());

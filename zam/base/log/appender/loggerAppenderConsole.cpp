@@ -89,7 +89,7 @@ namespace zam {
                 auto backend = boost::make_shared<Backend_t>();
                 backend->add_stream(boost::shared_ptr<std::ostream>(&std::clog, boost::null_deleter()));
                 backend->auto_flush(true);
-                return backend;
+                return std::move(backend);
             }
 
             void loggerAppenderConsole::load(loggerWriter &writer, Json::Value const & vAppender) {
