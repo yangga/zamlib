@@ -38,6 +38,14 @@ namespace zam {
                     ioPost(boost::bind(&eventHandler_t::onAccept, handler_, c));
                 }
 
+                void onConnect(boost::shared_ptr<connection::connection>& c) override {
+                    ioPost(boost::bind(&eventHandler_t::onConnect, handler_, c));
+                }
+
+                void onConnectFailed(boost::shared_ptr<connection::connection>& c) override {
+                    ioPost(boost::bind(&eventHandler_t::onConnectFailed, handler_, c));
+                }
+
                 void onClose(boost::shared_ptr<connection::connection>& c) override {
                     ioPost(boost::bind(&eventHandler_t::onClose, handler_, c));
                 }

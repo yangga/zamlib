@@ -34,6 +34,9 @@ namespace zam {
 
                 acceptorSocket_.open(endpoint.protocol(), ec);
 
+                if (ec)
+                    throw base::zamException(netError::failed_get_endpoint, ec.message());
+
                 acceptorSocket_.set_option(tcp::no_delay(true));
                 acceptorSocket_.set_option(tcp::acceptor::reuse_address(true));
                 acceptorSocket_.set_option(boost::asio::socket_base::linger(true, 0));

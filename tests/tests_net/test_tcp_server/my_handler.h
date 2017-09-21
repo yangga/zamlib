@@ -20,6 +20,14 @@ public:
         ZAM_LOGD("test1") << __FUNCTION__;
     }
 
+    void onConnect(boost::shared_ptr<connection::connection>& c) override {
+        ZAM_LOGD("test1") << __FUNCTION__;
+    }
+
+    void onConnectFailed(boost::shared_ptr<connection::connection>& c) override {
+        ZAM_LOGD("test1") << __FUNCTION__;
+    }
+
     void onClose(boost::shared_ptr<connection::connection>& c) override {
         ZAM_LOGD("test1") << __FUNCTION__;
     }

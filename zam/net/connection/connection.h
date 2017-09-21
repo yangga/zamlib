@@ -61,6 +61,8 @@ namespace zam {
                 packer_ptr_t packer_;
             };
         }
+
+        using connection_ptr_t = boost::shared_ptr<connection::connection>;
     }
 }
 

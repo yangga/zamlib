@@ -19,6 +19,7 @@ namespace zam {
             invalid_packet,
             failed_bind,
             failed_listen,
+            failed_get_endpoint
         };
 
     }

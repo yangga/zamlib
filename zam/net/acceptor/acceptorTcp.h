@@ -26,6 +26,8 @@ namespace zam {
 
                 ZAMNET_API void startAccept() override;
 
+                Config const& getConfig() const { return cfg_; }
+
             private:
                 void acceptHandler(const boost::system::error_code &ec);
 

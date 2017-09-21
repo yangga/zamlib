@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 
     warehouse::warehouse wh;
     wh.getCipher = []() -> net::cipher_ptr_t {
-        return boost::make_shared<net::cipher::cipherNull>();
+        return nullptr;
     };
     wh.getEventHandler = []() -> net::eventHandler_ptr_t {
         static net::eventHandler_ptr_t s_event_handler(new handler::eventDispatcherSingleThread<my_handler>(*ios));
@@ -50,35 +50,6 @@ int main(int argc, char* argv[]) {
     } catch(std::exception& e) {
         ZAM_LOGE("test1") << "err - " << e.what();
     }
-
-//    net::message msgRecved;
-//    size_t transported = 80;
-//    net::messageIStream istreamRecv(msgRecved, transported);
-//
-//    net::packer::packer* packer;
-//
-//    net::message msgUnpacked;
-//    auto const msgUnpackedLen = packer->unpack(msgUnpacked, istreamRecv);
-//    msgRecved.squash(istreamRecv.readSize(), transported-istreamRecv.readSize());
-
-
-//    net::acceptorCfg<
-//            net::proto::tcp,
-//            net::chiper::dev3,
-//            net::handler
-//            > cfg;
-//
-//    net::acceptor acceptor(ios);
-
-
-//    zam::net::acceptor acceptor(ios);
-//
-//    protocol
-//    cyper (en/decryptor)
-//    parser
-//    handler
-//         single, multi
-//    updateTime <= 이건 공용 service로 올리자
 
     auto do_shomething = [](){
         using namespace std::chrono_literals;
