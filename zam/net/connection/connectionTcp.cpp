@@ -27,7 +27,16 @@ namespace zam {
                 sock_.set_option(boost::asio::socket_base::linger(true, 0));
 
                 offset_ = 0;
+                startRead();
 
+                status_ = status::open;
+            }
+
+            void connectionTcp::startConnect() {
+                sock_.set_option(boost::asio::ip::tcp::no_delay(true));
+                sock_.set_option(boost::asio::socket_base::linger(true, 0));
+
+                offset_ = 0;
                 startRead();
 
                 status_ = status::open;

@@ -28,6 +28,8 @@ namespace zam {
 
                 ZAMNET_API void startAccept() override;
 
+                ZAMNET_API void startConnect() override;
+
                 ZAMNET_API void closing() override;
 
                 ZAMNET_API void send(message& msg, size_t msg_len) override;

@@ -30,6 +30,7 @@ namespace zam {
 
                 virtual endPoint remote_endpoint() = 0;
                 virtual void startAccept() = 0;
+                virtual void startConnect() = 0;
                 virtual void closing() = 0;
                 virtual void send(message& msg, size_t msg_len) = 0;
                 virtual void sendRaw(void* src, size_t src_len) = 0;
