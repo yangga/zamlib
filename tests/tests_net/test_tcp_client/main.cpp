@@ -49,22 +49,18 @@ int main(int argc, char* argv[]) {
     net::connection_ptr_t conn;
     try {
         conn = connector.connect();
-        ZAM_LOGD("test1") << "connected";
+        ZAM_LOGD("test1") << "synchronous connecting is completed";
+
+        ZAM_LOGD("test1") << "try asynchronous connecting for new connection";
+        connector.assignConnections(1);
     } catch(std::exception& e) {
         ZAM_LOGE("test1") << "err - " << e.what();
         return 0;
     }
 
     auto do_shomething = [&](){
-        net::message msg;
-        net::messageOStream os(msg);
-
-        os << std::string("hello world~!");
-        conn->send(os);
-        ZAM_LOGD("test1") << "sent message";
-
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(1s);
+        std::this_thread::sleep_for(3s);
 
         ios->stop();
     };
