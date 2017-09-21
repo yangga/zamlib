@@ -29,10 +29,7 @@ namespace zam {
                 logger() = default;
                 logger(const logger&) = delete;
                 logger(logger&&) = delete;
-				~logger() {
-					if (writer_ && writer_->checkLevel(lv_))
-						flush();
-				}
+				ZAMBASE_API ~logger();
 
                 bool operator! () const BOOST_NOEXCEPT {
                     return (nullptr != writer_);
@@ -59,9 +56,7 @@ namespace zam {
                 logger&& operator=(logger&&) = delete;
 
             private:
-				void flush() {
-					writer_->flush(lv_, ss_.str().c_str());
-				}
+                ZAMBASE_API void flush();
 
             private:
                 level lv_ = level::all;

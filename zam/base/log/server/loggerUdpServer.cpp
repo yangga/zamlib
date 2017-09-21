@@ -13,12 +13,11 @@ namespace zam {
         namespace log {
             namespace server {
 
-                loggerUdpServer::loggerUdpServer(boost::asio::io_service& ios
+                loggerUdpServer::loggerUdpServer(base::io::ioSystem& ios
                         , uint16_t portListen
                         , delegate_recv deleRecv
                 )
-                : ios_(ios)
-                , sock_(ios, udp::endpoint(udp::v4(), portListen))
+                : sock_(ios.getIos(), udp::endpoint(udp::v4(), portListen))
                 , delegateRecv_(deleRecv)
                 {
                 }

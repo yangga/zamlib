@@ -46,6 +46,8 @@ MakeFile
 _CPack_Packages/
 cmake_install.cmake
 CTestTestfile.cmake
+install/
+Win32/
 
 # CPack
 cpack
@@ -55,6 +57,7 @@ CPackSourceConfig.cmake
 # ctest
 Testing/
 DartConfiguration.tcl
+*.dir/
 
 # make install
 install_manifest.txt
@@ -75,4 +78,4 @@ ZamConfig.h
 *.vcxproj
 *.vcxproj.filters
 *.sln
-
+*.vcxproj.user

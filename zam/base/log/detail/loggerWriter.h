@@ -27,24 +27,13 @@ namespace zam {
 
                 void setLevel(level lv) { lv_ = lv; }
 
-				void addSink(sink_t s) {
-					sinks_.push_back(s);
-				}
+				ZAMBASE_API void addSink(sink_t s);
 
                 inline bool checkLevel(level lv) const BOOST_NOEXCEPT {
                     return (lv_ <= lv);
                 }
 
-				void flush(level lvContext, const char* txt) {
-					if (lvContext < lv_)
-						return;
-
-					namespace src = boost::log::sources;
-					namespace keywords = boost::log::keywords;
-
-					src::severity_channel_logger_mt<level> logger(keywords::channel = name_);
-					BOOST_LOG_SEV(logger, lvContext) << txt;
-				}
+				ZAMBASE_API void flush(level lvContext, const char* txt);
 
             private:
                 std::string name_;

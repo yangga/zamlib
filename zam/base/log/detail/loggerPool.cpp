@@ -25,10 +25,12 @@ namespace zam {
             }
 
             loggerPool::~loggerPool() {
-                for (auto itr : writers_) {
+				/// do not destroy writers for just end without collector job.
+				/// when below code is activated, in collectorDefault::moveStoreFile() some exception will come up. (only happens on windows)
+                /*for (auto itr : writers_) {
                     delete itr.second;
                 }
-                writers_.clear();
+                writers_.clear();*/
             }
 
             loggerWriter* loggerPool::alloc(std::string const& name) {

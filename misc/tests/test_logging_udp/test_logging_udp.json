@@ -23,7 +23,7 @@
         "stream" : "udp",
         "level": "trace",
         "url" : "localhost",
-        "port" : 5050,
+        "port" : 7070,
         "unorder" : false
       }
     ]

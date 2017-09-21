@@ -5,6 +5,8 @@
 #ifndef ZAM_BASE_STDAFX_H
 #define ZAM_BASE_STDAFX_H
 
+#include <ZamConfig.h>
+
 #include <boost/config.hpp>
 
 #ifdef BOOST_MSVC
@@ -21,6 +23,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <iostream>
+#include <string>
 
 #ifdef zam_base_shared_EXPORTS
 #define ZAMBASE_API BOOST_SYMBOL_EXPORT
