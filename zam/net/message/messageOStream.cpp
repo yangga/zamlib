@@ -7,8 +7,8 @@
 namespace zam {
     namespace net {
 
-        messageOStream::messageOStream(message& m)
-                : zam::base::stream::streamOutputBuf<message>(m)
+        messageOStream::messageOStream(message& m, size_t offset)
+                : zam::base::stream::streamOutputBuf<message>(m, offset)
         {
         }
 

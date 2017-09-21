@@ -54,29 +54,73 @@ namespace zam {
             }
 
             void connectionTcp::readHandler(const boost::system::error_code& ec, size_t bytes_transferred) {
+                assert(0 < bytes_transferred);
                 offset_ += bytes_transferred;
 
                 if (!ec) {
-                    messageIStream is(msg_, offset_);
-
-                    auto msgUnpacked = boost::make_shared<message>();
                     try {
-                        const auto msgUnpackedLen = packer()->unpack(*msgUnpacked, is);
-                        assert(offset_ >= is.readSize());
-                        offset_ -= is.readSize();
-                        msg_.squash(is.readSize(), is.dataSize()-is.readSize());
+                        if (packer_) {
+                            auto unpackLambda = [this](message& msgUnpacked)
+                            {
+                                messageIStream isUnpack(msg_, offset_);
+                                const auto msgUnpackedLen = packer()->unpack(msgUnpacked, isUnpack);
+                                assert(offset_ >= isUnpack.readSize());
+                                offset_ -= isUnpack.readSize();
+                                msg_.squash(isUnpack.readSize(), isUnpack.dataSize()-isUnpack.readSize());
+                                return msgUnpackedLen;
+                            };
 
-                        ioPost(
-                                boost::bind(
-                                        &handler::eventHandler::onRecv
-                                        , eventHandler()
-                                        , shared_from_this()
-                                        , msgUnpacked
-                                        , msgUnpackedLen
-                                ));
+                            if (cipher_) {
+                                message msgUnpacked;
+                                const auto msgUnpackedLen = unpackLambda(msgUnpacked);
+
+                                auto msgDecrypted = boost::make_shared<message>();
+                                messageIStream isDecrypt(msgUnpacked, msgUnpackedLen);
+                                const auto msgDecryptedLen = cipher_->decrypt(*msgDecrypted, isDecrypt);
+
+                                ioPost(
+                                        boost::bind(
+                                                &handler::eventHandler::onRecv
+                                                , eventHandler()
+                                                , shared_from_this()
+                                                , msgDecrypted
+                                                , msgDecryptedLen
+                                        ));
+                            }
+                            else {
+                                auto msgUnpacked = boost::make_shared<message>();
+                                const auto msgUnpackedLen = unpackLambda(*msgUnpacked);
+
+                                ioPost(
+                                        boost::bind(
+                                                &handler::eventHandler::onRecv
+                                                , eventHandler()
+                                                , shared_from_this()
+                                                , msgUnpacked
+                                                , msgUnpackedLen
+                                        ));
+                            }
+                        }
+                        else {
+                            auto msgToss = boost::make_shared<message>();
+                            messageOStream os(*msgToss);
+                            os.write(msg_.ptr(), offset_);
+
+                            ioPost(
+                                    boost::bind(
+                                            &handler::eventHandler::onRecv
+                                            , eventHandler()
+                                            , shared_from_this()
+                                            , msgToss
+                                            , offset_
+                                    ));
+
+                            offset_ = 0;
+                        }
 
                         startRead();
-                    } catch(zam::base::zamException& e) {
+                    }
+                    catch(zam::base::zamException& e) {
                         if (netError::incompleted_packet == e.errorNo()) {
                             startRead();
                         }
@@ -132,6 +176,68 @@ namespace zam {
                     }
                 }
             }
+
+            void connectionTcp::send(message& msg, size_t msg_len) {
+                try {
+                    if (packer_) {
+                        auto packNsend = [this](message& m, size_t len)
+                        {
+                            message msgPacked;
+                            messageOStream osPack(m, len);
+                            auto msgPackedLen = packer_->pack(msgPacked, osPack);
+                            sendRaw(msgPacked.ptr(), msgPackedLen);
+                        };
+
+                        if (cipher_) {
+                            message msgEncrypted;
+                            messageOStream osEncrypt(msg, msg_len);
+                            auto msgEncryptedLen = cipher_->encrypt(msgEncrypted, osEncrypt);
+
+                            packNsend(msgEncrypted, msgEncryptedLen);
+                        }
+                        else {
+                            packNsend(msg, msg_len);
+                        }
+                    }
+                    else {
+                        sendRaw(msg.ptr(), msg_len);
+                    }
+                } catch(base::zamException& e) {
+                    ZAM_LOGD("default") << "connectionTcp::send exception -"
+                                        << " exception:" << e.errorNo()
+                                        << ", msg:" << e.what();
+                    closing(boost::asio::ip::tcp::socket::shutdown_send);
+                } catch(std::exception& e) {
+                    ZAM_LOGD("default") << "connectionTcp::send exception -"
+                                        << " msg:" << e.what();
+                    closing(boost::asio::ip::tcp::socket::shutdown_send);
+                }
+            }
+
+            void connectionTcp::sendRaw(void* src, size_t src_len) {
+                boost::function<void(const boost::system::error_code& ec, size_t bytes_transferred)> writeLambda (
+                        [s=shared_from_this()](const boost::system::error_code& ec, size_t bytes_transferred) {
+                            s->toChild<connectionTcp>().writeHandler(ec, bytes_transferred);
+                        });
+
+                boost::asio::async_write(
+                        sock_
+                        , boost::asio::buffer(src, src_len)
+                        , strand().wrap(boost::bind(
+                                writeLambda
+                                , boost::asio::placeholders::error
+                                , boost::asio::placeholders::bytes_transferred))
+                );
+            }
+
+            void connectionTcp::writeHandler(const boost::system::error_code& ec, size_t bytes_transferred) {
+                if (!ec) {
+                    return;
+                }
+
+                closing(boost::asio::ip::tcp::socket::shutdown_send);
+            }
+
         }
     }
 }

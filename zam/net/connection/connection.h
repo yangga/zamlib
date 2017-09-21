@@ -31,6 +31,8 @@ namespace zam {
                 virtual endPoint remote_endpoint() = 0;
                 virtual void startAccept() = 0;
                 virtual void closing() = 0;
+                virtual void send(message& msg, size_t msg_len) = 0;
+                virtual void sendRaw(void* src, size_t src_len) = 0;
 
             public:
                 void initialize(warehouse::warehouse& wh) {
@@ -53,7 +55,6 @@ namespace zam {
                 explicit connection(base::io::ioSystem& ios) : base::io::ioObject(ios)
                 {}
 
-            private:
                 cipher_ptr_t cipher_;
                 eventHandler_ptr_t evtHandler_;
                 packer_ptr_t packer_;

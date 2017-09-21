@@ -20,6 +20,7 @@ namespace zam {
 
         };
 
+        using message_ptr_t = boost::shared_ptr<message>;
     }
 }
 

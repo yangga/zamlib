@@ -18,7 +18,7 @@ namespace zam {
         : public zam::base::stream::streamOutputBuf<message>
         {
         public:
-            ZAMNET_API explicit messageOStream(message& m);
+            ZAMNET_API explicit messageOStream(message& m, size_t offset=0);
         };
 
     }
