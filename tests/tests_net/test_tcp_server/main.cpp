@@ -7,7 +7,6 @@
 #include <zam/base/io/ioSystem.h>
 
 #include <zam/net/acceptor/acceptorTcp.h>
-#include <zam/net/cipher/cipherNull.h>
 #include <zam/net/handler/eventDispatcher.h>
 #include <zam/net/packer/packerDefault.h>
 

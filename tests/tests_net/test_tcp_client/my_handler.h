@@ -1,5 +1,5 @@
 //
-// Created by SungWoo Yang on 2017. 9. 19..
+// Created by SungWoo Yang on 2017. 9. 21..
 //
 
 #ifndef ZAMLIB_MY_HANDLER_H
@@ -33,10 +33,7 @@ public:
     }
 
     void onRecv(boost::shared_ptr<connection::connection> &c, boost::shared_ptr<net::message> &msg, size_t length) override {
-        std::string data;
-        net::messageIStream is(*msg, length);
-        is >> data;
-        ZAM_LOGD("test1") << __FUNCTION__ << ", data:" << data;
+        ZAM_LOGD("test1") << __FUNCTION__;
     }
 };
 

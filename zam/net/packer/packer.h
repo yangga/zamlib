@@ -20,7 +20,7 @@ namespace zam {
                 virtual ~packer() = default;
 
                 /// returns : length of out
-                virtual size_t pack(message& out, messageOStream& os) = 0;
+                virtual size_t pack(message& out, messageIStream& is) = 0;
 
                 /// returns : length of out
                 virtual size_t unpack(message& out, messageIStream& is) = 0;

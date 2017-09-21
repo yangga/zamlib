@@ -86,8 +86,10 @@ namespace zam {
                 tcp::resolver::query query(ipAddr, port);
                 auto ep = *resolver.resolve(query, ec);
 
-                if (ec)
+                if (ec) {
+                    ZAM_LOGE("default") << "failed get endpoint. msg:" << ec.message();
                     throw base::zamException(netError::failed_get_endpoint, ec.message());
+                }
 
                 return ep;
             }
@@ -98,7 +100,7 @@ namespace zam {
                     , size_t remainCnt) {
 
                 if (!conn->toChild<connection::connectionTcp>().socket().is_open()){
-                    ZAM_LOGD("default") << "connectorTcp::connectHandler - Connect timed out, ep:" << ep;
+                    ZAM_LOGE("default") << "connectorTcp::connectHandler - Connect timed out, ep:" << ep;
                     conn->toChild<connection::connectionTcp>().socket().close();
                     conn->eventHandler()->onConnectFailed(conn);
                     return false;
@@ -106,7 +108,7 @@ namespace zam {
 
                 if (ec)
                 {
-                    ZAM_LOGD("default") << "connectorTcp::connectHandler - Connect error"
+                    ZAM_LOGE("default") << "connectorTcp::connectHandler - Connect error"
                                         << ", msg:" << ec.message()
                                         << ", ep:" << ep;
                     conn->toChild<connection::connectionTcp>().socket().close();

@@ -24,14 +24,15 @@ namespace zam {
             };
 #pragma pack()
 
-            size_t packerDefault::pack(message& out, messageOStream& os)
+            size_t packerDefault::pack(message& out, messageIStream& is)
             {
-                os << PACKER_DEFAULT_HEADER{PACKER_DEFAULT_ID, static_cast<uint16_t>(os.dataSize())};
+                messageOStream os(out);
+                os << PACKER_DEFAULT_HEADER{PACKER_DEFAULT_ID, static_cast<uint16_t>(is.dataSize())};
 
-                if (!os.writable(os.dataSize()))
+                if (!os.writable(is.dataSize()))
                     throw base::zamException(netError::overflow, "input message is too large");
 
-                os.write(os.buf().ptr(), os.dataSize());
+                os.write(is.buf().ptr(), is.dataSize());
                 return os.dataSize();
             }
 
@@ -51,6 +52,8 @@ namespace zam {
                 messageOStream os(out);
                 if (header.length != os.write(is.current(), header.length))
                     throw base::zamException(netError::overflow, "failed to write large message");
+
+                is.skip(header.length);
 
                 return os.dataSize();
             }

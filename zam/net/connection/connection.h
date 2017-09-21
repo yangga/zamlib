@@ -7,6 +7,7 @@
 
 #include "endPoint.h"
 
+#include "../message/messageOStream.h"
 #include "../warehouse/warehouse.h"
 
 #include <zam/base/io/ioObject.h>
@@ -45,6 +46,10 @@ namespace zam {
                 cipher_ptr_t& cipher() { return cipher_; }
                 eventHandler_ptr_t& eventHandler() { return evtHandler_; }
                 packer_ptr_t& packer() { return packer_; }
+
+                void send(messageOStream const& os) {
+                    send(os.buf(), os.dataSize());
+                }
 
                 template <class CHILD_CONNECTION>
                 CHILD_CONNECTION& toChild() {

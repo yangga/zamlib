@@ -15,7 +15,7 @@ namespace zam {
 
             class packerDefault : public packer {
             public:
-                ZAMNET_API size_t pack(message& out, messageOStream& os) override;
+                ZAMNET_API size_t pack(message& out, messageIStream& is) override;
                 ZAMNET_API size_t unpack(message& out, messageIStream& is) override;
             };
 

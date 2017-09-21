@@ -63,10 +63,10 @@ namespace zam {
             }
 
             void connectionTcp::readHandler(const boost::system::error_code& ec, size_t bytes_transferred) {
-                assert(0 < bytes_transferred);
-                offset_ += bytes_transferred;
-
                 if (!ec) {
+                    assert(0 < bytes_transferred);
+                    offset_ += bytes_transferred;
+
                     try {
                         if (packer_) {
                             auto unpackLambda = [this](message& msgUnpacked)
@@ -192,8 +192,8 @@ namespace zam {
                         auto packNsend = [this](message& m, size_t len)
                         {
                             message msgPacked;
-                            messageOStream osPack(m, len);
-                            auto msgPackedLen = packer_->pack(msgPacked, osPack);
+                            messageIStream isPack(m, len);
+                            auto msgPackedLen = packer_->pack(msgPacked, isPack);
                             sendRaw(msgPacked.ptr(), msgPackedLen);
                         };
 
