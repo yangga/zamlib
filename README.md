@@ -3,7 +3,7 @@
 
 zamlib
 ======
-> Library for game server.
+> C++ multi platform game server libraries. 
 
 Setting
 -------
