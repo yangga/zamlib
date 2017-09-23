@@ -16,8 +16,12 @@
 
 namespace zam {
     namespace net {
+        namespace warehouse {
+            struct warehouse;
+        }
 
         namespace connection {
+
             class connection
                 : public base::io::ioObject
                 , public boost::enable_shared_from_this<connection>
@@ -37,11 +41,7 @@ namespace zam {
                 virtual void sendRaw(void* src, size_t src_len) = 0;
 
             public:
-                void initialize(warehouse::warehouse& wh) {
-                    cipher_     = wh.getCipher();
-                    evtHandler_ = wh.getEventHandler();
-                    packer_     = wh.getPacker();
-                }
+                ZAMNET_API void initialize(warehouse::warehouse& wh);
 
                 cipher_ptr_t& cipher() { return cipher_; }
                 eventHandler_ptr_t& eventHandler() { return evtHandler_; }
@@ -58,8 +58,7 @@ namespace zam {
                 }
 
             protected:
-                explicit connection(base::io::ioSystem& ios) : base::io::ioObject(ios)
-                {}
+                ZAMNET_API explicit connection(base::io::ioSystem& ios);
 
                 cipher_ptr_t cipher_;
                 eventHandler_ptr_t evtHandler_;

@@ -17,7 +17,7 @@ namespace zam {
         namespace handler {
 
             template <class EVENT_HANDLER>
-            class eventDispatcherSingleThread
+            class eventDispatcherSingleThread final
                     : public base::io::ioObject
                     , public eventHandler
             {
@@ -34,23 +34,26 @@ namespace zam {
                 boost::shared_ptr<eventHandler_t>& handlerReal() { return handler_; }
 
             public:
-                void onAccept(boost::shared_ptr<connection::connection>& c) override {
+                void onInitHandler() final {
+                    ioPost(boost::bind(&eventHandler_t::onInitHandler, handler_));
+                }
+                void onAccept(boost::shared_ptr<connection::connection>& c) final {
                     ioPost(boost::bind(&eventHandler_t::onAccept, handler_, c));
                 }
 
-                void onConnect(boost::shared_ptr<connection::connection>& c) override {
+                void onConnect(boost::shared_ptr<connection::connection>& c) final {
                     ioPost(boost::bind(&eventHandler_t::onConnect, handler_, c));
                 }
 
-                void onConnectFailed(boost::shared_ptr<connection::connection>& c) override {
+                void onConnectFailed(boost::shared_ptr<connection::connection>& c) final {
                     ioPost(boost::bind(&eventHandler_t::onConnectFailed, handler_, c));
                 }
 
-                void onClose(boost::shared_ptr<connection::connection>& c) override {
+                void onClose(boost::shared_ptr<connection::connection>& c) final {
                     ioPost(boost::bind(&eventHandler_t::onClose, handler_, c));
                 }
 
-                void onRecv(boost::shared_ptr<connection::connection> &c, boost::shared_ptr<message> &msg, size_t length) override {
+                void onRecv(boost::shared_ptr<connection::connection> &c, boost::shared_ptr<message> &msg, size_t length) final {
                     ioPost(boost::bind(&eventHandler_t::onRecv, handler_, c, msg, length));
                 }
 

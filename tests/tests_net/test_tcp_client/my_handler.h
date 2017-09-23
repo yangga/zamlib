@@ -16,6 +16,10 @@ namespace connection = zam::net::connection;
 class my_handler : public zam::net::handler::eventHandler
 {
 public:
+    void onInitHandler() override {
+        ZAM_LOGT("test1") << __FUNCTION__;
+    }
+
     void onAccept(boost::shared_ptr<connection::connection>& c) override {
         ZAM_LOGT("test1") << __FUNCTION__;
     }

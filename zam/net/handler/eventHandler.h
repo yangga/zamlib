@@ -21,6 +21,7 @@ namespace zam {
             struct eventHandler {
                 virtual ~eventHandler() = default;
 
+                virtual void onInitHandler() = 0;
                 virtual void onAccept(boost::shared_ptr<connection::connection>& c) = 0;
                 virtual void onConnect(boost::shared_ptr<connection::connection>& c) = 0;
                 virtual void onConnectFailed(boost::shared_ptr<connection::connection>& c) = 0;
