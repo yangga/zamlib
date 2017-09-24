@@ -68,7 +68,7 @@ namespace zam {
                     offset_ += bytes_transferred;
 
                     try {
-                        while (0 < offset_) {
+                        do {
                             if (packer_) {
                                 auto unpackLambda = [this](message& msgUnpacked)
                                 {
@@ -127,7 +127,7 @@ namespace zam {
 
                                 offset_ = 0;
                             }
-                        }
+                        }while (0 < offset_);
 
                         startRead();
                     }
