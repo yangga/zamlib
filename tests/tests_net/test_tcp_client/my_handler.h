@@ -15,7 +15,7 @@ namespace connection = zam::net::connection;
 
 enum protocol : zam::net::protocol_t {
     protocol_json = 1000,
-    protocol_struct = 1000
+    protocol_struct = 1001
 };
 
 struct sample_struct_data {
@@ -25,7 +25,7 @@ struct sample_struct_data {
     char d[80] = {0,};
 };
 
-class my_handler : public zam::net::handler::eventHandlerProtocol
+class my_handler final : public zam::net::handler::eventHandlerProtocol
 {
 public:
     void onInitHandler() override {
@@ -34,44 +34,43 @@ public:
         registProtocol(protocol_struct, &my_handler::onPackStruct, this);
     }
 
-    void onAccept(boost::shared_ptr<connection::connection>& c) override {
+    void onAccept(boost::shared_ptr<connection::connection>& c) final {
         ZAM_LOGT("test1") << __FUNCTION__;
     }
 
-    void onConnect(boost::shared_ptr<connection::connection>& c) override {
+    void onConnect(boost::shared_ptr<connection::connection>& c) final {
         ZAM_LOGT("test1") << __FUNCTION__;
     }
 
-    void onConnectFailed(boost::shared_ptr<connection::connection>& c) override {
+    void onConnectFailed(boost::shared_ptr<connection::connection>& c) final {
         ZAM_LOGT("test1") << __FUNCTION__;
     }
 
-    void onClose(boost::shared_ptr<connection::connection>& c) override {
+    void onClose(boost::shared_ptr<connection::connection>& c) final {
         ZAM_LOGT("test1") << __FUNCTION__;
-    }
-
-    void onRecv(boost::shared_ptr<connection::connection> &c, boost::shared_ptr<net::message> &msg, size_t length) override {
-        ZAM_LOGT("test1") << __FUNCTION__;
-
-        std::string data;
-        net::messageIStream is(*msg, length);
-        is >> data;
-        ZAM_LOGD("test1") << __FUNCTION__ << ", recvdata:" << data;
-
-
-        net::message msgSend;
-        net::messageOStream os(msgSend);
-        os << std::string("hello world~!");
-        c->send(os);
     }
 
 private:
     void onPackJson(boost::shared_ptr<connection::connection> &c, const Json::Value& content) {
+        ZAM_LOGD("test1") << __FUNCTION__ << ", " << content.toStyledString();
 
+        /// answering json message
+        Json::Value v;
+        v["id"] = 2004;
+        v["msg"] = "hello server~!";
+        c->sendProtocol(protocol_json, v);
     }
 
     void onPackStruct(boost::shared_ptr<connection::connection> &c, const sample_struct_data& content) {
+        ZAM_LOGD("test1") << __FUNCTION__ << ", " << content.d;
 
+        /// answering structure message
+        sample_struct_data d;
+        d.a = 10;
+        d.b = 20.2;
+        d.c = 30.3;
+        strncpy(d.d, "server", 6);
+        c->sendProtocol(protocol_struct, d);
     }
 };
 

@@ -7,6 +7,7 @@
 
 #include <zam/net/net.h>
 
+#include "../message/messageIStream.h"
 #include "../message/messageOStream.h"
 
 #include <json/value.h>
@@ -19,6 +20,8 @@ namespace zam {
             struct formJson {
                 template <class PROTO_DATA_T>
                 static constexpr bool check_value() { return std::is_base_of<Json::Value, PROTO_DATA_T>::value; }
+
+                ZAMNET_API static void read(Json::Value& out, zam::net::messageIStream& is);
 
                 ZAMNET_API static void write(zam::net::messageOStream& os, const Json::Value& data);
             };

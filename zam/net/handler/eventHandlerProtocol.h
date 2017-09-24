@@ -13,6 +13,8 @@
 
 #include <json/value.h>
 
+#include <boost/bind.hpp>
+
 #include <map>
 
 namespace zam {
@@ -37,16 +39,17 @@ namespace zam {
                         , void(INSTANCE_TYPE::*method)(connection_ptr_t& conn, const PROTOCOL_TYPE& data)
                         , INSTANCE_TYPE* instance)
                 {
-                    std::cout << "registProtocol - type:" << "binary" << std::endl;
-                    return true;
-                }
+                    auto ll = [method, instance](connection_ptr_t& c, boost::shared_ptr<message>& msg, size_t length) {
+                        messageIStream is(*msg, length);
+                        is.skip(sizeof(protocol_t));
+                        PROTOCOL_TYPE parsedData;
+                        proto::proto_form_factory_impl<PROTOCOL_TYPE>::type::read(parsedData, is);
+                        (instance->*method)(c, parsedData);
+                    };
 
-                template <typename INSTANCE_TYPE>
-                bool registProtocol(protocol_t proto
-                        , void(INSTANCE_TYPE::*method)(connection_ptr_t& conn, const Json::Value& data)
-                        , INSTANCE_TYPE* instance)
-                {
-                    std::cout << "registProtocol - type:" << "json" << std::endl;
+                    using namespace boost::placeholders;
+                    msgHandlerCont_.insert(std::make_pair(proto, boost::bind<void>(ll, _1, _2, _3)));
+
                     return true;
                 }
 

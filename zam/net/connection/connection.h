@@ -61,7 +61,7 @@ namespace zam {
                 eventHandler_ptr_t& eventHandler() { return evtHandler_; }
                 packer_ptr_t& packer() { return packer_; }
 
-                void send(messageOStream const& os) {
+                inline void send(messageOStream const& os) {
                     send(os.buf(), os.dataSize());
                 }
 
