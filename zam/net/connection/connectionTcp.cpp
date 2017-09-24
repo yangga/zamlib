@@ -68,63 +68,65 @@ namespace zam {
                     offset_ += bytes_transferred;
 
                     try {
-                        if (packer_) {
-                            auto unpackLambda = [this](message& msgUnpacked)
-                            {
-                                messageIStream isUnpack(msg_, offset_);
-                                const auto msgUnpackedLen = packer()->unpack(msgUnpacked, isUnpack);
-                                assert(offset_ >= isUnpack.readSize());
-                                offset_ -= isUnpack.readSize();
-                                msg_.squash(isUnpack.readSize(), isUnpack.dataSize()-isUnpack.readSize());
-                                return msgUnpackedLen;
-                            };
+                        while (0 < offset_) {
+                            if (packer_) {
+                                auto unpackLambda = [this](message& msgUnpacked)
+                                {
+                                    messageIStream isUnpack(msg_, offset_);
+                                    const auto msgUnpackedLen = packer()->unpack(msgUnpacked, isUnpack);
+                                    assert(offset_ >= isUnpack.readSize());
+                                    offset_ -= isUnpack.readSize();
+                                    msg_.squash(isUnpack.readSize(), isUnpack.dataSize()-isUnpack.readSize());
+                                    return msgUnpackedLen;
+                                };
 
-                            if (cipher_) {
-                                message msgUnpacked;
-                                const auto msgUnpackedLen = unpackLambda(msgUnpacked);
+                                if (cipher_) {
+                                    message msgUnpacked;
+                                    const auto msgUnpackedLen = unpackLambda(msgUnpacked);
 
-                                auto msgDecrypted = boost::make_shared<message>();
-                                messageIStream isDecrypt(msgUnpacked, msgUnpackedLen);
-                                const auto msgDecryptedLen = cipher_->decrypt(*msgDecrypted, isDecrypt);
+                                    auto msgDecrypted = boost::make_shared<message>();
+                                    messageIStream isDecrypt(msgUnpacked, msgUnpackedLen);
+                                    const auto msgDecryptedLen = cipher_->decrypt(*msgDecrypted, isDecrypt);
 
-                                ioPost(
-                                        boost::bind(
-                                                &handler::eventHandler::onRecv
-                                                , eventHandler()
-                                                , shared_from_this()
-                                                , msgDecrypted
-                                                , msgDecryptedLen
-                                        ));
+                                    ioPost(
+                                            boost::bind(
+                                                    &handler::eventHandler::onRecv
+                                                    , eventHandler()
+                                                    , shared_from_this()
+                                                    , msgDecrypted
+                                                    , msgDecryptedLen
+                                            ));
+                                }
+                                else {
+                                    auto msgUnpacked = boost::make_shared<message>();
+                                    const auto msgUnpackedLen = unpackLambda(*msgUnpacked);
+
+                                    ioPost(
+                                            boost::bind(
+                                                    &handler::eventHandler::onRecv
+                                                    , eventHandler()
+                                                    , shared_from_this()
+                                                    , msgUnpacked
+                                                    , msgUnpackedLen
+                                            ));
+                                }
                             }
                             else {
-                                auto msgUnpacked = boost::make_shared<message>();
-                                const auto msgUnpackedLen = unpackLambda(*msgUnpacked);
+                                auto msgToss = boost::make_shared<message>();
+                                messageOStream os(*msgToss);
+                                os.write(msg_.ptr(), offset_);
 
                                 ioPost(
                                         boost::bind(
                                                 &handler::eventHandler::onRecv
                                                 , eventHandler()
                                                 , shared_from_this()
-                                                , msgUnpacked
-                                                , msgUnpackedLen
+                                                , msgToss
+                                                , offset_
                                         ));
+
+                                offset_ = 0;
                             }
-                        }
-                        else {
-                            auto msgToss = boost::make_shared<message>();
-                            messageOStream os(*msgToss);
-                            os.write(msg_.ptr(), offset_);
-
-                            ioPost(
-                                    boost::bind(
-                                            &handler::eventHandler::onRecv
-                                            , eventHandler()
-                                            , shared_from_this()
-                                            , msgToss
-                                            , offset_
-                                    ));
-
-                            offset_ = 0;
                         }
 
                         startRead();
