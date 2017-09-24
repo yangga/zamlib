@@ -20,7 +20,6 @@ namespace zam {
                     evtHandler_->onInitHandler();
             }
 
-
         }
     }
 }

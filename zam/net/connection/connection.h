@@ -5,14 +5,28 @@
 #ifndef ZAMLIB_CONNECTION_H
 #define ZAMLIB_CONNECTION_H
 
+#include <zam/net/net.h>
+
 #include "endPoint.h"
 
 #include "../message/messageOStream.h"
 #include "../warehouse/warehouse.h"
 
+#include "../proto/forms.h"
+
 #include <zam/base/io/ioObject.h>
 
 #include <boost/enable_shared_from_this.hpp>
+
+namespace Json {
+    class Value;
+}
+
+namespace google {
+    namespace protobuf {
+        class Message;
+    }
+}
 
 namespace zam {
     namespace net {
@@ -49,6 +63,17 @@ namespace zam {
 
                 void send(messageOStream const& os) {
                     send(os.buf(), os.dataSize());
+                }
+
+                template <typename PROTO_DATA_T>
+                void sendProtocol(protocol_t proto, const PROTO_DATA_T& data) {
+                    message msg;
+                    messageOStream os(msg);
+
+                    os << proto;
+
+                    proto::proto_form_factory_impl<PROTO_DATA_T>::type::write(os, data);
+                    send(os);
                 }
 
                 template <class CHILD_CONNECTION>

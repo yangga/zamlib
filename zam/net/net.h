@@ -34,4 +34,12 @@
 
 #include "netError.h"
 
+namespace zam {
+    namespace net {
+
+        using protocol_t = uint16_t;
+
+    }
+}
+
 #endif //ZAM_STDAFX_H

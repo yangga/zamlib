@@ -10,19 +10,19 @@
 #include <zam/net/connection/connection.h>
 #include <zam/net/message/message.h>
 
-struct sample_struct_data {
-    int a;
-    float b;
-    double c;
-    char d[80];
-};
-
 namespace net = zam::net;
 namespace connection = zam::net::connection;
 
-enum protocol : zam::net::handler::eventHandlerProtocol::protocol_t {
+enum protocol : zam::net::protocol_t {
     protocol_json = 1000,
     protocol_struct = 1000
+};
+
+struct sample_struct_data {
+    int a = 0;
+    float b = 0;
+    double c = 0;
+    char d[80] = {0,};
 };
 
 class my_handler : public zam::net::handler::eventHandlerProtocol
@@ -37,11 +37,19 @@ public:
     void onAccept(boost::shared_ptr<connection::connection>& c) override {
         ZAM_LOGT("test1") << __FUNCTION__;
 
-        net::message msg;
-        net::messageOStream os(msg);
+        /// sending json message
+        Json::Value v;
+        v["id"] = 1004;
+        v["msg"] = "hello world~!";
+        c->sendProtocol(protocol_json, v);
 
-        os << std::string("welcome to zam world~!");
-        c->send(os);
+        /// sending structure message
+        sample_struct_data d;
+        d.a = 1;
+        d.b = 2.2;
+        d.c = 3.3;
+        strncpy(d.d, "second structure data!", O_TRUNC);
+        c->sendProtocol(protocol_struct, d);
     }
 
     void onConnect(boost::shared_ptr<connection::connection>& c) override {

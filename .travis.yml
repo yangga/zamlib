@@ -20,8 +20,12 @@ addons:
       - g++-6
       - make
       - libjsoncpp-dev
+      - libprotobuf-dev
       #- cmake
       #- libboost-all-dev
+  brew:
+    packages:
+      - protobuf
 
 cache:
   directories:

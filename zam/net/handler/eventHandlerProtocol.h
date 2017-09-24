@@ -21,7 +21,6 @@ namespace zam {
 
             class eventHandlerProtocol : public eventHandler {
             public:
-                using protocol_t = uint16_t;
                 using msgHandlerDelegator = boost::function<void(connection_ptr_t&, boost::shared_ptr<message>&, size_t)>;
 
             protected:
