@@ -14,6 +14,7 @@
 #include <json/value.h>
 
 #include <boost/bind.hpp>
+#include <boost/function.hpp>
 
 #include <map>
 
@@ -28,7 +29,6 @@ namespace zam {
             protected:
                 eventHandlerProtocol() = default;
 
-            public:
                 ZAMNET_API void onRecv(boost::shared_ptr<connection::connection> &c
                         , boost::shared_ptr<message> &msg
                         , size_t length) override;
@@ -36,21 +36,43 @@ namespace zam {
             public:
                 template <typename INSTANCE_TYPE, typename PROTOCOL_TYPE>
                 bool registProtocol(protocol_t proto
-                        , void(INSTANCE_TYPE::*method)(connection_ptr_t& conn, const PROTOCOL_TYPE& data)
+                        , void(INSTANCE_TYPE::*method)(connection_ptr_t& conn, PROTOCOL_TYPE data)
                         , INSTANCE_TYPE* instance)
                 {
+                    static_assert(std::is_member_function_pointer<decltype(method)>::value, "it's not a member function proto handler");
+
                     auto ll = [method, instance](connection_ptr_t& c, boost::shared_ptr<message>& msg, size_t length) {
+                        using type = std::remove_const_t< std::remove_reference_t<PROTOCOL_TYPE> >;
+
                         messageIStream is(*msg, length);
                         is.skip(sizeof(protocol_t));
-                        PROTOCOL_TYPE parsedData;
-                        proto::proto_form_factory_impl<PROTOCOL_TYPE>::type::read(parsedData, is);
+                        type parsedData;
+                        proto::proto_form_factory_impl<type>::type::read(parsedData, is);
                         (instance->*method)(c, parsedData);
                     };
 
                     using namespace boost::placeholders;
-                    msgHandlerCont_.insert(std::make_pair(proto, boost::bind<void>(ll, _1, _2, _3)));
+                    return msgHandlerCont_.insert(std::make_pair(proto, boost::bind<void>(ll, _1, _2, _3))).second;
+                }
 
-                    return true;
+                template <typename PROTOCOL_TYPE>
+                bool registProtocol(protocol_t proto
+                        , void(*fn)(connection_ptr_t&, PROTOCOL_TYPE))
+                {
+                    static_assert(false == std::is_member_function_pointer<decltype(fn)>::value, "it's not a static function proto handler");
+
+                    auto ll = [fn](connection_ptr_t& c, boost::shared_ptr<message>& msg, size_t length) {
+                        using type = std::remove_const_t< std::remove_reference_t<PROTOCOL_TYPE> >;
+
+                        messageIStream is(*msg, length);
+                        is.skip(sizeof(protocol_t));
+                        type parsedData;
+                        proto::proto_form_factory_impl<type>::type::read(parsedData, is);
+                        fn(c, parsedData);
+                    };
+
+                    using namespace boost::placeholders;
+                    return msgHandlerCont_.insert(std::make_pair(proto, boost::bind<void>(ll, _1, _2, _3))).second;
                 }
 
             private:

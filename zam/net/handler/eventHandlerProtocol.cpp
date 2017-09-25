@@ -7,6 +7,7 @@
 #include "../message/messageIStream.h"
 
 #include <zam/base/logger.h>
+#include <zam/base/exception.h>
 
 namespace zam {
     namespace net {
@@ -16,23 +17,31 @@ namespace zam {
                     , boost::shared_ptr<message> &msg
                     , size_t length) {
 
-                messageIStream is(*msg, length);
+                try {
+                    messageIStream is(*msg, length);
 
-                protocol_t proto(0);
-                if (!is.readable(&proto, sizeof(proto))) {
-                    ZAM_LOGD("default") << "packet is too short to read";
+                    protocol_t proto(0);
+                    if (!is.readable(&proto, sizeof(proto))) {
+                        throw base::zamException(netError::invalid_packet, "could not get proto number");
+                    }
+
+                    auto itr = msgHandlerCont_.find(proto);
+                    if (msgHandlerCont_.end() == itr) {
+                        throw base::zamException(netError::invalid_protocol, std::string("invalid protocol - proto:")+std::to_string(proto));
+                    }
+
+                    itr->second(c, msg, length);
+                }
+                catch(base::zamException& e) {
+                    ZAM_LOGD("default") << "proto err - err:" << e.errorNo() << ", msg:" << e.what();
                     c->closing();
-                    return;
+                }
+                catch(std::exception& e) {
+                    ZAM_LOGD("default") << "proto err - msg:" << e.what();
+                    c->closing();
                 }
 
-                auto itr = msgHandlerCont_.find(proto);
-                if (msgHandlerCont_.end() == itr) {
-                    ZAM_LOGD("default") << "invalid protocol - proto:" << proto;
-                    c->closing();
-                    return;
-                }
 
-                itr->second(c, msg, length);
             }
 
         }
