@@ -161,8 +161,8 @@ install:
       fi
 
       pushd ${PROTOBUF_DOWNLOAD_DIR}
-      ./autogen.sh
-      ./configure --prefix=/usr
+      travis_wait 30 ./autogen.sh
+      travis_wait 30 ./configure --prefix=/usr
       travis_wait 30 make -s
       sudo make install
       popd
