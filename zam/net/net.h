@@ -37,7 +37,7 @@
 namespace zam {
     namespace net {
 
-        using protocol_t = uint16_t;
+        using protocol_t = ZAM_PROTOCOL_TYPE;
 
     }
 }
