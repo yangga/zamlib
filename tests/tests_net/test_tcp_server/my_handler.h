@@ -5,7 +5,7 @@
 #ifndef ZAMLIB_MY_HANDLER_H
 #define ZAMLIB_MY_HANDLER_H
 
-#include <zam/net/handler/eventHandlerProtocol.h>
+#include <zam/net/handler/eventHandlerProtocolServer.h>
 
 #include <zam/net/connection/connection.h>
 #include <zam/net/message/message.h>
@@ -25,7 +25,7 @@ struct sample_struct_data {
     char d[80] = {0,};
 };
 
-class my_handler final : public zam::net::handler::eventHandlerProtocol
+class my_handler final : public zam::net::handler::eventHandlerProtocolServer
 {
 public:
     void onInitHandler() final {
@@ -50,14 +50,6 @@ public:
         d.c = 3.3;
         strncpy(d.d, "client", 6);
         c->sendProtocol(protocol_struct, d);
-    }
-
-    void onConnect(boost::shared_ptr<connection::connection>& c) final {
-        ZAM_LOGT("test1") << __FUNCTION__;
-    }
-
-    void onConnectFailed(boost::shared_ptr<connection::connection>& c) final {
-        ZAM_LOGT("test1") << __FUNCTION__;
     }
 
     void onClose(boost::shared_ptr<connection::connection>& c) final {

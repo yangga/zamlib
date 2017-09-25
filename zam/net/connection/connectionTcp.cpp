@@ -155,9 +155,14 @@ namespace zam {
                 boost::system::error_code ec;
                 sock_.shutdown(what, ec);
 
-                if (!ec && status_ == status::open)
-                {
+                if (status_ == status::open) {
                     status_ = status::closing;
+
+                    if (boost::system::errc::not_connected != ec.value()) {
+                        ZAM_LOGW("default") << "shutdown error -"
+                                    << " what:" << what
+                                    << ", msg:" << ec.message();
+                    }
 
                     ioPost(
                             [s=shared_from_this()]() {
@@ -170,21 +175,18 @@ namespace zam {
                 boost::system::error_code ec;
                 sock_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
 
-                if (!ec)
-                {
+                if (status_ != connection::status::close) {
                     status_ = connection::status::close;
+
+                    if (boost::system::errc::not_connected != ec.value()) {
+                        ZAM_LOGW("default") << "shutdown error - " << ec.message();
+                    }
 
                     ioPost(
                             boost::bind(
                                     &handler::eventHandler::onClose
                                     , eventHandler()
                                     , shared_from_this()));
-                }
-                else
-                {
-                    if (boost::system::errc::not_connected != ec.value()) {
-                        ZAM_LOGD("default") << "shutdown error - " << ec.message();
-                    }
                 }
             }
 

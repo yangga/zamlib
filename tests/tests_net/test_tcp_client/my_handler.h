@@ -5,7 +5,7 @@
 #ifndef ZAMLIB_MY_HANDLER_H
 #define ZAMLIB_MY_HANDLER_H
 
-#include <zam/net/handler/eventHandlerProtocol.h>
+#include <zam/net/handler/eventHandlerProtocolClient.h>
 
 #include <zam/net/connection/connection.h>
 #include <zam/net/message/message.h>
@@ -25,17 +25,13 @@ struct sample_struct_data {
     char d[80] = {0,};
 };
 
-class my_handler final : public zam::net::handler::eventHandlerProtocol
+class my_handler final : public zam::net::handler::eventHandlerProtocolClient
 {
 public:
-    void onInitHandler() override {
+    void onInitHandler() final {
         ZAM_LOGT("test1") << __FUNCTION__;
         registProtocol(protocol_json, &my_handler::onPackJson, this);
         registProtocol(protocol_struct, &my_handler::onPackStruct, this);
-    }
-
-    void onAccept(boost::shared_ptr<connection::connection>& c) final {
-        ZAM_LOGT("test1") << __FUNCTION__;
     }
 
     void onConnect(boost::shared_ptr<connection::connection>& c) final {
