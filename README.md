@@ -16,8 +16,9 @@ or
 
 #### # install dependent libraries
 * mac
-  * brew install boost
-  * brew install jsoncpp
+  * brew install boost jsoncpp protobuf
+* ubuntu
+  * sudo apt-get install libboost-all-dev libjsoncpp-dev libprotobuf-dev
 * ...
 
 #### # more help for Windows
@@ -34,7 +35,9 @@ or
 
 Dependency
 -------
+###### Required
 * Boost
 * Jsoncpp
 * JsonValueCaster
-* Google Protobuf (optional)
+###### Optional
+* Google Protobuf
