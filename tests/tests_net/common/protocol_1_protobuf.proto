@@ -1,0 +1,13 @@
+syntax = "proto3";
+package tutorial;
+
+message LoginReq {
+    string id = 1;
+}
+
+message LoginAck {
+    string name = 1;
+    uint64 accNo = 2;
+    uint64 money = 3;
+}
+

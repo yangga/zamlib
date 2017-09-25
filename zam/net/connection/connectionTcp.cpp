@@ -158,7 +158,7 @@ namespace zam {
                 if (status_ == status::open) {
                     status_ = status::closing;
 
-                    if (boost::system::errc::not_connected != ec.value()) {
+                    if (ec && boost::system::errc::not_connected != ec.value()) {
                         ZAM_LOGW("default") << "shutdown error -"
                                     << " what:" << what
                                     << ", msg:" << ec.message();
@@ -178,7 +178,7 @@ namespace zam {
                 if (status_ != connection::status::close) {
                     status_ = connection::status::close;
 
-                    if (boost::system::errc::not_connected != ec.value()) {
+                    if (ec && boost::system::errc::not_connected != ec.value()) {
                         ZAM_LOGW("default") << "shutdown error - " << ec.message();
                     }
 

@@ -8,7 +8,7 @@ include_directories(${PROJECT_SOURCE_DIR} ${ZAMLIB_ROOT} ${JSONCPP_INCLUDE_DIR_R
 set(SOURCE_FILES main.cpp my_handler.h)
 add_executable(test_tcp_server ${SOURCE_FILES})
 
-set(LIBRARY_FILES zam_base_shared zam_net_shared ${Boost_LIBRARIES} ${JSONCPP_LIBRARY})
+set(LIBRARY_FILES zam_base_shared zam_net_shared ${Boost_LIBRARIES} ${JSONCPP_LIBRARY} ${Protobuf_LIBRARIES})
 
 if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4996")   # turn off deprecated warning (latest jsoncpp has lots of deprecated warning)

@@ -22,7 +22,7 @@ namespace zam {
             class streamOutputBuf;
 
             template <class BUFFER>
-            class streamInputBuf : std::streambuf
+            class streamInputBuf : public std::streambuf
             {
                 friend class streamOutputBuf<BUFFER>;
 

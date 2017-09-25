@@ -20,6 +20,9 @@ namespace zam {
 
             using proto_form_sequence = boost::mpl::vector
                     <
+                    #if ZAM_PROTOBUF_ENABLE == true
+                            formProto,
+                    #endif
                             formJson,
 
                             formBinary	// this form must be placed at the end
