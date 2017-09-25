@@ -20,12 +20,9 @@ addons:
       - g++-6
       - make
       - libjsoncpp-dev
-      - libprotobuf-dev
       #- cmake
       #- libboost-all-dev
-  brew:
-    packages:
-      - protobuf
+      #- libprotobuf-dev
 
 cache:
   directories:
@@ -140,10 +137,8 @@ install:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       brew upgrade boost || brew install boost
-    else
-      if [[ "${BOOST_BUILD}" == "true" ]]; then
-        (cd ${BOOST_DIR} && ./bootstrap.sh && sudo ./b2 threading=multi -d0 install)
-      fi
+    elif [[ "${BOOST_BUILD}" == "true" ]]; then
+      (cd ${BOOST_DIR} && ./bootstrap.sh && sudo ./b2 threading=multi -d0 install)
     fi
 
   ############################################################################
@@ -155,10 +150,9 @@ install:
     fi
 
   ############################################################################
-  # Download Protobuf
+  # Install Protobuf
   ############################################################################
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+  - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
       PROTOBUF_DOWNLOAD_DIR="${DEPS_DIR}/protobuf-v${PROTOBUF_VERSION}"
       if [[ -z "$(ls -A ${PROTOBUF_DOWNLOAD_DIR})" ]]; then
         PROTOBUF_URL="https://github.com/yangga/protobuf/archive/v${PROTOBUF_VERSION}.tar.gz"
@@ -166,6 +160,8 @@ install:
       fi
 
       pushd ${PROTOBUF_DOWNLOAD_DIR} && ./autogen.sh && ./configure --prefix=/usr && make -s && sudo make install && popd
+    elif [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+      brew install protobuf
     fi
 
   ############################################################################
