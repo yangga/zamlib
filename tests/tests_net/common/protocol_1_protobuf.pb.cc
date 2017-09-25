@@ -54,13 +54,14 @@ PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTable const
 };
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq, id_),
-  ~0u,  // no _has_bits_
+  0,
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginAck, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginAck, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -68,10 +69,13 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginAck, name_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginAck, accno_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginAck, money_),
+  0,
+  1,
+  2,
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(LoginReq)},
-  { 6, -1, sizeof(LoginAck)},
+  { 0, 6, sizeof(LoginReq)},
+  { 7, 15, sizeof(LoginAck)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -120,12 +124,11 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\031protocol_1_protobuf.proto\022\010tutorial\"\026\n"
-      "\010LoginReq\022\n\n\002id\030\001 \001(\t\"6\n\010LoginAck\022\014\n\004nam"
-      "e\030\001 \001(\t\022\r\n\005accNo\030\002 \001(\004\022\r\n\005money\030\003 \001(\004b\006p"
-      "roto3"
+      "\010LoginReq\022\n\n\002id\030\001 \002(\t\"6\n\010LoginAck\022\014\n\004nam"
+      "e\030\001 \002(\t\022\r\n\005accNo\030\002 \002(\004\022\r\n\005money\030\003 \002(\004"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 125);
+      descriptor, 117);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "protocol_1_protobuf.proto", &protobuf_RegisterTypes);
 }
@@ -162,18 +165,19 @@ LoginReq::LoginReq()
 LoginReq::LoginReq(const LoginReq& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      _has_bits_(from._has_bits_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.id().size() > 0) {
+  if (from.has_id()) {
     id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
   }
   // @@protoc_insertion_point(copy_constructor:tutorial.LoginReq)
 }
 
 void LoginReq::SharedCtor() {
-  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _cached_size_ = 0;
+  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 LoginReq::~LoginReq() {
@@ -214,7 +218,11 @@ void LoginReq::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (has_id()) {
+    GOOGLE_DCHECK(!id_.IsDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited()));
+    (*id_.UnsafeRawStringPointer())->clear();
+  }
+  _has_bits_.Clear();
   _internal_metadata_.Clear();
 }
 
@@ -228,16 +236,16 @@ bool LoginReq::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string id = 1;
+      // required string id = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_id()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
             this->id().data(), static_cast<int>(this->id().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "tutorial.LoginReq.id"));
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "tutorial.LoginReq.id");
         } else {
           goto handle_unusual;
         }
@@ -270,19 +278,20 @@ void LoginReq::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string id = 1;
-  if (this->id().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+  cached_has_bits = _has_bits_[0];
+  // required string id = 1;
+  if (cached_has_bits & 0x00000001u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->id().data(), static_cast<int>(this->id().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
       "tutorial.LoginReq.id");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       1, this->id(), output);
   }
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+  if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+        _internal_metadata_.unknown_fields(), output);
   }
   // @@protoc_insertion_point(serialize_end:tutorial.LoginReq)
 }
@@ -294,20 +303,21 @@ void LoginReq::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string id = 1;
-  if (this->id().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+  cached_has_bits = _has_bits_[0];
+  // required string id = 1;
+  if (cached_has_bits & 0x00000001u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->id().data(), static_cast<int>(this->id().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
       "tutorial.LoginReq.id");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         1, this->id(), target);
   }
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+  if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+        _internal_metadata_.unknown_fields(), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tutorial.LoginReq)
   return target;
@@ -317,18 +327,17 @@ size_t LoginReq::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:tutorial.LoginReq)
   size_t total_size = 0;
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+  if (_internal_metadata_.have_unknown_fields()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+        _internal_metadata_.unknown_fields());
   }
-  // string id = 1;
-  if (this->id().size() > 0) {
+  // required string id = 1;
+  if (has_id()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->id());
   }
-
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -358,8 +367,8 @@ void LoginReq::MergeFrom(const LoginReq& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.id().size() > 0) {
-
+  if (from.has_id()) {
+    set_has_id();
     id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
   }
 }
@@ -379,6 +388,7 @@ void LoginReq::CopyFrom(const LoginReq& from) {
 }
 
 bool LoginReq::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   return true;
 }
 
@@ -389,6 +399,7 @@ void LoginReq::Swap(LoginReq* other) {
 void LoginReq::InternalSwap(LoginReq* other) {
   using std::swap;
   id_.Swap(&other->id_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -401,22 +412,32 @@ void LoginReq::InternalSwap(LoginReq* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // LoginReq
 
-// string id = 1;
+// required string id = 1;
+bool LoginReq::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+void LoginReq::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+void LoginReq::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
 void LoginReq::clear_id() {
   id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clear_has_id();
 }
 const ::std::string& LoginReq::id() const {
   // @@protoc_insertion_point(field_get:tutorial.LoginReq.id)
   return id_.GetNoArena();
 }
 void LoginReq::set_id(const ::std::string& value) {
-  
+  set_has_id();
   id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:tutorial.LoginReq.id)
 }
 #if LANG_CXX11
 void LoginReq::set_id(::std::string&& value) {
-  
+  set_has_id();
   id_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
   // @@protoc_insertion_point(field_set_rvalue:tutorial.LoginReq.id)
@@ -424,31 +445,31 @@ void LoginReq::set_id(::std::string&& value) {
 #endif
 void LoginReq::set_id(const char* value) {
   GOOGLE_DCHECK(value != NULL);
-  
+  set_has_id();
   id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:tutorial.LoginReq.id)
 }
 void LoginReq::set_id(const char* value, size_t size) {
-  
+  set_has_id();
   id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:tutorial.LoginReq.id)
 }
 ::std::string* LoginReq::mutable_id() {
-  
+  set_has_id();
   // @@protoc_insertion_point(field_mutable:tutorial.LoginReq.id)
   return id_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 ::std::string* LoginReq::release_id() {
   // @@protoc_insertion_point(field_release:tutorial.LoginReq.id)
-  
+  clear_has_id();
   return id_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 void LoginReq::set_allocated_id(::std::string* id) {
   if (id != NULL) {
-    
+    set_has_id();
   } else {
-    
+    clear_has_id();
   }
   id_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), id);
   // @@protoc_insertion_point(field_set_allocated:tutorial.LoginReq.id)
@@ -475,10 +496,11 @@ LoginAck::LoginAck()
 LoginAck::LoginAck(const LoginAck& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      _has_bits_(from._has_bits_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.name().size() > 0) {
+  if (from.has_name()) {
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
   ::memcpy(&accno_, &from.accno_,
@@ -488,11 +510,11 @@ LoginAck::LoginAck(const LoginAck& from)
 }
 
 void LoginAck::SharedCtor() {
+  _cached_size_ = 0;
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&accno_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&money_) -
       reinterpret_cast<char*>(&accno_)) + sizeof(money_));
-  _cached_size_ = 0;
 }
 
 LoginAck::~LoginAck() {
@@ -533,10 +555,17 @@ void LoginAck::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&accno_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&money_) -
-      reinterpret_cast<char*>(&accno_)) + sizeof(money_));
+  if (has_name()) {
+    GOOGLE_DCHECK(!name_.IsDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited()));
+    (*name_.UnsafeRawStringPointer())->clear();
+  }
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 6u) {
+    ::memset(&accno_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&money_) -
+        reinterpret_cast<char*>(&accno_)) + sizeof(money_));
+  }
+  _has_bits_.Clear();
   _internal_metadata_.Clear();
 }
 
@@ -550,27 +579,27 @@ bool LoginAck::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string name = 1;
+      // required string name = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_name()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
             this->name().data(), static_cast<int>(this->name().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "tutorial.LoginAck.name"));
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "tutorial.LoginAck.name");
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // uint64 accNo = 2;
+      // required uint64 accNo = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
-
+          set_has_accno();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &accno_)));
@@ -580,11 +609,11 @@ bool LoginAck::MergePartialFromCodedStream(
         break;
       }
 
-      // uint64 money = 3;
+      // required uint64 money = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
-
+          set_has_money();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &money_)));
@@ -620,29 +649,30 @@ void LoginAck::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string name = 1;
-  if (this->name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+  cached_has_bits = _has_bits_[0];
+  // required string name = 1;
+  if (cached_has_bits & 0x00000001u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->name().data(), static_cast<int>(this->name().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
       "tutorial.LoginAck.name");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       1, this->name(), output);
   }
 
-  // uint64 accNo = 2;
-  if (this->accno() != 0) {
+  // required uint64 accNo = 2;
+  if (cached_has_bits & 0x00000002u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->accno(), output);
   }
 
-  // uint64 money = 3;
-  if (this->money() != 0) {
+  // required uint64 money = 3;
+  if (cached_has_bits & 0x00000004u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(3, this->money(), output);
   }
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+  if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+        _internal_metadata_.unknown_fields(), output);
   }
   // @@protoc_insertion_point(serialize_end:tutorial.LoginAck)
 }
@@ -654,65 +684,91 @@ void LoginAck::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string name = 1;
-  if (this->name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+  cached_has_bits = _has_bits_[0];
+  // required string name = 1;
+  if (cached_has_bits & 0x00000001u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->name().data(), static_cast<int>(this->name().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
       "tutorial.LoginAck.name");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         1, this->name(), target);
   }
 
-  // uint64 accNo = 2;
-  if (this->accno() != 0) {
+  // required uint64 accNo = 2;
+  if (cached_has_bits & 0x00000002u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->accno(), target);
   }
 
-  // uint64 money = 3;
-  if (this->money() != 0) {
+  // required uint64 money = 3;
+  if (cached_has_bits & 0x00000004u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(3, this->money(), target);
   }
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+  if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+        _internal_metadata_.unknown_fields(), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tutorial.LoginAck)
   return target;
 }
 
-size_t LoginAck::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:tutorial.LoginAck)
+size_t LoginAck::RequiredFieldsByteSizeFallback() const {
+// @@protoc_insertion_point(required_fields_byte_size_fallback_start:tutorial.LoginAck)
   size_t total_size = 0;
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
-  // string name = 1;
-  if (this->name().size() > 0) {
+  if (has_name()) {
+    // required string name = 1;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->name());
   }
 
-  // uint64 accNo = 2;
-  if (this->accno() != 0) {
+  if (has_accno()) {
+    // required uint64 accNo = 2;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->accno());
   }
 
-  // uint64 money = 3;
-  if (this->money() != 0) {
+  if (has_money()) {
+    // required uint64 money = 3;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->money());
   }
 
+  return total_size;
+}
+size_t LoginAck::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:tutorial.LoginAck)
+  size_t total_size = 0;
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        _internal_metadata_.unknown_fields());
+  }
+  if (((_has_bits_[0] & 0x00000007) ^ 0x00000007) == 0) {  // All required fields are present.
+    // required string name = 1;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->name());
+
+    // required uint64 accNo = 2;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->accno());
+
+    // required uint64 money = 3;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->money());
+
+  } else {
+    total_size += RequiredFieldsByteSizeFallback();
+  }
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -742,15 +798,19 @@ void LoginAck::MergeFrom(const LoginAck& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.name().size() > 0) {
-
-    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
-  }
-  if (from.accno() != 0) {
-    set_accno(from.accno());
-  }
-  if (from.money() != 0) {
-    set_money(from.money());
+  cached_has_bits = from._has_bits_[0];
+  if (cached_has_bits & 7u) {
+    if (cached_has_bits & 0x00000001u) {
+      set_has_name();
+      name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+    }
+    if (cached_has_bits & 0x00000002u) {
+      accno_ = from.accno_;
+    }
+    if (cached_has_bits & 0x00000004u) {
+      money_ = from.money_;
+    }
+    _has_bits_[0] |= cached_has_bits;
   }
 }
 
@@ -769,6 +829,7 @@ void LoginAck::CopyFrom(const LoginAck& from) {
 }
 
 bool LoginAck::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
   return true;
 }
 
@@ -781,6 +842,7 @@ void LoginAck::InternalSwap(LoginAck* other) {
   name_.Swap(&other->name_);
   swap(accno_, other->accno_);
   swap(money_, other->money_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -793,22 +855,32 @@ void LoginAck::InternalSwap(LoginAck* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // LoginAck
 
-// string name = 1;
+// required string name = 1;
+bool LoginAck::has_name() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+void LoginAck::set_has_name() {
+  _has_bits_[0] |= 0x00000001u;
+}
+void LoginAck::clear_has_name() {
+  _has_bits_[0] &= ~0x00000001u;
+}
 void LoginAck::clear_name() {
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clear_has_name();
 }
 const ::std::string& LoginAck::name() const {
   // @@protoc_insertion_point(field_get:tutorial.LoginAck.name)
   return name_.GetNoArena();
 }
 void LoginAck::set_name(const ::std::string& value) {
-  
+  set_has_name();
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:tutorial.LoginAck.name)
 }
 #if LANG_CXX11
 void LoginAck::set_name(::std::string&& value) {
-  
+  set_has_name();
   name_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
   // @@protoc_insertion_point(field_set_rvalue:tutorial.LoginAck.name)
@@ -816,60 +888,80 @@ void LoginAck::set_name(::std::string&& value) {
 #endif
 void LoginAck::set_name(const char* value) {
   GOOGLE_DCHECK(value != NULL);
-  
+  set_has_name();
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:tutorial.LoginAck.name)
 }
 void LoginAck::set_name(const char* value, size_t size) {
-  
+  set_has_name();
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:tutorial.LoginAck.name)
 }
 ::std::string* LoginAck::mutable_name() {
-  
+  set_has_name();
   // @@protoc_insertion_point(field_mutable:tutorial.LoginAck.name)
   return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 ::std::string* LoginAck::release_name() {
   // @@protoc_insertion_point(field_release:tutorial.LoginAck.name)
-  
+  clear_has_name();
   return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 void LoginAck::set_allocated_name(::std::string* name) {
   if (name != NULL) {
-    
+    set_has_name();
   } else {
-    
+    clear_has_name();
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
   // @@protoc_insertion_point(field_set_allocated:tutorial.LoginAck.name)
 }
 
-// uint64 accNo = 2;
+// required uint64 accNo = 2;
+bool LoginAck::has_accno() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+void LoginAck::set_has_accno() {
+  _has_bits_[0] |= 0x00000002u;
+}
+void LoginAck::clear_has_accno() {
+  _has_bits_[0] &= ~0x00000002u;
+}
 void LoginAck::clear_accno() {
   accno_ = GOOGLE_ULONGLONG(0);
+  clear_has_accno();
 }
 ::google::protobuf::uint64 LoginAck::accno() const {
   // @@protoc_insertion_point(field_get:tutorial.LoginAck.accNo)
   return accno_;
 }
 void LoginAck::set_accno(::google::protobuf::uint64 value) {
-  
+  set_has_accno();
   accno_ = value;
   // @@protoc_insertion_point(field_set:tutorial.LoginAck.accNo)
 }
 
-// uint64 money = 3;
+// required uint64 money = 3;
+bool LoginAck::has_money() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+void LoginAck::set_has_money() {
+  _has_bits_[0] |= 0x00000004u;
+}
+void LoginAck::clear_has_money() {
+  _has_bits_[0] &= ~0x00000004u;
+}
 void LoginAck::clear_money() {
   money_ = GOOGLE_ULONGLONG(0);
+  clear_has_money();
 }
 ::google::protobuf::uint64 LoginAck::money() const {
   // @@protoc_insertion_point(field_get:tutorial.LoginAck.money)
   return money_;
 }
 void LoginAck::set_money(::google::protobuf::uint64 value) {
-  
+  set_has_money();
   money_ = value;
   // @@protoc_insertion_point(field_set:tutorial.LoginAck.money)
 }

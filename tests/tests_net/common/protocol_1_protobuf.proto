@@ -1,13 +1,13 @@
-syntax = "proto3";
+syntax = "proto2";
 package tutorial;
 
 message LoginReq {
-    string id = 1;
+    required string id = 1;
 }
 
 message LoginAck {
-    string name = 1;
-    uint64 accNo = 2;
-    uint64 money = 3;
+    required string name = 1;
+    required uint64 accNo = 2;
+    required uint64 money = 3;
 }
 
