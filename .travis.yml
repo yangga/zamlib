@@ -38,16 +38,17 @@ cache:
     - ${TRAVIS_BUILD_DIR}/deps/boost-1.61.0
     - ${TRAVIS_BUILD_DIR}/deps/boost-1.62.0
     - ${TRAVIS_BUILD_DIR}/deps/boost-1.63.0
+    - ${TRAVIS_BUILD_DIR}/deps/protobuf-3.4.0
 
 matrix:
   include:
     # GCC=6, Boost=default
     - os: linux
-      env: UNIT_TESTS=true COMPILER=g++-6 ENABLE_MEMCHECK=true BOOST_VERSION=default BOOST_BUILD=true
+      env: UNIT_TESTS=true COMPILER=g++-6 ENABLE_MEMCHECK=true BOOST_VERSION=default BOOST_BUILD=true PROTOBUF_VERSION=default
       compiler: gcc
 
     - os: osx
-      env: UNIT_TESTS=true COMPILER=g++ BOOST_VERSION=default BOOST_BUILD=true
+      env: UNIT_TESTS=true COMPILER=g++ BOOST_VERSION=default BOOST_BUILD=true PROTOBUF_VERSION=default
       osx_image: xcode8.3.3
       compiler: gcc
 
@@ -67,6 +68,7 @@ install:
   ############################################################################
   - if [[ "${LLVM_VERSION}" == "default" ]]; then LLVM_VERSION=3.9.0; fi
   - if [[ "${BOOST_VERSION}" == "default" ]]; then BOOST_VERSION=1.63.0; fi
+  - if [[ "${PROTOBUF_VERSION}" == "default" ]]; then PROTOBUF_VERSION=3.4.0; fi
 
   - if [[ "${COMPILER}" != "" ]]; then export CXX=${COMPILER}; fi
 
@@ -150,6 +152,20 @@ install:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       brew upgrade jsoncpp || brew install jsoncpp
+    fi
+
+  ############################################################################
+  # Download Protobuf
+  ############################################################################
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      PROTOBUF_DOWNLOAD_DIR="${DEPS_DIR}/protobuf-v${PROTOBUF_VERSION}"
+      if [[ -z "$(ls -A ${PROTOBUF_DOWNLOAD_DIR})" ]]; then
+        PROTOBUF_URL="https://github.com/yangga/protobuf/archive/v${PROTOBUF_VERSION}.tar.gz"
+        travis_retry wget --quiet -O - ${PROTOBUF_URL}      | tar --strip-components=1 -xJ -C ${PROTOBUF_DOWNLOAD_DIR}
+      fi
+
+      pushd ${PROTOBUF_DOWNLOAD_DIR} && ./autogen.sh && ./configure --prefix=/usr && make && sudo make install && popd
     fi
 
   ############################################################################
