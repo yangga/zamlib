@@ -85,10 +85,10 @@ install:
   ############################################################################
   # If you want remove all caches, just uncomment below commands
   ############################################################################
-    - |
-      rm -rf ${BOOST_DIR}
-      rm -rf ${LLVM_DIR}
-      rm -rf ${PROTOBUF_DIR} 
+  - |
+    rm -rf ${BOOST_DIR}
+    rm -rf ${LLVM_DIR}
+    rm -rf ${PROTOBUF_DIR}
 
   ############################################################################
   # Install a recent CMake
