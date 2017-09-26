@@ -67,16 +67,20 @@ install:
   ############################################################################
   - |
     BOOST_DIR=${DEPS_DIR}/boost-${BOOST_VERSION}
+    BOOST_DIR_DOWNLOAD=${BOOST_DIR}_download
     LLVM_DIR=${DEPS_DIR}/llvm-${LLVM_VERSION}
-    PROTOBUF_DOWNLOAD_DIR="${DEPS_DIR}/protobuf-v${PROTOBUF_VERSION}"
+    LLVM_DIR_DOWNLOAD=${LLVM_DIR}_download
+    PROTOBUF_DIR=${DEPS_DIR}/protobuf-v${PROTOBUF_VERSION}
+    PROTOBUF_DIR_DOWNLOAD=${PROTOBUF_DIR}_download
 
 
   ############################################################################
   # If you want remove all caches, just uncomment below commands
   ############################################################################
-#  - |
-#    rm -rf ${BOOST_DIR}
-#    rm -rf ${PROTOBUF_DOWNLOAD_DIR}
+  - |
+    rm -rf ${BOOST_DIR}
+    rm -rf ${LLVM_DIR}
+    rm -rf ${PROTOBUF_DIR_DOWNLOAD}
 
 
   ############################################################################
@@ -111,14 +115,17 @@ install:
         LIBCXX_URL="http://llvm.org/releases/${LLVM_VERSION}/libcxx-${LLVM_VERSION}.src.tar.xz"
         LIBCXXABI_URL="http://llvm.org/releases/${LLVM_VERSION}/libcxxabi-${LLVM_VERSION}.src.tar.xz"
         CLANG_URL="http://llvm.org/releases/${LLVM_VERSION}/clang+llvm-${LLVM_VERSION}-x86_64-linux-gnu-ubuntu-14.04.tar.xz"
-        mkdir -p ${LLVM_DIR} ${LLVM_DIR}/build ${LLVM_DIR}/projects/libcxx ${LLVM_DIR}/projects/libcxxabi ${LLVM_DIR}/clang
-        travis_retry wget --quiet -O - ${LLVM_URL}      | tar --strip-components=1 -xJ -C ${LLVM_DIR}
-        travis_retry wget --quiet -O - ${LIBCXX_URL}    | tar --strip-components=1 -xJ -C ${LLVM_DIR}/projects/libcxx
-        travis_retry wget --quiet -O - ${LIBCXXABI_URL} | tar --strip-components=1 -xJ -C ${LLVM_DIR}/projects/libcxxabi
-        travis_retry wget --quiet -O - ${CLANG_URL}     | tar --strip-components=1 -xJ -C ${LLVM_DIR}/clang
-        (cd ${LLVM_DIR}/build && cmake .. -DCMAKE_INSTALL_PREFIX=${LLVM_DIR}/install -DCMAKE_CXX_COMPILER=clang++)
-        (cd ${LLVM_DIR}/build/projects/libcxx && make install -j2)
-        (cd ${LLVM_DIR}/build/projects/libcxxabi && make install -j2)
+        mkdir -p ${LLVM_DIR_DOWNLOAD} ${LLVM_DIR_DOWNLOAD}/build ${LLVM_DIR_DOWNLOAD}/projects/libcxx ${LLVM_DIR_DOWNLOAD}/projects/libcxxabi ${LLVM_DIR_DOWNLOAD}/clang
+        travis_retry wget --quiet -O - ${LLVM_URL}      | tar --strip-components=1 -xJ -C ${LLVM_DIR_DOWNLOAD}
+        travis_retry wget --quiet -O - ${LIBCXX_URL}    | tar --strip-components=1 -xJ -C ${LLVM_DIR_DOWNLOAD}/projects/libcxx
+        travis_retry wget --quiet -O - ${LIBCXXABI_URL} | tar --strip-components=1 -xJ -C ${LLVM_DIR_DOWNLOAD}/projects/libcxxabi
+        travis_retry wget --quiet -O - ${CLANG_URL}     | tar --strip-components=1 -xJ -C ${LLVM_DIR_DOWNLOAD}/clang
+        (cd ${LLVM_DIR_DOWNLOAD}/build && cmake .. -DCMAKE_INSTALL_PREFIX=${LLVM_DIR_DOWNLOAD}/install -DCMAKE_CXX_COMPILER=clang++)
+        (cd ${LLVM_DIR_DOWNLOAD}/build/projects/libcxx && make install -j2)
+        (cd ${LLVM_DIR_DOWNLOAD}/build/projects/libcxxabi && make install -j2)
+
+        cd ${DEPS_DIR}
+        mv ${LLVM_DIR_DOWNLOAD} ${LLVM_DIR}
       fi
       export CXXFLAGS="-nostdinc++ -isystem ${LLVM_DIR}/install/include/c++/v1"
       export LDFLAGS="-L ${LLVM_DIR}/install/lib -l c++ -l c++abi"
@@ -136,11 +143,11 @@ install:
         if [[ -z "$(ls -A ${BOOST_DIR})" ]]; then
           if [[ "${BOOST_VERSION}" == "trunk" ]]; then
             BOOST_URL="http://github.com/boostorg/boost.git"
-            travis_retry git clone --depth 1 --recursive --quiet ${BOOST_URL} ${BOOST_DIR} || exit 1
+            travis_retry git clone --depth 1 --recursive --quiet ${BOOST_URL} ${BOOST_DIR_DOWNLOAD} || exit 1
           else
             BOOST_URL="http://sourceforge.net/projects/boost/files/boost/${BOOST_VERSION}/boost_${BOOST_VERSION//\./_}.tar.gz"
-            mkdir -p ${BOOST_DIR}
-            { travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xz -C ${BOOST_DIR}; } || exit 1
+            mkdir -p ${BOOST_DIR_DOWNLOAD}
+            { travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xz -C ${BOOST_DIR_DOWNLOAD}; } || exit 1
           fi
           # Make sure we don't conflict with the Hana shipped with Boost
           rm -rf ${BOOST_ROOT}/include/boost/{hana,hana.hpp}
@@ -155,9 +162,13 @@ install:
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       brew upgrade boost || brew install boost
     elif [[ "${BOOST_BUILD}" == "true" ]]; then
-      pushd ${BOOST_DIR}
-      travis_wait 30 ./bootstrap.sh
-      popd
+      if [[ -z "$(ls -A ${BOOST_DIR})" ]]; then
+        pushd ${BOOST_DIR_DOWNLOAD}
+        travis_wait 30 ./bootstrap.sh
+        popd
+
+        mv ${BOOST_DIR_DOWNLOAD} ${BOOST_DIR}
+      fi
     fi
 
   - |
@@ -181,18 +192,24 @@ install:
   ############################################################################
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      if [[ -z "$(ls -A ${PROTOBUF_DOWNLOAD_DIR})" ]]; then
+      if [[ -z "$(ls -A ${PROTOBUF_DIR})" ]]; then
         PROTOBUF_URL="https://github.com/google/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-cpp-${PROTOBUF_VERSION}.tar.gz"
-        mkdir -p ${PROTOBUF_DOWNLOAD_DIR}
-        { travis_retry wget --quiet -O - ${PROTOBUF_URL} | tar --strip-components=1 -xz -C ${PROTOBUF_DOWNLOAD_DIR}; } || exit 1
+        mkdir -p ${PROTOBUF_DIR_DOWNLOAD}
+        { travis_retry wget --quiet -O - ${PROTOBUF_URL} | tar --strip-components=1 -xz -C ${PROTOBUF_DIR_DOWNLOAD}; } || exit 1
+
+        pushd ${PROTOBUF_DIR_DOWNLOAD}
+        ./autogen.sh
+        ./configure --prefix=/usr
+        make -s
+        popd
+
+        mv ${PROTOBUF_DIR_DOWNLOAD} ${PROTOBUF_DIR}
       fi
 
-      pushd ${PROTOBUF_DOWNLOAD_DIR}
-      ./autogen.sh
-      ./configure --prefix=/usr
-      make -s
+      pushd ${PROTOBUF_DIR}
       sudo make install
       popd
+
     elif [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       brew install protobuf
     fi
