@@ -139,8 +139,8 @@ install:
       brew upgrade boost || brew install boost
     elif [[ "${BOOST_BUILD}" == "true" ]]; then
       pushd ${BOOST_DIR}
-      ./bootstrap.sh
-      sudo ./b2 threading=multi -d0 install
+      travis_wait 30 ./bootstrap.sh
+      travis_wait 30 sudo ./b2 threading=multi -d0 install
       popd
     fi
 
