@@ -145,7 +145,7 @@ install:
     fi
 
   - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ] && [ "${BOOST_BUILD}" == "true" ]]; then
+    if [ "${TRAVIS_OS_NAME}" == "linux" ] && [ "${BOOST_BUILD}" == "true" ]; then
       pushd ${BOOST_DIR}
       travis_wait 30 sudo ./b2 threading=multi -d0 install
       popd
