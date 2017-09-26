@@ -1,4 +1,5 @@
 add_subdirectory(test_buf)
+add_subdirectory(test_container)
 add_subdirectory(test_logging)
 add_subdirectory(test_logging_udp)
 add_subdirectory(test_scheduler)
