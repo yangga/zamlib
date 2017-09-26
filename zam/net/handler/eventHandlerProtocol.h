@@ -34,15 +34,18 @@ namespace zam {
                         , size_t length) override;
 
             public:
+                /// heap alive handler
                 template <typename INSTANCE_TYPE, typename PROTOCOL_TYPE>
                 bool registProtocol(protocol_t proto
                         , void(INSTANCE_TYPE::*method)(connection_ptr_t& conn, PROTOCOL_TYPE data)
                         , INSTANCE_TYPE* instance);
 
+                /// static handler
                 template <typename PROTOCOL_TYPE>
                 bool registProtocol(protocol_t proto
                         , void(*fn)(connection_ptr_t&, PROTOCOL_TYPE));
 
+                /// functional handler
                 ZAMNET_API bool registProtocol(protocol_t proto, delegator_t fn);
 
             private:
@@ -60,16 +63,17 @@ namespace zam {
                     , void(INSTANCE_TYPE::*method)(connection_ptr_t& conn, PROTOCOL_TYPE data)
                     , INSTANCE_TYPE* instance)
             {
+                static_assert(std::is_base_of<eventHandler, INSTANCE_TYPE>::value, "event handler must be child of zam::net::eventHandler");
                 static_assert(std::is_member_function_pointer<decltype(method)>::value, "it's not a member function proto handler");
 
-                auto ll = [method, instance](connection_ptr_t& c, boost::shared_ptr<message>& msg, size_t length) {
+                auto ll = [method, spIns=instance->shared_from_this()](connection_ptr_t& c, boost::shared_ptr<message>& msg, size_t length) {
                     using type = std::remove_const_t< std::remove_reference_t<PROTOCOL_TYPE> >;
 
                     messageIStream is(*msg, length);
                     is.skip(sizeof(protocol_t));
                     type parsedData;
                     proto::proto_form_factory_impl<type>::type::read(parsedData, is);
-                    (instance->*method)(c, parsedData);
+                    (((INSTANCE_TYPE*)spIns.get())->*method)(c, parsedData);
                 };
 
                 using namespace boost::placeholders;
