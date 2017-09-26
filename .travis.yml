@@ -166,9 +166,11 @@ install:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
       PROTOBUF_DOWNLOAD_DIR="${DEPS_DIR}/protobuf-v${PROTOBUF_VERSION}"
+      rm -rf ${PROTOBUF_DOWNLOAD_DIR}
       if [[ -z "$(ls -A ${PROTOBUF_DOWNLOAD_DIR})" ]]; then
-        PROTOBUF_URL="https://github.com/yangga/protobuf/archive/v${PROTOBUF_VERSION}.tar.gz"
-        travis_retry wget --quiet -O - ${PROTOBUF_URL}      | tar --strip-components=1 -xJ -C ${PROTOBUF_DOWNLOAD_DIR}
+        PROTOBUF_URL="https://github.com/google/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-cpp-${PROTOBUF_VERSION}.tar.gz"
+        mkdir -p ${PROTOBUF_DOWNLOAD_DIR}
+        { travis_retry wget --quiet -O - ${PROTOBUF_URL} | tar --strip-components=1 -xz -C ${PROTOBUF_DOWNLOAD_DIR}; } || exit 1
       fi
 
       pushd ${PROTOBUF_DOWNLOAD_DIR}
