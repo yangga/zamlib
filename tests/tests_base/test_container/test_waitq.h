@@ -39,7 +39,7 @@ void test_waitq() {
         // wait to pushed data
         if (!q.pop(txt))
             break;
-        
+
         std::cout << txt << std::endl;
     }
     std::cout << "======================" << std::endl;
