@@ -23,6 +23,7 @@ namespace zam {
                 explicit scheduler(io::ioObject& ioo);
 
                 void once(delegate_t fn, boost::posix_time::time_duration dur);
+                void loop(delegate_t fn, boost::posix_time::time_duration dur);
 
             private:
                 io::ioObject& ioo_;
