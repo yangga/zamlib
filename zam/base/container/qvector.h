@@ -5,6 +5,7 @@
 #ifndef ZAMLIB_QVECTOR_H
 #define ZAMLIB_QVECTOR_H
 
+#include <cstdlib>
 #include <algorithm>
 #include <vector>
 
