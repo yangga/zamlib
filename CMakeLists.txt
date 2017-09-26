@@ -12,6 +12,10 @@ if(NOT DEFINED ZAM_BUF_SIZE)
     set(ZAM_BUF_SIZE 8192)
 endif()
 
+if(NOT DEFINED ZAM_PROTOCOL_TYPE)
+    set(ZAM_PROTOCOL_TYPE uint16_t)
+endif()
+
 # output path
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -20,13 +24,6 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 
 set(ZAMLIB_ROOT ${PROJECT_BINARY_DIR})
 set(ROOT_INSTALL_PATH ${PROJECT_NAME})
-
-# configure a header file to pass some of the CMake settings
-# to the source code
-configure_file (
-        "${PROJECT_SOURCE_DIR}/ZamConfig.h.in"
-        "${PROJECT_BINARY_DIR}/ZamConfig.h"
-)
 
 # setup directory where we should look for cmake files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -38,9 +35,11 @@ set(Boost_USE_STATIC_LIBS        ON)
 set(Boost_USE_STATIC_RUNTIME    OFF)
 find_package(Boost 1.55 REQUIRED COMPONENTS date_time filesystem iostreams system serialization log log_setup thread)
 if(Boost_FOUND)
+    set(ZAM_BOOST_ENABLE true)
 	include_directories(${Boost_INCLUDE_DIRS})
 	link_directories(${Boost_LIBRARY_DIRS})
 else(Boost_FOUND)
+    set(ZAM_BOOST_ENABLE false)
 	if(MSVC)
 		message("You need to add entries - BOOST_INCLUDEDIR, BOOST_LIBRARYDIR, BOOST_ROOT")
 	else(MSVC)
@@ -58,7 +57,21 @@ else(JSONCPP_FOUND)
 		message(FATAL_ERROR "you need to jsoncpp library")
 	endif(MSVC)
 endif(JSONCPP_FOUND)
+# Protobuf
+find_package(Protobuf)
+if(PROTOBUF_FOUND)
+    set(ZAM_PROTOBUF_ENABLE true)
+    include_directories(${PROTOBUF_INCLUDE_DIRS})
+else(PROTOBUF_FOUND)
+    set(ZAM_PROTOBUF_ENABLE false)
+endif(PROTOBUF_FOUND)
 
+# configure a header file to pass some of the CMake settings
+# to the source code
+configure_file (
+        "${PROJECT_SOURCE_DIR}/ZamConfig.h.in"
+        "${PROJECT_BINARY_DIR}/ZamConfig.h"
+)
 
 include_directories ("${PROJECT_SOURCE_DIR}")
 include_directories ("${LIBRARY_OUTPUT_PATH}")

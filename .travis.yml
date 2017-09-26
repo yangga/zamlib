@@ -22,6 +22,7 @@ addons:
       - libjsoncpp-dev
       #- cmake
       #- libboost-all-dev
+      #- libprotobuf-dev
 
 cache:
   directories:
@@ -34,16 +35,17 @@ cache:
     - ${TRAVIS_BUILD_DIR}/deps/boost-1.61.0
     - ${TRAVIS_BUILD_DIR}/deps/boost-1.62.0
     - ${TRAVIS_BUILD_DIR}/deps/boost-1.63.0
+    - ${TRAVIS_BUILD_DIR}/deps/protobuf-v3.4.0
 
 matrix:
   include:
     # GCC=6, Boost=default
     - os: linux
-      env: UNIT_TESTS=true COMPILER=g++-6 ENABLE_MEMCHECK=true BOOST_VERSION=default BOOST_BUILD=true
+      env: UNIT_TESTS=true COMPILER=g++-6 ENABLE_MEMCHECK=true BOOST_VERSION=default BOOST_BUILD=true PROTOBUF_VERSION=default
       compiler: gcc
 
     - os: osx
-      env: UNIT_TESTS=true COMPILER=g++ BOOST_VERSION=default BOOST_BUILD=true
+      env: UNIT_TESTS=true COMPILER=g++ BOOST_VERSION=default BOOST_BUILD=true PROTOBUF_VERSION=default
       osx_image: xcode8.3.3
       compiler: gcc
 
@@ -52,17 +54,37 @@ matrix:
       - env: UNIT_TESTS=true LLVM_VERSION=default BOOST_VERSION=trunk
 
 install:
+  - echo =[INSTALL]===========================================================
   ############################################################################
   # All the dependencies are installed in ${TRAVIS_BUILD_DIR}/deps/
   ############################################################################
-  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
-  - mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
+  - |
+    DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+    mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
+
+  ############################################################################
+  # Defines components variables
+  ############################################################################
+  - |
+    BOOST_DIR=${DEPS_DIR}/boost-${BOOST_VERSION}
+    LLVM_DIR=${DEPS_DIR}/llvm-${LLVM_VERSION}
+    PROTOBUF_DOWNLOAD_DIR="${DEPS_DIR}/protobuf-v${PROTOBUF_VERSION}"
+
+
+  ############################################################################
+  # If you want remove all caches, just uncomment below commands
+  ############################################################################
+#  - |
+#    rm -rf ${BOOST_DIR}
+#    rm -rf ${PROTOBUF_DOWNLOAD_DIR}
+
 
   ############################################################################
   # Setup default versions and override compiler if needed
   ############################################################################
   - if [[ "${LLVM_VERSION}" == "default" ]]; then LLVM_VERSION=3.9.0; fi
   - if [[ "${BOOST_VERSION}" == "default" ]]; then BOOST_VERSION=1.63.0; fi
+  - if [[ "${PROTOBUF_VERSION}" == "default" ]]; then PROTOBUF_VERSION=3.4.0; fi
 
   - if [[ "${COMPILER}" != "" ]]; then export CXX=${COMPILER}; fi
 
@@ -84,7 +106,6 @@ install:
   ############################################################################
   - |
     if [[ "${LLVM_VERSION}" != "" ]]; then
-      LLVM_DIR=${DEPS_DIR}/llvm-${LLVM_VERSION}
       if [[ -z "$(ls -A ${LLVM_DIR})" ]]; then
         LLVM_URL="http://llvm.org/releases/${LLVM_VERSION}/llvm-${LLVM_VERSION}.src.tar.xz"
         LIBCXX_URL="http://llvm.org/releases/${LLVM_VERSION}/libcxx-${LLVM_VERSION}.src.tar.xz"
@@ -112,7 +133,6 @@ install:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
       if [[ "${BOOST_VERSION}" != "" ]]; then
-        BOOST_DIR=${DEPS_DIR}/boost-${BOOST_VERSION}
         if [[ -z "$(ls -A ${BOOST_DIR})" ]]; then
           if [[ "${BOOST_VERSION}" == "trunk" ]]; then
             BOOST_URL="http://github.com/boostorg/boost.git"
@@ -134,11 +154,19 @@ install:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       brew upgrade boost || brew install boost
-    else
-      if [[ "${BOOST_BUILD}" == "true" ]]; then
-        (cd ${BOOST_DIR} && ./bootstrap.sh && sudo ./b2 threading=multi -d0 install)
-      fi
+    elif [[ "${BOOST_BUILD}" == "true" ]]; then
+      pushd ${BOOST_DIR}
+      travis_wait 30 ./bootstrap.sh
+      popd
     fi
+
+  - |
+    if [ "${TRAVIS_OS_NAME}" == "linux" ] && [ "${BOOST_BUILD}" == "true" ]; then
+      pushd ${BOOST_DIR}
+      travis_wait 30 sudo ./b2 threading=multi -d0 install
+      popd
+    fi
+
 
   ############################################################################
   # Install Jsoncpp.Build
@@ -147,6 +175,28 @@ install:
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       brew upgrade jsoncpp || brew install jsoncpp
     fi
+
+  ############################################################################
+  # Install Protobuf
+  ############################################################################
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      if [[ -z "$(ls -A ${PROTOBUF_DOWNLOAD_DIR})" ]]; then
+        PROTOBUF_URL="https://github.com/google/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-cpp-${PROTOBUF_VERSION}.tar.gz"
+        mkdir -p ${PROTOBUF_DOWNLOAD_DIR}
+        { travis_retry wget --quiet -O - ${PROTOBUF_URL} | tar --strip-components=1 -xz -C ${PROTOBUF_DOWNLOAD_DIR}; } || exit 1
+      fi
+
+      pushd ${PROTOBUF_DOWNLOAD_DIR}
+      ./autogen.sh
+      ./configure --prefix=/usr
+      make -s
+      sudo make install
+      popd
+    elif [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+      brew install protobuf
+    fi
+
 
   ############################################################################
   # Install a recent Doxygen

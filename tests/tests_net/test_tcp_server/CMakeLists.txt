@@ -9,6 +9,9 @@ set(SOURCE_FILES main.cpp my_handler.h)
 add_executable(test_tcp_server ${SOURCE_FILES})
 
 set(LIBRARY_FILES zam_base_shared zam_net_shared ${Boost_LIBRARIES} ${JSONCPP_LIBRARY})
+if(PROTOBUF_FOUND)
+    set(LIBRARY_FILES ${LIBRARY_FILES} ${Protobuf_LIBRARIES})
+endif(PROTOBUF_FOUND)
 
 if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4996")   # turn off deprecated warning (latest jsoncpp has lots of deprecated warning)

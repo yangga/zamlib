@@ -5,45 +5,74 @@
 #ifndef ZAMLIB_MY_HANDLER_H
 #define ZAMLIB_MY_HANDLER_H
 
-#include <zam/net/handler/eventHandler.h>
+#include <zam/net/handler/eventHandlerProtocolServer.h>
 
 #include <zam/net/connection/connection.h>
 #include <zam/net/message/message.h>
 
+#include "../common/protocol_1.h"
+#if ZAM_PROTOBUF_ENABLE == true
+#include "../common/protocol_1_protobuf.pb.h"
+#include "../common/protocol_1_protobuf.pb.cc"
+#endif
+
 namespace net = zam::net;
 namespace connection = zam::net::connection;
 
-class my_handler : public zam::net::handler::eventHandler
+class my_handler final : public zam::net::handler::eventHandlerProtocolServer
 {
 public:
-    void onAccept(boost::shared_ptr<connection::connection>& c) override {
+    void onInitHandler() final {
         ZAM_LOGT("test1") << __FUNCTION__;
-
-        net::message msg;
-        net::messageOStream os(msg);
-
-        os << std::string("welcome to zam world~!");
-        c->send(os);
+        registProtocol(c_s_json, &my_handler::onPackJson, this);
+        registProtocol(c_s_struct, &my_handler::onPackStruct, this);
+#if ZAM_PROTOBUF_ENABLE == true
+        registProtocol(c_s_protobuf, &my_handler::onPackProtobuf, this);
+#endif
     }
 
-    void onConnect(boost::shared_ptr<connection::connection>& c) override {
-        ZAM_LOGT("test1") << __FUNCTION__;
-    }
-
-    void onConnectFailed(boost::shared_ptr<connection::connection>& c) override {
+    void onAccept(boost::shared_ptr<connection::connection>& c) final {
         ZAM_LOGT("test1") << __FUNCTION__;
     }
 
-    void onClose(boost::shared_ptr<connection::connection>& c) override {
+    void onClose(boost::shared_ptr<connection::connection>& c) final {
         ZAM_LOGT("test1") << __FUNCTION__;
     }
 
-    void onRecv(boost::shared_ptr<connection::connection> &c, boost::shared_ptr<net::message> &msg, size_t length) override {
-        std::string data;
-        net::messageIStream is(*msg, length);
-        is >> data;
-        ZAM_LOGD("test1") << __FUNCTION__ << ", recvdata:" << data;
+private:
+    void onPackJson(boost::shared_ptr<connection::connection> &c, const Json::Value& content) {
+        ZAM_LOGD("test1") << __FUNCTION__ << ", " << content.toStyledString();
+
+        /// sending json message
+        Json::Value v;
+        v["id"] = 1004;
+        v["msg"] = "hello client~!";
+        c->sendProtocol(s_c_json, v);
     }
+
+    void onPackStruct(boost::shared_ptr<connection::connection> &c, const sample_struct_data& content) {
+        ZAM_LOGD("test1") << __FUNCTION__ << ", " << content.d;
+
+        /// sending structure message
+        sample_struct_data d;
+        d.a = 1;
+        d.b = 2.2;
+        d.c = 3.3;
+        strncpy(d.d, "client", 6);
+        c->sendProtocol(s_c_struct, d);
+    }
+
+#if ZAM_PROTOBUF_ENABLE == true
+    void onPackProtobuf(boost::shared_ptr<connection::connection> &c, const tutorial::LoginReq& content) {
+        ZAM_LOGD("test1") << __FUNCTION__ << ", " << content.id();
+
+        tutorial::LoginAck ack;
+        ack.set_name("Jake");
+        ack.set_accno(1234567890);
+        ack.set_money(9999999999);
+        c->sendProtocol(s_c_protobuf, ack);
+    }
+#endif
 };
 
 #endif //ZAMLIB_MY_HANDLER_H

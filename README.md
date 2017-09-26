@@ -16,8 +16,9 @@ or
 
 #### # install dependent libraries
 * mac
-  * brew install boost
-  * brew install jsoncpp
+  * brew install boost jsoncpp protobuf
+* ubuntu
+  * sudo apt-get install libboost-all-dev libjsoncpp-dev libprotobuf-dev
 * ...
 
 #### # more help for Windows
@@ -29,10 +30,14 @@ or
 * JSONCPP_INCLUDE_DIR_ROOT - include path of jsoncpp
 * JSONCPP_LIBRARY - release ".lib" file path of jsoncpp
 * JSONCPP_LIBRARY_DEBUG - debug ".lib" file path of jsoncpp 
-
+###### Google Protobuf
+* refer to <a href="https://cmake.org/cmake/help/v3.2/module/FindProtobuf.html">cmake::FindProtobuf</a>
 
 Dependency
 -------
+###### Required
 * Boost
 * Jsoncpp
 * JsonValueCaster
+###### Optional
+* Google Protobuf
