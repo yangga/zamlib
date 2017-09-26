@@ -24,7 +24,7 @@ namespace zam {
 
             class eventHandlerProtocol : public eventHandler {
             public:
-                using msgHandlerDelegator = boost::function<void(connection_ptr_t&, boost::shared_ptr<message>&, size_t)>;
+                using delegator_t = boost::function<void(connection_ptr_t&, boost::shared_ptr<message>&, size_t)>;
 
             protected:
                 eventHandlerProtocol() = default;
@@ -52,7 +52,7 @@ namespace zam {
                     };
 
                     using namespace boost::placeholders;
-                    return msgHandlerCont_.insert(std::make_pair(proto, boost::bind<void>(ll, _1, _2, _3))).second;
+                    return registProtocol(proto, boost::bind<void>(ll, _1, _2, _3));
                 }
 
                 template <typename PROTOCOL_TYPE>
@@ -72,11 +72,13 @@ namespace zam {
                     };
 
                     using namespace boost::placeholders;
-                    return msgHandlerCont_.insert(std::make_pair(proto, boost::bind<void>(ll, _1, _2, _3))).second;
+                    return registProtocol(proto, boost::bind<void>(ll, _1, _2, _3));
                 }
 
+                ZAMNET_API bool registProtocol(protocol_t proto, delegator_t fn);
+
             private:
-                std::map<protocol_t, msgHandlerDelegator> msgHandlerCont_;
+                std::map<protocol_t, delegator_t> msgHandlerCont_;
             };
 
         }

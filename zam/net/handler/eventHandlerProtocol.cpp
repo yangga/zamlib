@@ -40,8 +40,10 @@ namespace zam {
                     ZAM_LOGD("default") << "proto err - msg:" << e.what();
                     c->closing();
                 }
+            }
 
-
+            bool eventHandlerProtocol::registProtocol(protocol_t proto, delegator_t fn) {
+                return msgHandlerCont_.insert(std::make_pair(proto, fn)).second;
             }
 
         }
