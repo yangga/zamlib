@@ -31,7 +31,7 @@ namespace zam {
 
                 using timers_t = thread::lockObject< std::map<std::string, boost::shared_ptr<boost::asio::deadline_timer> > >;
 
-                static constexpr auto unlimit_v = std::numeric_limits<size_t>::max();
+                static constexpr auto unlimit_v = (std::numeric_limits<size_t>::max)();
 
                 explicit scheduler(io::ioObject& ioo);
 
