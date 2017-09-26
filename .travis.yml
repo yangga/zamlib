@@ -85,10 +85,10 @@ install:
   ############################################################################
   # If you want remove all caches, just uncomment below commands
   ############################################################################
-#  - |
-#    rm -rf ${BOOST_DIR}
-#    rm -rf ${LLVM_DIR}
-#    rm -rf ${PROTOBUF_DIR}
+  - |
+    rm -rf ${BOOST_DIR}
+    rm -rf ${LLVM_DIR}
+    rm -rf ${PROTOBUF_DIR}
 
   ############################################################################
   # Install a recent CMake
@@ -147,6 +147,9 @@ install:
             mkdir -p ${BOOST_DIR_DOWNLOAD}
             { travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xz -C ${BOOST_DIR_DOWNLOAD}; } || exit 1
           fi
+
+          mv ${BOOST_DIR_DOWNLOAD} ${BOOST_DIR}
+
           # Make sure we don't conflict with the Hana shipped with Boost
           rm -rf ${BOOST_ROOT}/include/boost/{hana,hana.hpp}
         fi
@@ -159,19 +162,12 @@ install:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       brew upgrade boost || brew install boost
-    elif [[ "${BOOST_BUILD}" == "true" ]]; then
-      if [[ -z "$(ls -A ${BOOST_DIR})" ]]; then
-        pushd ${BOOST_DIR_DOWNLOAD}
-        travis_wait 30 ./bootstrap.sh
-        popd
-
-        mv ${BOOST_DIR_DOWNLOAD} ${BOOST_DIR}
-      fi
     fi
 
   - |
     if [ "${TRAVIS_OS_NAME}" == "linux" ] && [ "${BOOST_BUILD}" == "true" ]; then
       pushd ${BOOST_DIR}
+      travis_wait 30 ./bootstrap.sh
       travis_wait 30 sudo ./b2 threading=multi -d0 install
       popd
     fi
