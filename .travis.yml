@@ -63,6 +63,15 @@ install:
     mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
 
   ############################################################################
+  # Setup default versions and override compiler if needed
+  ############################################################################
+  - if [[ "${LLVM_VERSION}" == "default" ]]; then LLVM_VERSION=3.9.0; fi
+  - if [[ "${BOOST_VERSION}" == "default" ]]; then BOOST_VERSION=1.63.0; fi
+  - if [[ "${PROTOBUF_VERSION}" == "default" ]]; then PROTOBUF_VERSION=3.4.0; fi
+
+  - if [[ "${COMPILER}" != "" ]]; then export CXX=${COMPILER}; fi
+
+  ############################################################################
   # Defines components variables
   ############################################################################
   - |
@@ -74,21 +83,12 @@ install:
     PROTOBUF_DIR_DOWNLOAD=${PROTOBUF_DIR}_download
 
   ############################################################################
-  # Setup default versions and override compiler if needed
-  ############################################################################
-  - if [[ "${LLVM_VERSION}" == "default" ]]; then LLVM_VERSION=3.9.0; fi
-  - if [[ "${BOOST_VERSION}" == "default" ]]; then BOOST_VERSION=1.63.0; fi
-  - if [[ "${PROTOBUF_VERSION}" == "default" ]]; then PROTOBUF_VERSION=3.4.0; fi
-
-  - if [[ "${COMPILER}" != "" ]]; then export CXX=${COMPILER}; fi
-
-  ############################################################################
   # If you want remove all caches, just uncomment below commands
   ############################################################################
-  - |
-    rm -rf ${BOOST_DIR}
-    rm -rf ${LLVM_DIR}
-    rm -rf ${PROTOBUF_DIR}
+#  - |
+#    rm -rf ${BOOST_DIR}
+#    rm -rf ${LLVM_DIR}
+#    rm -rf ${PROTOBUF_DIR}
 
   ############################################################################
   # Install a recent CMake
