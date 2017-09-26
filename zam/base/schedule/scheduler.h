@@ -14,8 +14,8 @@
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/timer.hpp>
 
+#include <limits>
 #include <map>
-
 
 
 namespace zam {
@@ -31,7 +31,7 @@ namespace zam {
 
                 using timers_t = thread::lockObject< std::map<std::string, boost::shared_ptr<boost::asio::deadline_timer> > >;
 
-                static constexpr size_t unlimit_v = std::numeric_limits<size_t>::max();
+                static constexpr auto unlimit_v = std::numeric_limits<size_t>::max();
 
                 explicit scheduler(io::ioObject& ioo);
 

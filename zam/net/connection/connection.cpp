@@ -8,8 +8,11 @@ namespace zam {
     namespace net {
         namespace connection {
 
-            connection::connection(base::io::ioSystem& ios) : base::io::ioObject(ios)
-            {}
+            connection::connection(base::io::ioSystem& ios)
+                    : base::io::ioObject(ios)
+                    , scheduler_(boost::make_shared<zam::base::schedule::scheduler>(*this))
+            {
+            }
 
             void connection::initialize(warehouse::warehouse& wh) {
                 cipher_     = wh.getCipher();
