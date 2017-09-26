@@ -37,7 +37,8 @@ namespace zam {
                 }
 
             protected:
-                explicit ioObject(ioSystem& ios) : ios_(ios), strand_(ios.getIos()) {}
+                ZAMBASE_API ioObject(ioObject& ioo);
+                ZAMBASE_API explicit ioObject(ioSystem& ios);
 
             private:
                 ioSystem& ios_;
