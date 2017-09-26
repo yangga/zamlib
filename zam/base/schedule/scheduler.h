@@ -33,7 +33,7 @@ namespace zam {
 
                 static constexpr auto unlimit_v = (std::numeric_limits<size_t>::max)();
 
-                explicit scheduler(io::ioObject& ioo);
+                ZAMBASE_API explicit scheduler(io::ioObject& ioo);
 
                 ZAMBASE_API bool at(std::string name, delegate_t fn, time_type time_at);
                 ZAMBASE_API bool once(std::string name, delegate_t fn, duration_type dur);
