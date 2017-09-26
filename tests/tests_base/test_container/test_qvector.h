@@ -12,7 +12,6 @@
 using namespace zam::base::container;
 
 void test_qvector_int() {
-    std::cout << "======================" << std::endl;
     std::cout << __FUNCTION__ << std::endl;
 
     qvector<int> cont;
@@ -42,7 +41,6 @@ bool operator < (const CustomType& lh, const CustomType& rh) {
 
 
 void test_qvector_custom_type() {
-    std::cout << "======================" << std::endl;
     std::cout << __FUNCTION__ << std::endl;
     qvector<CustomType> cont;
     cont.push(CustomType{1000, 1.11f});
@@ -58,8 +56,12 @@ void test_qvector_custom_type() {
 
 void test_qvector()
 {
+    std::cout << "[test_qvector]" << std::endl;
+    std::cout << "======================" << std::endl;
     test_qvector_int();
+    std::cout << "======================" << std::endl;
     test_qvector_custom_type();
+    std::cout << "======================" << std::endl;
 }
 
 #endif //ZAMLIB_TEST_QVECTOR_H

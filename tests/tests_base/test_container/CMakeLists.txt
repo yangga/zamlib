@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(${PROJECT_SOURCE_DIR} ${ZAMLIB_ROOT} ${JSONCPP_INCLUDE_DIR_ROOT})
 
-set(SOURCE_FILES main.cpp test_qvector.h)
+set(SOURCE_FILES main.cpp test_qvector.h test_waitq.h)
 add_executable(test_container ${SOURCE_FILES})
 
 set(LIBRARY_FILES zam_base_shared ${Boost_LIBRARIES} ${JSONCPP_LIBRARY})
