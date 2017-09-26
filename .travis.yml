@@ -73,16 +73,6 @@ install:
     PROTOBUF_DIR=${DEPS_DIR}/protobuf-v${PROTOBUF_VERSION}
     PROTOBUF_DIR_DOWNLOAD=${PROTOBUF_DIR}_download
 
-
-  ############################################################################
-  # If you want remove all caches, just uncomment below commands
-  ############################################################################
-#  - |
-#    rm -rf ${BOOST_DIR}
-#    rm -rf ${LLVM_DIR}
-#    rm -rf ${PROTOBUF_DIR_DOWNLOAD}
-
-
   ############################################################################
   # Setup default versions and override compiler if needed
   ############################################################################
@@ -91,6 +81,14 @@ install:
   - if [[ "${PROTOBUF_VERSION}" == "default" ]]; then PROTOBUF_VERSION=3.4.0; fi
 
   - if [[ "${COMPILER}" != "" ]]; then export CXX=${COMPILER}; fi
+
+  ############################################################################
+  # If you want remove all caches, just uncomment below commands
+  ############################################################################
+    - |
+      rm -rf ${BOOST_DIR}
+      rm -rf ${LLVM_DIR}
+      rm -rf ${PROTOBUF_DIR}
 
   ############################################################################
   # Install a recent CMake
