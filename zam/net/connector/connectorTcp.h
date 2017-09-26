@@ -19,6 +19,7 @@ namespace zam {
                 struct Config {
                     std::string remoteIp;
                     uint16_t remotePort;
+                    size_t keepAliveTimeMs = 0;
                 };
 
                 ZAMNET_API explicit connectorTcp(base::io::ioSystem& ios, warehouse::warehouse w, Config cfg);

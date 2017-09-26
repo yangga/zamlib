@@ -53,6 +53,10 @@ namespace zam {
                     ioPost(boost::bind(&eventHandler::onClose, handler_, c));
                 }
 
+                void onExpired(boost::shared_ptr<connection::connection>& c) final {
+                    ioPost(boost::bind(&eventHandler::onExpired, handler_, c));
+                }
+
                 void onRecv(boost::shared_ptr<connection::connection> &c, boost::shared_ptr<message> &msg, size_t length) final {
                     ioPost(boost::bind(&eventHandler::onRecv, handler_, c, msg, length));
                 }

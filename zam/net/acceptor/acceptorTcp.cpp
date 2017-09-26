@@ -65,7 +65,9 @@ namespace zam {
             }
 
             void acceptorTcp::startAcceptInternal() {
-                auto c = new connection::connectionTcp(ios());
+                connection::connectionTcp::Config cfg;
+                cfg.keepAliveTimeMs = cfg_.keepAliveTimeMs;
+                auto c = new connection::connectionTcp(ios(), std::move(cfg));
                 c->initialize(this->warehouse());
                 conn_.reset(c);
 

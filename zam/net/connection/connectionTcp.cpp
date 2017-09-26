@@ -11,8 +11,11 @@ namespace zam {
     namespace net {
         namespace connection {
 
-            connectionTcp::connectionTcp(base::io::ioSystem& ios)
+            static const std::string TIMER_CONNECTION_TCP_EXPIRE("timerExpire");
+
+            connectionTcp::connectionTcp(base::io::ioSystem& ios, Config cfg)
                     : connection(ios)
+                    , cfg_(std::move(cfg))
                     , sock_(ios.getIos())
                     , offset_(0)
                     , status_(status::close)
@@ -30,6 +33,8 @@ namespace zam {
                 startRead();
 
                 status_ = status::open;
+
+                renewExpireTime();
             }
 
             void connectionTcp::startConnect() {
@@ -40,6 +45,8 @@ namespace zam {
                 startRead();
 
                 status_ = status::open;
+
+                renewExpireTime();
             }
 
             void connectionTcp::closing() {
@@ -145,6 +152,8 @@ namespace zam {
                         ZAM_LOGD("default") << "exception in connectionTcp::readHandler - " << e.what();
                         closing(boost::asio::ip::tcp::socket::shutdown_receive);
                     }
+
+                    renewExpireTime();
                 }
                 else {
                     closing(boost::asio::ip::tcp::socket::shutdown_receive);
@@ -154,6 +163,8 @@ namespace zam {
             void connectionTcp::closing(boost::asio::socket_base::shutdown_type what) {
                 boost::system::error_code ec;
                 sock_.shutdown(what, ec);
+
+                scheduler().stop(TIMER_CONNECTION_TCP_EXPIRE);
 
                 if (status_ == status::open) {
                     status_ = status::closing;
@@ -174,6 +185,8 @@ namespace zam {
             void connectionTcp::close() {
                 boost::system::error_code ec;
                 sock_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
+
+                scheduler().stop(TIMER_CONNECTION_TCP_EXPIRE);
 
                 if (status_ != connection::status::close) {
                     status_ = connection::status::close;
@@ -245,12 +258,30 @@ namespace zam {
 
             void connectionTcp::writeHandler(const boost::system::error_code& ec, size_t bytes_transferred) {
                 if (!ec) {
+                    renewExpireTime();
                     return;
                 }
 
                 closing(boost::asio::ip::tcp::socket::shutdown_send);
             }
 
+            void connectionTcp::renewExpireTime() {
+                if (0 < cfg_.keepAliveTimeMs) {
+                    scheduler().once(TIMER_CONNECTION_TCP_EXPIRE
+                            , std::bind<void>([s=shared_from_this()](){
+                                s->toChild<connectionTcp>().onExpireTime();
+                            })
+                            , boost::posix_time::milliseconds(static_cast<boost::int64_t>(cfg_.keepAliveTimeMs)));
+                }
+            }
+
+            void connectionTcp::onExpireTime() {
+                ioPost(
+                        boost::bind(
+                                &handler::eventHandler::onExpired
+                                , eventHandler()
+                                , shared_from_this()));
+            }
         }
     }
 }

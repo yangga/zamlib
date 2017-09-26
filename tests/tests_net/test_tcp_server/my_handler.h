@@ -39,6 +39,10 @@ public:
         ZAM_LOGT("test1") << __FUNCTION__;
     }
 
+    void onExpired(boost::shared_ptr<connection::connection>& c) final {
+        ZAM_LOGT("test1") << __FUNCTION__;
+    }
+
 private:
     void onPackJson(boost::shared_ptr<connection::connection> &c, const Json::Value& content) {
         ZAM_LOGD("test1") << __FUNCTION__ << ", " << content.toStyledString();

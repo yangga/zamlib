@@ -22,7 +22,11 @@ namespace zam {
                 , public base::memory::pool<connectionTcp>
             {
             public:
-                ZAMNET_API explicit connectionTcp(base::io::ioSystem& ios);
+                struct Config {
+                    size_t keepAliveTimeMs = 0;
+                };
+
+                ZAMNET_API explicit connectionTcp(base::io::ioSystem& ios, Config cfg);
 
                 ZAMNET_API endPoint remote_endpoint() override;
 
@@ -46,7 +50,11 @@ namespace zam {
                 void closing(boost::asio::socket_base::shutdown_type what);
                 void close();
 
+                void renewExpireTime();
+                void onExpireTime();
+
             private:
+                Config cfg_;
                 boost::asio::ip::tcp::socket sock_;
                 message msg_;
                 size_t offset_;
