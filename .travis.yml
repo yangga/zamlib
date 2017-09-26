@@ -143,7 +143,7 @@ install:
             BOOST_URL="http://github.com/boostorg/boost.git"
             travis_retry git clone --depth 1 --recursive --quiet ${BOOST_URL} ${BOOST_DIR_DOWNLOAD} || exit 1
           else
-            BOOST_URL="http://sourceforge.net/projects/boost/files/boost/${BOOST_VERSION}/boost_${BOOST_VERSION//\./_}.tar.gz"
+            BOOST_URL="http://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION//\./_}.tar.gz"
             mkdir -p ${BOOST_DIR_DOWNLOAD}
             { travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xz -C ${BOOST_DIR_DOWNLOAD}; } || exit 1
           fi
