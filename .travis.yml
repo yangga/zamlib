@@ -77,10 +77,10 @@ install:
   ############################################################################
   # If you want remove all caches, just uncomment below commands
   ############################################################################
-  - |
-    rm -rf ${BOOST_DIR}
-    rm -rf ${LLVM_DIR}
-    rm -rf ${PROTOBUF_DIR_DOWNLOAD}
+#  - |
+#    rm -rf ${BOOST_DIR}
+#    rm -rf ${LLVM_DIR}
+#    rm -rf ${PROTOBUF_DIR_DOWNLOAD}
 
 
   ############################################################################

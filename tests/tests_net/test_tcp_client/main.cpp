@@ -43,7 +43,9 @@ int main(int argc, char* argv[]) {
         return boost::make_shared<net::packer::packerDefault>();
     };
 
-    net::connector::connectorTcp::Config cfg {"127.0.0.1", 8080};
+    net::connector::connectorTcp::Config cfg;
+    cfg.remoteIp = "127.0.0.1";
+    cfg.remotePort = 8080;
     net::connector::connectorTcp connector(*ios, wh, cfg);
 
     net::connection_ptr_t conn;

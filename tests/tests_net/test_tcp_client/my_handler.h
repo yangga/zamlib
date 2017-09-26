@@ -43,7 +43,7 @@ public:
         /// sending structure message
         sample_struct_data d;
         d.a = 10;
-        d.b = 20.2;
+        d.b = 20.2f;
         d.c = 30.3;
         strncpy(d.d, "server", 6);
         c->sendProtocol(c_s_struct, d);

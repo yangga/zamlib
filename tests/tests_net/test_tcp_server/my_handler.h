@@ -62,7 +62,7 @@ private:
         /// sending structure message
         sample_struct_data d;
         d.a = 1;
-        d.b = 2.2;
+        d.b = 2.2f;
         d.c = 3.3;
         strncpy(d.d, "client", 6);
         c->sendProtocol(s_c_struct, d);
