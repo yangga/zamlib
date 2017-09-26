@@ -21,8 +21,8 @@ namespace zam {
                     });
                 }
 
-                bool scheduler_loop(bool isBegin
-                        , boost::shared_ptr<scheduler> s
+                bool scheduler_loop(
+                        boost::shared_ptr<scheduler> s
                         , scheduler::timers_t& timers
                         , std::string name
                         , scheduler::delegate_t fn
@@ -33,7 +33,9 @@ namespace zam {
                             (const boost::system::error_code& ec, size_t remainCnt) mutable
                     {
                         if (ec) {
-                            implement::scheduler_remove(timers, name);
+                            if (boost::system::errc::operation_canceled != ec.value())
+                                implement::scheduler_remove(timers, name);
+
                             return;
                         }
 
@@ -48,27 +50,20 @@ namespace zam {
                         if (0 == remainCnt)
                             return;
 
-                        scheduler_loop(false, s, timers, name, fn, dur, remainCnt);
+                        scheduler_loop(s, timers, name, fn, dur, remainCnt);
                     };
 
                     bool isSuccess = false;
                     timers.lock([&](scheduler::timers_t::object_t & cont) {
                         boost::shared_ptr<boost::asio::deadline_timer> timer;
-                        if (isBegin) {
-                            if (cont.end() == cont.find(name)) {
-                                timer = boost::make_shared<boost::asio::deadline_timer>(s->ioo().ios().getIos());
-                                cont.insert(std::make_pair(name, timer));
-                            }
+                        auto itr = cont.find(name);
+                        if (itr != cont.end()) {
+                            timer = itr->second;
                         }
                         else {
-                            auto itr = cont.find(name);
-                            if (itr != cont.end()) {
-                                timer = itr->second;
-                            }
+                            timer = boost::make_shared<boost::asio::deadline_timer>(s->ioo().ios().getIos());
+                            cont.insert(std::make_pair(name, timer));
                         }
-
-                        if (!timer)
-                            return;
 
                         timer->expires_from_now(dur);
                         timer->async_wait(
@@ -97,7 +92,9 @@ namespace zam {
                 auto callback = [s=this->shared_from_this(), this, name, fn=std::move(fn)]
                         (const boost::system::error_code& ec)
                 {
-                    implement::scheduler_remove(timers_, name);
+                    if (!ec || boost::system::errc::operation_canceled != ec.value()) {
+                        implement::scheduler_remove(timers_, name);
+                    }
 
                     if (!ec) {
                         fn();
@@ -106,17 +103,23 @@ namespace zam {
 
                 bool isSuccess = false;
                 timers_.lock([&](timers_t::object_t & cont) {
-                    if (cont.end() != cont.find(name))
-                        return;
+                    boost::shared_ptr<boost::asio::deadline_timer> timer;
+                    auto itr = cont.find(name);
+                    if (cont.end() != cont.find(name)) {
+                        timer = itr->second;
+                    }
+                    else {
+                        timer = boost::make_shared<boost::asio::deadline_timer>(ioo_.ios().getIos());
+                        cont.insert(std::make_pair(name, timer));
+                    }
 
-                    auto timer = boost::make_shared<boost::asio::deadline_timer>(ioo_.ios().getIos());
                     timer->expires_at(time_at);
                     timer->async_wait(
                             ioo_.strand().wrap(
                                     boost::bind<void>(
                                             callback, boost::asio::placeholders::error)));
 
-                    isSuccess = cont.insert(std::make_pair(name, timer)).second;
+                    isSuccess = true;
                 });
 
                 return isSuccess;
@@ -131,8 +134,7 @@ namespace zam {
                 if (unlimit_v != cnt && 0 == cnt)
                     return false;
 
-                return implement::scheduler_loop(true
-                        , this->shared_from_this()
+                return implement::scheduler_loop(this->shared_from_this()
                         , timers_
                         , std::move(name)
                         , std::move(fn)
