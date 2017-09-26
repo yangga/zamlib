@@ -117,6 +117,8 @@ install:
       if [[ "${BOOST_VERSION}" != "" ]]; then
         BOOST_DIR=${DEPS_DIR}/boost-${BOOST_VERSION}
 
+        rm -rf ${BOOST_DIR}
+
         if [[ -z "$(ls -A ${BOOST_DIR})" ]]; then
           if [[ "${BOOST_VERSION}" == "trunk" ]]; then
             BOOST_URL="http://github.com/boostorg/boost.git"
@@ -147,7 +149,7 @@ install:
   - |
     if [[ "${BOOST_BUILD}" == "true" ]]; then
       pushd ${BOOST_DIR}
-      travis_wait 30 sudo ./b2 threading=multi -d1 install
+      travis_wait 30 sudo ./b2 threading=multi install
       popd
     fi
 
