@@ -15,6 +15,7 @@
 #include "../proto/forms.h"
 
 #include <zam/base/io/ioObject.h>
+#include <zam/base/schedule/scheduler.h>
 
 #include <boost/enable_shared_from_this.hpp>
 
@@ -66,21 +67,12 @@ namespace zam {
                 }
 
                 template <typename PROTO_DATA_T>
-                void sendProtocol(protocol_t proto, const PROTO_DATA_T& data) {
-                    message msg;
-                    messageOStream os(msg);
-
-                    os << proto;
-
-                    proto::proto_form_factory_impl<PROTO_DATA_T>::type::write(os, data);
-                    send(os);
-                }
+                void sendProtocol(protocol_t proto, const PROTO_DATA_T& data);
 
                 template <class CHILD_CONNECTION>
-                CHILD_CONNECTION& toChild() {
-                    static_assert(std::is_base_of<connection, CHILD_CONNECTION>::value, "child connection must be child of connection");
-                    return dynamic_cast<CHILD_CONNECTION&>(*this);
-                }
+                CHILD_CONNECTION& toChild();
+
+                zam::base::schedule::scheduler& scheduler() const { return *scheduler_; }
 
             protected:
                 ZAMNET_API explicit connection(base::io::ioSystem& ios);
@@ -88,8 +80,30 @@ namespace zam {
                 cipher_ptr_t cipher_;
                 eventHandler_ptr_t evtHandler_;
                 packer_ptr_t packer_;
+
+                boost::shared_ptr<zam::base::schedule::scheduler> scheduler_;
             };
+
+
+
+            template <typename PROTO_DATA_T>
+            void connection::sendProtocol(protocol_t proto, const PROTO_DATA_T& data) {
+                message msg;
+                messageOStream os(msg);
+
+                os << proto;
+
+                proto::proto_form_factory_impl<PROTO_DATA_T>::type::write(os, data);
+                send(os);
+            }
+
+            template <class CHILD_CONNECTION>
+            CHILD_CONNECTION& connection::toChild() {
+                static_assert(std::is_base_of<connection, CHILD_CONNECTION>::value, "child connection must be child of connection");
+                return dynamic_cast<CHILD_CONNECTION&>(*this);
+            }
         }
+
 
         using connection_ptr_t = boost::shared_ptr<connection::connection>;
     }

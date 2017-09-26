@@ -5,7 +5,7 @@
 #ifndef ZAMLIB_EVENTHANDLER_H
 #define ZAMLIB_EVENTHANDLER_H
 
-#include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 namespace zam {
     namespace net {
@@ -18,9 +18,8 @@ namespace zam {
 
         namespace handler {
 
-            struct eventHandler {
-                virtual ~eventHandler() = default;
-
+            struct eventHandler : public boost::enable_shared_from_this<eventHandler>
+            {
                 virtual void onInitHandler() = 0;
                 virtual void onAccept(boost::shared_ptr<connection::connection>& c) = 0;
                 virtual void onConnect(boost::shared_ptr<connection::connection>& c) = 0;
