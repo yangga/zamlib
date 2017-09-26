@@ -150,21 +150,6 @@ install:
     fi
 
   ############################################################################
-  # Install Protobuf
-  ############################################################################
-#  - |
-#    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-#      PROTOBUF_DOWNLOAD_DIR="${DEPS_DIR}/protobuf-v${PROTOBUF_VERSION}"
-#      if [[ -z "$(ls -A ${PROTOBUF_DOWNLOAD_DIR})" ]]; then
-#        PROTOBUF_URL="https://github.com/yangga/protobuf/archive/v${PROTOBUF_VERSION}.tar.gz"
-#        travis_retry wget --quiet -O - ${PROTOBUF_URL}      | tar --strip-components=1 -xJ -C ${PROTOBUF_DOWNLOAD_DIR}
-#      fi
-#    elif [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-#      brew install protobuf
-#    fi
-  #    pushd ${PROTOBUF_DOWNLOAD_DIR} && ./autogen.sh && ./configure --prefix=/usr && make -s && sudo make install && popd
-
-  ############################################################################
   # Install a recent Doxygen
   ############################################################################
   - |
