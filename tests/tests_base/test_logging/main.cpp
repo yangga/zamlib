@@ -25,5 +25,18 @@ int main(int argc, char* argv[]) {
     ZAM_LOGE("test1") << "error";
     ZAM_LOGF("test1") << "fatal";
 
+    struct TestBuf {
+        int a = 1 << 1;
+        int b = 1 << 2;
+        int c = 1 << 3;
+        int d = 1 << 4;
+        char txt[80] = "hello world~!!!!!!";
+    };
+    TestBuf buf;
+    ZAM_LOGD("test1") << ZAM_DUMP_INLINE(&buf, sizeof(buf));
+    ZAM_LOGD("test1") << ZAM_DUMP_INLINE(&buf, sizeof(buf), sizeof(buf)-10);
+    ZAM_LOGD("test1") << ZAM_DUMP(&buf, sizeof(buf));
+    ZAM_LOGD("test1") << ZAM_DUMP(&buf, sizeof(buf), sizeof(buf)-10);
+
     return 0;
 }
