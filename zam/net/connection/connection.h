@@ -74,6 +74,9 @@ namespace zam {
 
                 zam::base::schedule::scheduler& scheduler() const { return *scheduler_; }
 
+                void* getTag() const { return tag_; }
+                void setTag(void* tag) { tag_ = tag; }
+
             protected:
                 ZAMNET_API explicit connection(base::io::ioSystem& ios);
 
@@ -82,6 +85,8 @@ namespace zam {
                 packer_ptr_t packer_;
 
                 boost::shared_ptr<zam::base::schedule::scheduler> scheduler_;
+
+                void* tag_;
             };
 
 
