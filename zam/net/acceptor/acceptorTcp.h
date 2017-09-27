@@ -19,6 +19,7 @@ namespace zam {
                 struct Config {
                     std::string bindIp;
                     uint16_t bindPort;
+                    size_t keepAliveTimeMs = 0;
                 };
 
             public:

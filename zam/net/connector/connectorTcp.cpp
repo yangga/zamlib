@@ -62,7 +62,9 @@ namespace zam {
             {
                 using TCP = boost::asio::ip::tcp;
 
-                auto c = new connection::connectionTcp(ios());
+                connection::connectionTcp::Config cfg;
+                cfg.keepAliveTimeMs = cfg_.keepAliveTimeMs;
+                auto c = new connection::connectionTcp(ios(), std::move(cfg));
                 c->initialize(this->warehouse());
 
                 auto& s = c->socket();

@@ -41,7 +41,9 @@ int main(int argc, char* argv[]) {
         return boost::make_shared<net::packer::packerDefault>();
     };
 
-    net::acceptor::acceptorTcp::Config cfg {"0.0.0.0", 8080};
+    net::acceptor::acceptorTcp::Config cfg;
+    cfg.bindIp = "0.0.0.0";
+    cfg.bindPort = 8080;
     net::acceptor::acceptorTcp acceptor(*ios, wh, cfg);
 
     try {

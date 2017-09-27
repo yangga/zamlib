@@ -5,7 +5,10 @@
 #ifndef ZAMLIB_ENDPOINT_H
 #define ZAMLIB_ENDPOINT_H
 
+#include <zam/net/net.h>
+
 #include <string>
+#include <sstream>
 
 namespace zam {
     namespace net {
@@ -17,6 +20,7 @@ namespace zam {
                 uint16_t port;
             };
 
+            ZAMNET_API std::string to_string(const endPoint& e);
         }
     }
 }

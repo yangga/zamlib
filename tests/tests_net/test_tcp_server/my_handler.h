@@ -32,16 +32,21 @@ public:
     }
 
     void onAccept(boost::shared_ptr<connection::connection>& c) final {
-        ZAM_LOGT("test1") << __FUNCTION__;
+        ZAM_LOGT("test1") << __FUNCTION__ << " - conn[" << zam::net::connection::to_string(c->remote_endpoint()) << "]";
     }
 
     void onClose(boost::shared_ptr<connection::connection>& c) final {
-        ZAM_LOGT("test1") << __FUNCTION__;
+        ZAM_LOGT("test1") << __FUNCTION__ << " - conn[" << zam::net::connection::to_string(c->remote_endpoint()) << "]";
+    }
+
+    void onExpired(boost::shared_ptr<connection::connection>& c) final {
+        ZAM_LOGT("test1") << __FUNCTION__ << " - conn[" << zam::net::connection::to_string(c->remote_endpoint()) << "]";
     }
 
 private:
     void onPackJson(boost::shared_ptr<connection::connection> &c, const Json::Value& content) {
-        ZAM_LOGD("test1") << __FUNCTION__ << ", " << content.toStyledString();
+        ZAM_LOGT("test1") << __FUNCTION__ << " - conn[" << zam::net::connection::to_string(c->remote_endpoint()) << "]";
+        ZAM_LOGD("test1") << content.toStyledString();
 
         /// sending json message
         Json::Value v;
@@ -51,12 +56,13 @@ private:
     }
 
     void onPackStruct(boost::shared_ptr<connection::connection> &c, const sample_struct_data& content) {
-        ZAM_LOGD("test1") << __FUNCTION__ << ", " << content.d;
+        ZAM_LOGT("test1") << __FUNCTION__ << " - conn[" << zam::net::connection::to_string(c->remote_endpoint()) << "]";
+        ZAM_LOGD("test1") << content.a << ", " << content.b << ", " << content.c << ", " << content.d;
 
         /// sending structure message
         sample_struct_data d;
         d.a = 1;
-        d.b = 2.2;
+        d.b = 2.2f;
         d.c = 3.3;
         strncpy(d.d, "client", 6);
         c->sendProtocol(s_c_struct, d);
@@ -64,7 +70,8 @@ private:
 
 #if ZAM_PROTOBUF_ENABLE == true
     void onPackProtobuf(boost::shared_ptr<connection::connection> &c, const tutorial::LoginReq& content) {
-        ZAM_LOGD("test1") << __FUNCTION__ << ", " << content.id();
+        ZAM_LOGT("test1") << __FUNCTION__ << " - conn[" << zam::net::connection::to_string(c->remote_endpoint()) << "]";
+        ZAM_LOGD("test1") << content.id();
 
         tutorial::LoginAck ack;
         ack.set_name("Jake");

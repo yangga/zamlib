@@ -7,6 +7,7 @@
 
 #include <boost/thread.hpp>
 
+#include <condition_variable>
 #include <queue>
 #include <mutex>
 
