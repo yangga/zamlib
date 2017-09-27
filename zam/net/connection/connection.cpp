@@ -11,6 +11,7 @@ namespace zam {
             connection::connection(base::io::ioSystem& ios)
                     : base::io::ioObject(ios)
                     , scheduler_(boost::make_shared<zam::base::schedule::scheduler>(*this))
+                    , tag_(nullptr)
             {
             }
 
