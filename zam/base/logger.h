@@ -8,6 +8,7 @@
 #include "base.h"
 
 #include "log/logger.h"
+#include "log/loggerDump.h"
 #include "log/loggerSystem.h"
 
 
