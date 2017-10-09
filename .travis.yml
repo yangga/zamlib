@@ -99,7 +99,7 @@ install:
       mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
     else
-      brew upgrade cmake || brew install cmake
+      brew install cmake || brew upgrade cmake
     fi
   - cmake --version
 
@@ -161,7 +161,7 @@ install:
   ############################################################################
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      brew upgrade boost || brew install boost
+      brew install boost || brew upgrade boost
     fi
 
   - |
@@ -178,7 +178,7 @@ install:
   ############################################################################
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      brew upgrade jsoncpp || brew install jsoncpp
+      brew install jsoncpp || brew upgrade jsoncpp
     fi
 
   ############################################################################
@@ -230,8 +230,8 @@ install:
   ############################################################################
   - |
     if [[ "${CHECK_FORMATTING}" == "true" ]]; then
-      brew upgrade pcre || brew install pcre || exit 1
-      brew upgrade vera++ || brew install vera++ || exit 1
+      brew install pcre || brew upgrade pcre || exit 1
+      brew install vera++ || brew upgrade vera++ || exit 1
     fi
 
 before_script:
